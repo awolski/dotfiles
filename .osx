@@ -9,8 +9,23 @@ sudo -v
 while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
 
 ###############################################################################
-# General UI/UX                                                               #
+# Dock, Dashboard, and hot corners                                            #
 ###############################################################################
 
 # Set the dock to autohide
-defaults write com.apple.Dock autohide -bool TRUE; killall Dock
+defaults write com.apple.Dock autohide -bool TRUE; 
+
+# Only show active applicatoins
+defaults write com.apple.dock static-only -bool TRUE
+
+# Set the icon size of Dock items to 36 pixels
+defaults write com.apple.dock tilesize -int 36
+
+###############################################################################
+# Kill affected applications                                                  #
+###############################################################################
+
+for app in "Dock"; do
+	killall "${app}" &> /dev/null
+done
+echo "Done. Note that some of these changes require a logout/restart to take effect."
