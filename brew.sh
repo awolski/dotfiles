@@ -20,9 +20,12 @@ brew update
 # Upgrade any already-installed formulae.
 brew upgrade --all
 
-# Install cask applications
+# Install everyday applications. 
 brew cask install google-chrome
 brew cask install iterm2
+brew cask install skype
+
+# Install development tools.
 brew cask install dockertoolbox
 
 # Remove outdated versions from the cellar.
