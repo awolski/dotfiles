@@ -28,6 +28,8 @@ brew cask install skype
 
 # Install development tools.
 brew cask install dockertoolbox
+brew cask install java
+brew cask install webstorm
 
 # Remove outdated versions from the cellar.
 brew cleanup
