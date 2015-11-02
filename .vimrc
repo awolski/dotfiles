@@ -1,13 +1,13 @@
 " set the runtime path to include Vundle and initialize
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
-
-Plugin 'gmarik/Vundle.vim'
-Plugin 'kien/ctrlp.vim'
-Plugin 'bling/vim-airline'
-Plugin 'altercation/vim-colors-solarized'
-
-call vundle#end()            " required
+"set rtp+=~/.vim/bundle/Vundle.vim
+"call vundle#begin()
+"
+"Plugin 'gmarik/Vundle.vim'
+"Plugin 'kien/ctrlp.vim'
+"Plugin 'bling/vim-airline'
+"Plugin 'altercation/vim-colors-solarized'
+"
+"call vundle#end()            " required
 
 filetype plugin indent on    " required
 
@@ -16,9 +16,9 @@ filetype off                  " required
 
 " Colors -------------------------------------
 syntax enable                 " enable syntax processing
-set background=dark
-let g:solarized_termtrans = 1
-colorscheme solarized 
+"set background=dark
+"let g:solarized_termtrans = 1
+"colorscheme solarized 
 
 " Spaces & Tabs ------------------------------
 set tabstop=4       " number of visual spaces per TAB
