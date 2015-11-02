@@ -31,5 +31,8 @@ brew cask install dockertoolbox
 brew cask install java
 brew cask install webstorm
 
+# Install utilities
+brew cask install tunnelblick
+
 # Remove outdated versions from the cellar.
 brew cleanup
