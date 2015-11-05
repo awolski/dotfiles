@@ -20,6 +20,10 @@ brew update
 # Upgrade any already-installed formulae.
 brew upgrade --all
 
+# Homebrew installs
+brew install nvm
+brew install rbenv ruby-build
+
 # Install everyday applications. 
 brew cask install google-chrome
 brew cask install hipchat
