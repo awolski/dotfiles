@@ -47,3 +47,7 @@ alias sudo='sudo '
 
 # Docker
 alias dm="docker-machine"
+
+# Git
+alias ga="git add"
+alias gcam="git commit -am"

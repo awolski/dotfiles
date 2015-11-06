@@ -21,8 +21,8 @@ brew update
 brew upgrade --all
 
 # Homebrew installs
+brew install git-extras
 brew install nvm
-brew install rbenv ruby-build
 
 # Install everyday applications. 
 brew cask install google-chrome

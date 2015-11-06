@@ -8,3 +8,7 @@ for file in ~/.{path,bash_prompt,exports,aliases,functions,extra}; do
 	[ -r "$file" ] && [ -f "$file" ] && source "$file";
 done;
 unset file;
+
+# Placed here temporarily - Should this be moved?? 
+# Initialise nvm 
+source $(brew --prefix nvm)/nvm.sh
