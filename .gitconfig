@@ -2,3 +2,5 @@
 [user]
 	name = Anthony Wolski
 	email = anthony.wolski@apexdatasolutions.net
+[push]
+	default = simple
