@@ -22,7 +22,7 @@ brew upgrade --all
 
 # Homebrew installs
 brew install git-extras
-brew install lein
+brew install leiningen
 brew install maven
 brew install nvm
 
