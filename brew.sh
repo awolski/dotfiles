@@ -22,6 +22,8 @@ brew upgrade --all
 
 # Homebrew installs
 brew install git-extras
+brew install lein
+brew install maven
 brew install nvm
 
 # Install everyday applications. 
@@ -32,7 +34,9 @@ brew cask install skype
 
 # Install development tools.
 brew cask install dockertoolbox
+brew cask install idea
 brew cask install java
+brew cask install vagrant
 brew cask install webstorm
 
 # Install utilities
