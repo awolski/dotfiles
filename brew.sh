@@ -40,6 +40,7 @@ brew cask install vagrant
 brew cask install webstorm
 
 # Install utilities
+brew cask install private-internet-access
 brew cask install tunnelblick
 
 # Remove outdated versions from the cellar.
