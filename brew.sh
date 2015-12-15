@@ -22,9 +22,13 @@ brew upgrade --all
 
 # Homebrew installs
 brew install git-extras
+brew install gnugpg
+brew install gradle
 brew install leiningen
 brew install maven
 brew install nvm
+brew install packer
+brew install tmux
 
 # Install everyday applications. 
 brew cask install google-chrome
@@ -40,7 +44,6 @@ brew cask install vagrant
 brew cask install webstorm
 
 # Install utilities
-brew cask install private-internet-access
 brew cask install tunnelblick
 
 # Remove outdated versions from the cellar.
