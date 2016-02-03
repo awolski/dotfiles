@@ -24,10 +24,12 @@ brew upgrade --all
 brew install git-extras
 brew install gnugpg
 brew install gradle
+brew install jq
 brew install leiningen
 brew install maven
 brew install nvm
 brew install packer
+brew install terraform
 brew install tmux
 
 # Install everyday applications. 
@@ -40,6 +42,7 @@ brew cask install skype
 brew cask install dockertoolbox
 brew cask install idea
 brew cask install java
+brew cask install otto
 brew cask install vagrant
 brew cask install webstorm
 
