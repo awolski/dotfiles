@@ -25,24 +25,19 @@ brew install git-extras
 brew install gnugpg
 brew install gradle
 brew install jq
-brew install leiningen
 brew install maven
 brew install nvm
-brew install packer
-brew install terraform
 brew install tmux
 
 # Install everyday applications. 
 brew cask install google-chrome
-brew cask install hipchat
 brew cask install iterm2
 brew cask install skype
 
 # Install development tools.
 brew cask install dockertoolbox
-brew cask install idea
+brew cask install intellij-idea
 brew cask install java
-brew cask install otto
 brew cask install vagrant
 brew cask install webstorm
 
