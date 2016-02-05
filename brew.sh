@@ -24,6 +24,7 @@ brew upgrade --all
 brew install git-extras
 brew install gnugpg
 brew install gradle
+brew install httpie
 brew install jq
 brew install maven
 brew install nvm
