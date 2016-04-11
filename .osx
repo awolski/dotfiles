@@ -21,6 +21,9 @@ defaults write com.apple.dock static-only -bool TRUE
 # Set the icon size of Dock items to 36 pixels
 defaults write com.apple.dock tilesize -int 36
 
+# Use all F1,F2 keys as standard function keys
+defaults write .GlobalPreferences.plist com.apple.keyboard.fnState -int 1
+
 ###############################################################################
 # Kill affected applications                                                  #
 ###############################################################################

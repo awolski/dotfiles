@@ -21,6 +21,7 @@ brew update
 brew upgrade --all
 
 # Homebrew installs
+brew install awscli
 brew install git-extras
 brew install gnugpg
 brew install gradle
