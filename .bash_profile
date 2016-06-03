@@ -12,3 +12,5 @@ unset file;
 # Placed here temporarily - Should this be moved?? 
 # Initialise nvm 
 source $(brew --prefix nvm)/nvm.sh
+complete -C '/usr/local/bin/aws_completer' aws
+export PATH=/usr/local/bin/aws:$PATH

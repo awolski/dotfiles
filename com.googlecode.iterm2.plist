@@ -315,7 +315,7 @@
 	<key>NSWindow Frame Preferences</key>
 	<string>454 474 924 485 0 0 1920 1177 </string>
 	<key>NSWindow Frame iTerm Window 0</key>
-	<string>0 4 1915 1165 0 0 1920 1177 </string>
+	<string>0 12 1920 1165 0 0 1920 1177 </string>
 	<key>NSWindow Frame iTerm Window 1</key>
 	<string>2 7 1915 1165 0 0 1920 1177 </string>
 	<key>NSWindow Frame iTerm Window 2</key>
@@ -1053,7 +1053,7 @@
 	<key>NoSyncTimeOfLastPromo</key>
 	<real>477600720.16926599</real>
 	<key>NoSyncTimeOfLastPromoDownload</key>
-	<real>482022582.47641402</real>
+	<real>486510466.55001599</real>
 	<key>OnlyWhenMoreTabs</key>
 	<true/>
 	<key>OpenArrangementAtStartup</key>
@@ -1118,7 +1118,7 @@
 	<key>SUHasLaunchedBefore</key>
 	<true/>
 	<key>SULastCheckTime</key>
-	<date>2016-04-10T23:08:53Z</date>
+	<date>2016-06-01T21:47:46Z</date>
 	<key>SavePasteHistory</key>
 	<false/>
 	<key>ShowBookmarkName</key>
@@ -1149,6 +1149,10 @@
 	<true/>
 	<key>UseLionStyleFullscreen</key>
 	<true/>
+	<key>WebKitDefaultFontSize</key>
+	<integer>11</integer>
+	<key>WebKitStandardFont</key>
+	<string>.AppleSystemUIFont</string>
 	<key>Window Arrangements</key>
 	<dict>
 		<key>Full Screen</key>
