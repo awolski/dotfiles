@@ -6,8 +6,10 @@ git pull origin master;
 
 function doIt() {
 	rsync --exclude ".git/" --exclude ".DS_Store" --exclude "bootstrap.sh" --exclude "brew.sh"  \
-		--exclude "README.md" --exclude "LICENSE-MIT.txt" -avh --no-perms . ~;
-	source ~/.bash_profile;
+		--exclude "README.md" --exclude "LICENSE-MIT.txt" --exclude "com.googlecode.iterm2.plist" \
+        --exclude "todo.sh" com.googlecode.iterm2.plist
+
+    source ~/.bash_profile;
 }
 
 if [ "$1" == "--force" -o "$1" == "-f" ]; then

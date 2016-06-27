@@ -18,11 +18,18 @@ defaults write com.apple.Dock autohide -bool TRUE;
 # Only show active applicatoins
 defaults write com.apple.dock static-only -bool TRUE
 
-# Set the icon size of Dock items to 36 pixels
+# Set the icon size of D
 defaults write com.apple.dock tilesize -int 36
 
 # Use all F1,F2 keys as standard function keys
 defaults write .GlobalPreferences.plist com.apple.keyboard.fnState -int 1
+
+###############################################################################
+# Sound                                                                       #
+###############################################################################
+
+# Use F1, F2, etc. keys as standard function keys (requires restart)
+defaults write -g com.apple.keyboard.fnState -bool true
 
 ###############################################################################
 # Kill affected applications                                                  #

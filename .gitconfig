@@ -4,3 +4,5 @@
 	email = anthony.wolski@apexdatasolutions.net
 [push]
 	default = simple
+[commit]
+	gpssign = true

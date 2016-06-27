@@ -11,7 +11,7 @@ while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
 # Install brew if it has not been installed yet.
 if ! brew -v; then
   ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
-  brew install caskroom/cask/brew-cask
+  brew tap caskroom/cask 
 fi
 
 # Make sure we’re using the latest Homebrew.
@@ -40,7 +40,6 @@ brew cask install skype
 brew cask install dockertoolbox
 brew cask install intellij-idea
 brew cask install java
-brew cask install vagrant
 brew cask install webstorm
 
 # Install utilities
