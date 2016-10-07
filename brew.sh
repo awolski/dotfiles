@@ -23,7 +23,6 @@ brew upgrade --all
 # Homebrew installs
 brew install awscli
 brew install git-extras
-brew install gnugpg
 brew install gradle
 brew install httpie
 brew install jq
@@ -32,11 +31,11 @@ brew install nvm
 brew install tmux
 
 # Install everyday applications. 
+brew cask install gpgtools
 brew cask install google-chrome
 brew cask install iterm2
 
 # Install development tools.
-brew cask install dockertoolbox
 brew cask install intellij-idea
 brew cask install java
 brew cask install webstorm
