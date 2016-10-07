@@ -34,16 +34,12 @@ brew install tmux
 # Install everyday applications. 
 brew cask install google-chrome
 brew cask install iterm2
-brew cask install skype
 
 # Install development tools.
 brew cask install dockertoolbox
 brew cask install intellij-idea
 brew cask install java
 brew cask install webstorm
-
-# Install utilities
-brew cask install tunnelblick
 
 # Remove outdated versions from the cellar.
 brew cleanup
