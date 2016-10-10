@@ -28,12 +28,15 @@ brew install httpie
 brew install jq
 brew install maven
 brew install nvm
+brew install packer
 brew install tmux
 
 # Install everyday applications. 
-brew cask install gpgtools
 brew cask install google-chrome
+brew cask install gpgtools
 brew cask install iterm2
+brew cask install private-internet-access
+brew cask install skype
 
 # Install development tools.
 brew cask install intellij-idea
