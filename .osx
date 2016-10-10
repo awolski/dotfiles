@@ -31,6 +31,14 @@ defaults write .GlobalPreferences.plist com.apple.keyboard.fnState -int 1
 # Use F1, F2, etc. keys as standard function keys (requires restart)
 defaults write -g com.apple.keyboard.fnState -bool true
 
+# ==============================================
+# Ambient light sensor
+# ==============================================
+
+# Display -> Automatically adjust brightness
+defaults write /Library/Preferences/com.apple.iokit.AmbientLightSensor "Automatic Display Enabled" -bool true
+
+
 ###############################################################################
 # Kill affected applications                                                  #
 ###############################################################################
