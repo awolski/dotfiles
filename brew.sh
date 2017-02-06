@@ -11,7 +11,7 @@ while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
 # Install brew if it has not been installed yet.
 if ! brew -v; then
   ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
-  brew tap caskroom/cask 
+  brew tap caskroom/cask
 fi
 
 # Make sure we’re using the latest Homebrew.
@@ -23,25 +23,32 @@ brew upgrade --all
 # Homebrew installs
 brew install awscli
 brew install git-extras
-brew install gradle
+brew install gpg2
 brew install httpie
 brew install jq
-brew install maven
 brew install nvm
 brew install packer
-brew install tmux
+brew install terraform
+brew install emux
+brew install ykpers
 
-# Install everyday applications. 
+# Install everyday applications.
+brew cask install atom
+brew cask install docker
 brew cask install google-chrome
 brew cask install gpgtools
 brew cask install iterm2
 brew cask install private-internet-access
-brew cask install skype
+brew cask install slack
 
 # Install development tools.
 brew cask install intellij-idea
 brew cask install java
 brew cask install webstorm
+
+# More Homebrew installs (dependent on casks)
+brew install gradle
+brew install maven
 
 # Remove outdated versions from the cellar.
 brew cleanup
