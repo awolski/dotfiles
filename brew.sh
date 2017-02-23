@@ -23,6 +23,7 @@ brew upgrade --all
 # Homebrew installs
 brew install awscli
 brew install git-extras
+brew install go
 brew install gpg2
 brew install httpie
 brew install jq
@@ -33,6 +34,7 @@ brew install emux
 brew install ykpers
 
 # Install everyday applications.
+brew cask install 1password
 brew cask install atom
 brew cask install docker
 brew cask install google-chrome
