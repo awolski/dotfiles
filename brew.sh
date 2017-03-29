@@ -30,7 +30,8 @@ brew install jq
 brew install nvm
 brew install packer
 brew install terraform
-brew install emux
+brew install tree
+brew install tmux
 brew install ykpers
 
 # Install everyday applications.
