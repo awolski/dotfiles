@@ -21,6 +21,7 @@ brew update
 brew upgrade --all
 
 # Homebrew installs
+brew install 1password
 brew install awscli
 brew install git-extras
 brew install go
