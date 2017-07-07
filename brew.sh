@@ -33,6 +33,7 @@ brew install packer
 brew install terraform
 brew install tree
 brew install tmux
+brew install magic-wormhole
 brew install ykpers
 
 # Install everyday applications.
