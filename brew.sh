@@ -38,9 +38,7 @@ brew install ykpers
 
 # Install everyday applications.
 brew cask install 1password
-brew cask install atom
 brew cask install docker
-brew cask install google-chrome
 brew cask install gpgtools
 brew cask install iterm2
 brew cask install private-internet-access
