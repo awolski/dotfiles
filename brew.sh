@@ -23,6 +23,7 @@ brew upgrade --all
 # Homebrew installs
 brew install 1password
 brew install awscli
+brew install docker
 brew install git-extras
 brew install go
 brew install gpg2
@@ -38,7 +39,7 @@ brew install ykpers
 
 # Install everyday applications.
 brew cask install 1password
-brew cask install docker
+brew cask install brave
 brew cask install gpgtools
 brew cask install iterm2
 brew cask install private-internet-access

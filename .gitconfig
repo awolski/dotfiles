@@ -1,7 +1,7 @@
 # This is Git's per-user configuration file.
 [user]
 	name = Anthony Wolski
-	email = anthony.wolski@apexdatasolutions.net
+	email = anthony.wolski@gmail.com
 [push]
 	default = simple
 [commit]
