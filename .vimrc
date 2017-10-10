@@ -1,13 +1,14 @@
 " set the runtime path to include Vundle and initialize
-"set rtp+=~/.vim/bundle/Vundle.vim
-"call vundle#begin()
-"
-"Plugin 'gmarik/Vundle.vim'
-"Plugin 'kien/ctrlp.vim'
-"Plugin 'bling/vim-airline'
-"Plugin 'altercation/vim-colors-solarized'
-"
-"call vundle#end()            " required
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+
+Plugin 'gmarik/Vundle.vim'
+Plugin 'kien/ctrlp.vim'
+Plugin 'bling/vim-airline'
+Plugin 'altercation/vim-colors-solarized'
+Plugin 'scrooloose/nerdtree'
+
+call vundle#end()            " required
 
 filetype plugin indent on    " required
 
