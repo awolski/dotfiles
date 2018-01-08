@@ -44,6 +44,8 @@ nnoremap <leader><space> :nohlsearch<CR>
 " Folding ------------------------------------
 " Line Shortcuts -----------------------------
 " Leader Shortcuts ---------------------------
+:imap jk <Esc>
+:vmap jk <Esc>
 " Airline ------------------------------------
 set laststatus=2
 " CtrlP --------------------------------------
