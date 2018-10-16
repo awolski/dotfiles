@@ -21,7 +21,6 @@ brew update
 brew upgrade --all
 
 # Homebrew installs
-brew install 1password
 brew install awscli
 brew install docker
 brew install git-extras
@@ -29,7 +28,6 @@ brew install go
 brew install gpg2
 brew install httpie
 brew install jq
-brew install nvm
 brew install packer
 brew install terraform
 brew install tree
@@ -41,14 +39,11 @@ brew install ykpers
 brew cask install 1password
 brew cask install brave
 brew cask install gpgtools
-brew cask install iterm2
-brew cask install private-internet-access
 brew cask install slack
+brew cask install osxfuse
 
 # Install development tools.
-brew cask install intellij-idea
 brew cask install java
-brew cask install webstorm
 
 # More Homebrew installs (dependent on casks)
 brew install gradle
