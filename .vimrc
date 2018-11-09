@@ -7,6 +7,7 @@ Plugin 'kien/ctrlp.vim'
 Plugin 'bling/vim-airline'
 Plugin 'altercation/vim-colors-solarized'
 Plugin 'scrooloose/nerdtree'
+Plugin 'tpope/vim-fugitive'
 
 call vundle#end()            " required
 
@@ -17,9 +18,9 @@ filetype off                  " required
 
 " Colors -------------------------------------
 syntax enable                 " enable syntax processing
-"set background=dark
-"let g:solarized_termtrans = 1
-"colorscheme solarized 
+"set background=light
+let g:solarized_termcolors = 256 
+colorscheme solarized 
 
 " Spaces & Tabs ------------------------------
 set tabstop=4       " number of visual spaces per TAB
