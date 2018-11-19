@@ -38,7 +38,7 @@ brew install ykpers
 # Install everyday applications.
 brew cask install 1password
 brew cask install brave
-brew cask install gpgtools
+brew cask install gpg-suite
 brew cask install slack
 brew cask install osxfuse
 
