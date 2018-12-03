@@ -1,7 +1,8 @@
 # This is Git's per-user configuration file.
 [user]
-	name = Anthony Wolski
-	email = anthony.wolski@gmail.com
+	name = Tony Wolski
+	email = tony@awolski.com
+	signingkey = 0x72CA03529FF0C81Cq
 [push]
 	default = simple
 [commit]

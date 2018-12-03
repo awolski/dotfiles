@@ -33,14 +33,15 @@ brew install terraform
 brew install tree
 brew install tmux
 brew install magic-wormhole
+brew install pinentry-mac
+brew install ykman
 brew install ykpers
 
 # Install everyday applications.
 brew cask install 1password
-brew cask install brave
+brew cask install brave-browser
 brew cask install gpg-suite
 brew cask install keybase
-brew cask install slack
 brew cask install osxfuse
 
 # Install development tools.
