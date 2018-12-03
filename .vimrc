@@ -8,6 +8,7 @@ Plugin 'bling/vim-airline'
 Plugin 'altercation/vim-colors-solarized'
 Plugin 'scrooloose/nerdtree'
 Plugin 'tpope/vim-fugitive'
+Plugin 'hashivim/vim-terraform'
 
 call vundle#end()            " required
 
@@ -59,3 +60,6 @@ set laststatus=2
 " Backups ------------------------------------
 " Custom Functions ---------------------------
 
+" Terraform ----------------------------------
+let g:terraform_align=1
+let g:terraform_fmt_on_save=1
