@@ -2,7 +2,7 @@
 [user]
 	name = Tony Wolski
 	email = tony@awolski.com
-	signingkey = 0x72CA03529FF0C81Cq
+	signingkey = 0x72CA03529FF0C81C
 [push]
 	default = simple
 [commit]
