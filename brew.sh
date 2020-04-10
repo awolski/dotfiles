@@ -38,7 +38,7 @@ brew install ykman
 brew install ykpers
 
 # Install everyday applications.
-brew cask install brave-browser
+brew cask install firefox
 brew cask install freedom
 brew cask install gpg-suite
 brew cask install keybase
