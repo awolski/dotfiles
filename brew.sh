@@ -46,6 +46,7 @@ brew cask install osxfuse
 
 # Install development tools.
 brew cask install java
+brew cask install intellij-idea
 
 # More Homebrew installs (dependent on casks)
 brew install gradle
