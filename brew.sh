@@ -43,6 +43,7 @@ brew cask install freedom
 brew cask install gpg-suite
 brew cask install keybase
 brew cask install osxfuse
+brew cask install protonvpn
 
 # Install development tools.
 brew cask install java
