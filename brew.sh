@@ -22,7 +22,6 @@ brew upgrade --all
 
 # Homebrew installs
 brew install awscli
-brew install docker
 brew install git-extras
 brew install go
 brew install gpg2
@@ -38,6 +37,7 @@ brew install ykman
 brew install ykpers
 
 # Install everyday applications.
+brew cask install docker
 brew cask install firefox
 brew cask install freedom
 brew cask install gpg-suite
