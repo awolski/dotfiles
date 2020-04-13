@@ -51,4 +51,5 @@ alias dm="docker-machine"
 # Git
 alias ga="git add"
 alias gcam="git commit -am"
+alias gcsm="git commit -S -m"
 alias gscam="git commit -S -am"
