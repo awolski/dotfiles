@@ -9,7 +9,9 @@ for file in ~/.{path,bash_prompt,exports,aliases,functions,extra}; do
 done;
 unset file;
 
-complete -C '/usr/local/bin/aws_completer' aws
+complete -C /usr/local/bin/aws_completer aws
+complete -C /usr/local/bin/terraform terraform
+
 export PATH=/usr/local/bin/aws:$PATH
 
 if [ -f `brew --prefix`/etc/bash_completion ]; then
