@@ -43,7 +43,7 @@ brew cask install freedom
 brew cask install gpg-suite
 brew cask install keybase
 brew cask install osxfuse
-brew cask install protonvpn
+brew cask install torguard
 
 # Install development tools.
 brew cask install java
@@ -51,7 +51,6 @@ brew cask install intellij-idea
 
 # More Homebrew installs (dependent on casks)
 brew install gradle
-brew install maven
 
 # Remove outdated versions from the cellar.
 brew cleanup
