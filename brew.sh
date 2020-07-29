@@ -18,7 +18,7 @@ fi
 brew update
 
 # Upgrade any already-installed formulae.
-brew upgrade --all
+brew upgrade
 
 # Homebrew installs
 brew install awscli
@@ -27,6 +27,7 @@ brew install git-extras
 brew install go
 brew install gpg2
 brew install httpie
+brew install hugo
 brew install jq
 brew install packer
 brew install terraform
@@ -39,11 +40,12 @@ brew install ykpers
 
 # Install everyday applications.
 brew cask install firefox
-brew cask install freedom
 brew cask install gpg-suite
 brew cask install keybase
 brew cask install osxfuse
 brew cask install torguard
+brew cask install transmission
+brew cask install vlc
 
 # Install development tools.
 brew cask install java
