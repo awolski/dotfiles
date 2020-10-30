@@ -1,0 +1,12 @@
+[submodule ".vim/pack/awolski/start/vim-airline"]
+	path = .vim/pack/awolski/start/vim-airline
+	url = https://github.com/vim-airline/vim-airline
+[submodule ".vim/pack/awolski/start/vim-colors-solarized"]
+	path = .vim/pack/awolski/start/vim-colors-solarized
+	url = https://github.com/altercation/vim-colors-solarized
+[submodule ".vim/pack/awolski/start/ctrlp"]
+	path = .vim/pack/awolski/start/ctrlp
+	url = https://github.com/ctrlpvim/ctrlp.vim.git
+[submodule ".vim/pack/awolski/start/syntastic"]
+	path = .vim/pack/awolski/start/syntastic
+	url = https://github.com/vim-syntastic/syntastic

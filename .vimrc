@@ -1,16 +1,8 @@
-" set the runtime path to include Vundle and initialize
-"set rtp+=~/.vim/bundle/Vundle.vim
-"call vundle#begin()
-"
-"Plugin 'gmarik/Vundle.vim'
+" plugins to replace
 "Plugin 'kien/ctrlp.vim'
-"Plugin 'bling/vim-airline'
-"Plugin 'altercation/vim-colors-solarized'
 "Plugin 'scrooloose/nerdtree'
 "Plugin 'tpope/vim-fugitive'
 "Plugin 'hashivim/vim-terraform'
-"
-"call vundle#end()            " required
 
 filetype plugin indent on    " required
 
@@ -19,9 +11,9 @@ filetype off                  " required
 
 " Colors -------------------------------------
 syntax enable                 " enable syntax processing
-"set background=light
+set background=light
 let g:solarized_termcolors = 256 
-"colorscheme solarized 
+colorscheme solarized 
 
 " Spaces & Tabs ------------------------------
 set tabstop=4       " number of visual spaces per TAB
@@ -53,16 +45,19 @@ set laststatus=2
 " CtrlP --------------------------------------
 " NERDTree -----------------------------------
 " Syntastic ----------------------------------
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
 " Launch Config ------------------------------
 " Tmux ---------------------------------------
-" MacVim -------------------------------------
 " AutoGroups ---------------------------------
 " Backups ------------------------------------
 " Custom Functions ---------------------------
-
-" Terraform ----------------------------------
-let g:terraform_align=1
-let g:terraform_fmt_on_save=1
 
 " Uncategorised ------------------------------
 nnoremap ; :

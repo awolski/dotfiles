@@ -21,6 +21,6 @@ export GPG_TTY=$(tty)
 gpg-connect-agent updatestartuptty /bye >/dev/null
 
 # Source additional dotfiles
-for file in ~/dotfiles/.*; do
-	[ -r "$file" ] && [ -f "$file" ] && echo "$file";
+for file in ~/.files/*; do
+	[ -r "$file" ] && [ -f "$file" ] && source "$file";
 done;

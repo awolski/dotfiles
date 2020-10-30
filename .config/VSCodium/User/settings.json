@@ -1,0 +1,7 @@
+{
+    "vim.useCtrlKeys": false,
+    "vim.vimrc.enable": true,
+    "vim.visualModeKeyBindings": [
+    
+    ]
+}
