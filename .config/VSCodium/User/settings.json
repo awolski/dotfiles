@@ -1,7 +1,8 @@
 {
-    "vim.useCtrlKeys": false,
+    "vim.useCtrlKeys": true,
     "vim.vimrc.enable": true,
     "vim.visualModeKeyBindings": [
     
-    ]
+    ],
+    "window.zoomLevel": 0
 }
