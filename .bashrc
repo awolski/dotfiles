@@ -24,3 +24,8 @@ gpg-connect-agent updatestartuptty /bye >/dev/null
 for file in ~/.files/*; do
 	[ -r "$file" ] && [ -f "$file" ] && source "$file";
 done;
+
+if [ ! -d ~/bin ]; then
+    ln -s "$HOME/bin" ~/.files/bin
+fi
+export PATH="$PATH:$HOME/bin"
