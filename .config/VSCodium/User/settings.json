@@ -4,5 +4,11 @@
     "vim.visualModeKeyBindings": [
     
     ],
-    "window.zoomLevel": 0
+    "window.zoomLevel": 0,
+    "vim.insertModeKeyBindings": [
+        {
+            "before": ["j", "k"],
+            "after": ["<Esc>"]
+        }
+    ]
 }
