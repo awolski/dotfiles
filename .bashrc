@@ -29,3 +29,8 @@ if [ ! -d ~/bin ]; then
     ln -s "$HOME/bin" ~/.files/bin
 fi
 export PATH="$PATH:$HOME/bin"
+
+# Start Xorg at boot
+if [ -z "${DISPLAY}" ] && [ "${XDG_VTNR}" -eq 1 ]; then
+  exec startx
+fi
