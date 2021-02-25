@@ -25,10 +25,12 @@ for file in ~/.files/*; do
 	[ -r "$file" ] && [ -f "$file" ] && source "$file";
 done;
 
-if [ ! -d ~/bin ]; then
-    ln -s "$HOME/bin" ~/.files/bin
+# Add useful scripts to PATH
+if [ ! -d ~/.local/bin ]; then
+    mkdir -p ~/.local/bin
+    cp ~/.files/bin/* "$HOME/.local/bin/"
 fi
-export PATH="$PATH:$HOME/bin"
+export PATH="$PATH:$HOME/.local/bin"
 
 # Start Xorg at boot
 if [ -z "${DISPLAY}" ] && [ "${XDG_VTNR}" -eq 1 ]; then
