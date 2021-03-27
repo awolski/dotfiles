@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-setxkbmap gb -option 'ctrl:nocaps'
+setxkbmap gb -option 'ctrl:nocaps' -option 'caps:escape'
 
 xset -b
 

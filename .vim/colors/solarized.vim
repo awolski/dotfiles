@@ -1,1 +1,0 @@
-pack/awolski/start/vim-colors-solarized/colors/solarized.vim
