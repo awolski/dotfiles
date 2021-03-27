@@ -4,7 +4,6 @@
     "vim.visualModeKeyBindings": [
     
     ],
-    "window.zoomLevel": 0,
     "vim.insertModeKeyBindings": [
         {
             "before": ["j", "k"],
@@ -17,5 +16,6 @@
         "**/.project": true,
         "**/.settings": true,
         "**/.factorypath": true
-    }
+    },
+    "files.trimTrailingWhitespace": true
 }
