@@ -2,7 +2,7 @@
 
 [[ -f ~/.Xresources ]] && xrdb -merge -I$HOME ~/.Xresources
 
-setxkbmap gb -option 'ctrl:nocaps' -option 'caps:escape'
+setxkbmap gb -option 'ctrl:nocaps'
 
 xset -b
 

@@ -42,6 +42,9 @@ alias egrep='egrep --color=auto'
 # Enable aliases to be sudo’ed
 #alias sudo='sudo -v; sudo '
 
+#tmux
+alias tmux="tmux -2" # force tmux to assume terminal support 256 colors
+
 # Nvim
 alias v="vim"
 alias vim="nvim"
