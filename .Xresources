@@ -1,4 +1,8 @@
 XTerm.termName: xterm-256color
+
+XTerm.vt100.locale: false
+XTerm.vt100.utf8: true
+
 ! -----------------------------------------------------------------------------
 ! File: gruvbox-dark.xresources
 ! Description: Retro groove colorscheme generalized
