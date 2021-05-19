@@ -8,3 +8,9 @@ function encrypt() {
     fi 
     gpg --encrypt --sign --armor -r "$1" "$2" 
 }
+
+# Reconnect WiFi & Wireguard
+function wifi() {
+  sudo systemctl restart connman_iwd.service
+  sudo systemctl restart wg-quick@mullvad-gb14.service
+}
