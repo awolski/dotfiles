@@ -61,3 +61,6 @@ alias gpr="git pull --rebase"
 # Docker
 alias dcu="docker-compose up -d"
 alias dcd="docker-compose down"
+
+# Utils
+alias myip="curl https://am.i.mullvad.net/ip"
