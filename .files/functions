@@ -4,9 +4,9 @@
 function encrypt() {
     if [ "$#" -ne 2 ]; then
         echo "Usage: encrypt <recipient> <file>"
-        exit 1
+    else
+        gpg --encrypt --sign --armor -r "$1" "$2" 
     fi 
-    gpg --encrypt --sign --armor -r "$1" "$2" 
 }
 
 # Reconnect WiFi & Wireguard

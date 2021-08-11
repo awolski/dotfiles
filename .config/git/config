@@ -1,17 +1,17 @@
 # This is Git's per-user configuration file.
 [user]
-	name = Tony Wolski
-	email = tony@awolski.com
-	signingkey = 0x72CA03529FF0C81C
+  name = Tony Wolski
+  email = tony@awolski.com
+  signingkey = 0x72CA03529FF0C81C
 [push]
-	default = simple
+  default = simple
 [commit]
   gpgSign = true
 [tag]
   gpgSign = true
 [alias]
-	lg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
+  lg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
 [core]
-	autocrlf = input
+  autocrlf = input
 [gpg]
-	program = gpg2
+  program = gpg2

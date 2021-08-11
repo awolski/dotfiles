@@ -9,7 +9,7 @@ alias -- -="cd -"
 # Shortcuts
 alias dl="cd ~/Downloads"
 alias wk="cd ~/w"
-alias gt="git"
+alias g="git"
 alias h="history"
 alias j="jobs"
 alias dc="docker-compose"
@@ -52,6 +52,7 @@ alias vconfig="nvim ~/.config/nvim/init.vim"
 
 # Git
 alias ga="git add"
+alias gst="git status"
 alias gcam="git commit -am"
 alias gcs="git commit -S"
 alias gcsm="git commit -S -m"
