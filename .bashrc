@@ -20,6 +20,9 @@ fi
 # Configure pinentry to use the correct tty
 export GPG_TTY=$(tty)
 gpg-connect-agent updatestartuptty /bye >/dev/null
+if [ -t 0 ]; then
+  export PINENTRY_USER_DATA=USE_TTY=1
+fi
 
 # Source additional dotfiles
 for file in ~/.files/*; do
@@ -29,9 +32,11 @@ done;
 # Add useful scripts to PATH
 if [ ! -d ~/.local/bin ]; then
     mkdir -p ~/.local/bin
-    cp ~/.files/bin/* "$HOME/.local/bin/"
 fi
-export PATH="$PATH:$HOME/.local/bin"
+for file in ~/.files/bin/*; do
+	[ -r "$file" ] && [ -f "$file" ] && ln -sf "$file" "$HOME/.local/bin";
+done;
+export PATH="$HOME/.local/bin:$PATH"
 
 # Start Xorg at boot
 if [ -z "${DISPLAY}" ] && [ "${XDG_VTNR}" -eq 1 ]; then

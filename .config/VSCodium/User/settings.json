@@ -17,5 +17,6 @@
         "**/.settings": true,
         "**/.factorypath": true
     },
-    "files.trimTrailingWhitespace": true
+    "files.trimTrailingWhitespace": true,
+    "terminal.integrated.scrollback": 10000
 }
