@@ -18,5 +18,6 @@
         "**/.factorypath": true
     },
     "files.trimTrailingWhitespace": true,
-    "terminal.integrated.scrollback": 10000
+    "terminal.integrated.scrollback": 10000,
+    "diffEditor.renderSideBySide": false
 }

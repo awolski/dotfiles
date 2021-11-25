@@ -7,9 +7,10 @@
 
 alias ls='ls --color=auto'
 PS1='[\u@\h \W]\$ '
-EDITOR=nvim
+export EDITOR=nvim
 
 alias config="/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME"
+alias home="/usr/bin/git --git-dir=$HOME/.home/ --work-tree=$HOME"
 
 # Set SSH_AUTH_SOCK so that SSH will use gpg-agent instead of ssh-agent
 unset SSH_AGENT_PID

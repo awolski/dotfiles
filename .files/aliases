@@ -9,7 +9,6 @@ alias -- -="cd -"
 # Shortcuts
 alias dl="cd ~/Downloads"
 alias wk="cd ~/w"
-alias g="git"
 alias h="history"
 alias j="jobs"
 alias dc="docker-compose"

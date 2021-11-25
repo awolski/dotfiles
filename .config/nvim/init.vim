@@ -36,9 +36,11 @@ nnoremap ; :
 " Ledger
 let g:ledger_extra_options = '--pedantic --explicit'
 let g:ledger_detailed_first = 1
+au FileType ledger :setlocal sw=4 ts=4 sts=4
 au FileType ledger inoremap <silent> <Tab> <C-r>=ledger#autocomplete_and_align()<CR>
 au FileType ledger vnoremap <silent> <Tab> :LedgerAlign<CR>
 au FileType ledger nnoremap lf :LedgerAlignBuffer<CR>
+autocmd BufWritePre *.ledger :%s/\s\+$//e
 
 let g:ale_dockerfile_hadolint_use_docker = 'yes'
 let g:ale_completion_enabled = 1
