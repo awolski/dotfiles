@@ -1,6 +1,0 @@
-#!/usr/bin/env bash
-
-access_key_id=$(pass "$1" | grep access_key_id | sed -r 's/^(.*: )(.*)/\2/g')
-secret_access_key=$(pass "$1" | grep secret_access_key | sed -r 's/^(.*: )(.*)/\2/g')
-
-echo '{ "Version": 1, "AccessKeyId": "'"${access_key_id}"'", "SecretAccessKey": "'"${secret_access_key}"'" }'

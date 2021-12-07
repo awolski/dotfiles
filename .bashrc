@@ -9,9 +9,6 @@ alias ls='ls --color=auto'
 PS1='[\u@\h \W]\$ '
 export EDITOR=nvim
 
-alias config="/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME"
-alias home="/usr/bin/git --git-dir=$HOME/.home/ --work-tree=$HOME"
-
 # Set SSH_AUTH_SOCK so that SSH will use gpg-agent instead of ssh-agent
 unset SSH_AGENT_PID
 if [ "${gnupg_SSH_AUTH_SOCK_by:-0}" -ne $$ ]; then
@@ -37,7 +34,7 @@ fi
 for file in ~/.files/bin/*; do
 	[ -r "$file" ] && [ -f "$file" ] && ln -sf "$file" "$HOME/.local/bin";
 done;
-export PATH="$HOME/.local/bin:$PATH"
+#export PATH="$HOME/.local/bin:$PATH"
 
 # Start Xorg at boot
 if [ -z "${DISPLAY}" ] && [ "${XDG_VTNR}" -eq 1 ]; then
