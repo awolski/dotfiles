@@ -181,58 +181,59 @@
    installed. To ensure we install missing packages if they are missing.
 
    #+BEGIN_SRC emacs-lisp
-   (let* ((package--builtins nil)
-          (packages
-           '(auto-compile         ; automatically compile Emacs libraries
-             ;;cider                ; Clojure Interactive Development Environment
-             ;;clj-refactor         ; Commands for refactoring Clojure code
-             company              ; Modular text completion framework
-             ;;company-coq          ; A collection of extensions PG's Coq mode
-             ;;counsel              ; Various completion functions using Ivy
-             ;;counsel-projectile   ; Ivy integration for Projectile
-             define-word          ; display the definition of word at point
-             diff-hl              ; Highlight uncommitted changes using VC
-             doom-themes          ; An opinionated pack of modern color-themes
-             ;;erlang               ; Erlang major mode
-             ;;expand-region        ; Increase selected region by semantic units
-             ;;focus                ; Dim color of text in surrounding sections
-             ;;golden-ratio         ; Automatic resizing windows to golden ratio
-             ;;haskell-mode         ; A Haskell editing mode
-             ;;jedi                 ; Python auto-completion for Emacs
-             js2-mode             ; Improved JavaScript editing mode
-             lsp-mode             ; LSP mode
-             ;;lsp-java             ; Java support for lsp-mode
-             magit                ; control Git from Emacs
-             markdown-mode        ; Emacs Major mode for Markdown-formatted files
-             ;;maude-mode           ; Emacs mode for the programming language Maude
-             ;;minizinc-mode        ; Major mode for MiniZinc code
-             ;;multiple-cursors     ; Multiple cursors for Emacs
-             olivetti             ; Minor mode for a nice writing environment
-             org                  ; Outline-based notes management and organizer
-             org-bullets          ; Show bullets in org-mode as UTF-8 characters
-             ;;org-roam             ; Roam Research replica with Org-mode
-             ;;org-roam-server      ; Org Roam Database Visualizer
-             paredit              ; minor mode for editing parentheses
-             pdf-tools            ; Emacs support library for PDF files
-             projectile           ; Manage and navigate projects in Emacs easily
-             ;;proof-general        ; A generic Emacs interface for proof assistants
-             ;;racket-mode          ; Major mode for Racket language
-             ;;slime                ; Superior Lisp Interaction Mode for Emacs
-             ;;smex                 ; M-x interface with Ido-style fuzzy matching
-             try                  ; Try out Emacs packages
-             ;;vterm                ; A terminal via libvterm
-             which-key            ; Display available keybindings in popup
-             ;;z3-mode)))           ; z3/SMTLIBv2 interactive development
-             )))
-;;     (when (memq window-system '(mac ns))
-;;       (push 'exec-path-from-shell packages)
-;;       (push 'reveal-in-osx-finder packages))
-     (let ((packages (seq-remove 'package-installed-p packages)))
-       (print packages)
-       (when packages
-         ;; Install uninstalled packages
-         (package-refresh-contents)
-         (mapc 'package-install packages))))
+      (let* ((package--builtins nil)
+             (packages
+              '(auto-compile         ; automatically compile Emacs libraries
+                ;;cider                ; Clojure Interactive Development Environment
+                ;;clj-refactor         ; Commands for refactoring Clojure code
+                company              ; Modular text completion framework
+                ;;company-coq          ; A collection of extensions PG's Coq mode
+                counsel              ; Various completion functions using Ivy
+                counsel-projectile   ; Ivy integration for Projectile
+                define-word          ; display the definition of word at point
+                diff-hl              ; Highlight uncommitted changes using VC
+                doom-themes          ; An opinionated pack of modern color-themes
+                ;;erlang               ; Erlang major mode
+                ;;expand-region        ; Increase selected region by semantic units
+                ;;focus                ; Dim color of text in surrounding sections
+                ;;golden-ratio         ; Automatic resizing windows to golden ratio
+                ;;haskell-mode         ; A Haskell editing mode
+                ;;jedi                 ; Python auto-completion for Emacs
+                js2-mode             ; Improved JavaScript editing mode
+                lsp-mode             ; LSP mode
+                ;;lsp-java             ; Java support for lsp-mode
+                magit                ; control Git from Emacs
+                markdown-mode        ; Emacs Major mode for Markdown-formatted files
+                ;;maude-mode           ; Emacs mode for the programming language Maude
+                ;;minizinc-mode        ; Major mode for MiniZinc code
+                ;;multiple-cursors     ; Multiple cursors for Emacs
+                olivetti             ; Minor mode for a nice writing environment
+                org                  ; Outline-based notes management and organizer
+                org-bullets          ; Show bullets in org-mode as UTF-8 characters
+                ;;org-roam             ; Roam Research replica with Org-mode
+                ;;org-roam-server      ; Org Roam Database Visualizer
+                paredit              ; minor mode for editing parentheses
+                pdf-tools            ; Emacs support library for PDF files
+                projectile           ; Manage and navigate projects in Emacs easily
+                ;;proof-general        ; A generic Emacs interface for proof assistants
+                ;;racket-mode          ; Major mode for Racket language
+                ;;slime                ; Superior Lisp Interaction Mode for Emacs
+                ;;smex                 ; M-x interface with Ido-style fuzzy matching
+                try                  ; Try out Emacs packages
+                ;;vterm                ; A terminal via libvterm
+                web-mode             ; Major mode for editing HTML, CSS, JavaScript
+                which-key            ; Display available keybindings in popup
+                ;;z3-mode)))           ; z3/SMTLIBv2 interactive development
+                )))
+   ;;     (when (memq window-system '(mac ns))
+   ;;       (push 'exec-path-from-shell packages)
+   ;;       (push 'reveal-in-osx-finder packages))
+        (let ((packages (seq-remove 'package-installed-p packages)))
+          (print packages)
+          (when packages
+            ;; Install uninstalled packages
+            (package-refresh-contents)
+            (mapc 'package-install packages))))
    #+END_SRC
 
 ** Sane defaults
@@ -356,15 +357,15 @@
               global-company-mode          ; Auto-completion everywhere
               global-diff-hl-mode          ; Highlight uncommitted changes
               global-so-long-mode          ; Mitigate performance for long lines
-              ;;counsel-projectile-mode      ; Manage and navigate projects
+              counsel-projectile-mode      ; Manage and navigate projects
               recentf-mode                 ; Recently opened files
               show-paren-mode              ; Highlight matching parentheses
               which-key-mode))             ; Available keybindings in popup
      (funcall mode 1))
 
-;;   (when (version< emacs-version "24.4")
-;;     (eval-after-load 'auto-compile
-;;       '((auto-compile-on-save-mode 1))))  ; compile .el files on save
+   (when (version< emacs-version "24.4")
+     (eval-after-load 'auto-compile
+       '((auto-compile-on-save-mode 1))))  ; compile .el files on save
    #+END_SRC
 
 ** Visual
@@ -452,19 +453,19 @@
      (remove-hook 'olivetti-mode-on-hook 'visual-line-mode))
    #+END_SRC
 
-;;** Ivy
-;;
-;;   Let's try [[http://oremacs.com/swiper/][Ivy]] in favor of helm.
-;;
-;;   #+begin_src emacs-lisp
-;;   (setq ivy-wrap t
-;;         ivy-height 25
-;;         ivy-use-virtual-buffers t
-;;         ivy-count-format "(%d/%d) "
-;;         ivy-on-del-error-function 'ignore)
-;;   (ivy-mode 1)
-;;   #+end_src
-;;
+** Ivy
+
+   Let's try [[http://oremacs.com/swiper/][Ivy]] in favor of helm.
+
+   #+begin_src emacs-lisp
+   (setq ivy-wrap t
+         ivy-height 25
+         ivy-use-virtual-buffers t
+         ivy-count-format "(%d/%d) "
+         ivy-on-del-error-function 'ignore)
+   (ivy-mode 1)
+   #+end_src
+
 ** PDF Tools
 
    [[https://github.com/politza/pdf-tools][PDF Tools]] makes a huge improvement on the built-in [[http://www.gnu.org/software/emacs/manual/html_node/emacs/Document-View.html][doc-view-mode]]; the only
@@ -981,6 +982,15 @@
 ;;             (lambda () (setq forward-sexp-function nil)))
 ;;   #+END_SRC
 ;;
+** HTML, CSS and Javascript?
+
+   TODO Some text here
+   
+   #+BEGIN_SRC emacs-lisp
+   (add-hook 'web-mode-hook 'lsp)
+   (add-to-list 'auto-mode-alist '("\\.html\\'" . web-mode))
+   #+END_SRC
+
 ;;** Java and C
 ;;
 ;;   The =c-mode-common-hook= is a general hook that work on all C-like
