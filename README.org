@@ -3,6 +3,22 @@
 #+BABEL: :cache yes
 #+PROPERTY: header-args :tangle yes
 
+* Setup
+
+  #+begin_src shell
+  git init --bare $HOME/.dotfiles.git
+  alias dotfiles="/usr/bin/git --git-dir=$HOME/.dotfiles.git/ --work-tree=$HOME"
+  dotfiles config --local status.showUntrackedFiles no
+  #+end_src
+
+  #+begin_src shell
+  dotfiles status
+  dotfiles add .vimrc
+  dotfiles commit -m "Add vimrc"
+  dotfiles remote add origin https://www.github.com/awolski/dotfiles.git
+  dotfiles push origin main
+  #+end_src
+
 * Install on another system
 
   #+begin_src shell
@@ -12,4 +28,6 @@
   config checkout
   config config --local status.showUntrackedFiles no
   #+end_src
-  
+
+  Credits to
+  [[https://harfangk.github.io/2016/09/18/manage-dotfiles-with-a-git-bare-repository.html]].

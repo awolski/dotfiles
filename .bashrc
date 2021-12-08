@@ -29,10 +29,10 @@ done;
 
 # Add useful scripts to PATH
 if [ ! -d ~/.local/bin ]; then
-    mkdir -p ~/.local/bin
+  mkdir -p ~/.local/bin
 fi
 for file in ~/.files/bin/*; do
-	[ -r "$file" ] && [ -f "$file" ] && ln -sf "$file" "$HOME/.local/bin";
+  [ -r "$file" ] && [ -f "$file" ] && ln -sf "$file" "$HOME/.local/bin";
 done;
 #export PATH="$HOME/.local/bin:$PATH"
 
