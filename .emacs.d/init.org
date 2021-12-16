@@ -10,7 +10,7 @@
 
   This is a copy of [[https://github.com/larstvei/dot-emacs]] that I'm adapting for
   my own use.
-  
+
   This is an Emacs configuration file written in [[http://orgmode.org][Org mode]]. It is an attempt
   to keep my =~/.emacs.d= tidy, but still be able to keep it all in one
   file. I aim to briefly explain all my configurations as I go along!
@@ -196,11 +196,15 @@
                 ;;erlang               ; Erlang major mode
                 ;;expand-region        ; Increase selected region by semantic units
                 ;;focus                ; Dim color of text in surrounding sections
+                flycheck             ; Modern on-the-fly syntax checking
+                flycheck-ledger      ; Syntax checking for ledger
                 ;;golden-ratio         ; Automatic resizing windows to golden ratio
                 ;;haskell-mode         ; A Haskell editing mode
                 ;;jedi                 ; Python auto-completion for Emacs
                 js2-mode             ; Improved JavaScript editing mode
+                ledger-mode          ; Major mode for editing ledger files
                 lsp-mode             ; LSP mode
+                lsp-ui               ; LSP UI
                 ;;lsp-java             ; Java support for lsp-mode
                 magit                ; control Git from Emacs
                 markdown-mode        ; Emacs Major mode for Markdown-formatted files
@@ -356,6 +360,7 @@
               dirtrack-mode                ; directory tracking in *shell*
               global-company-mode          ; Auto-completion everywhere
               global-diff-hl-mode          ; Highlight uncommitted changes
+              global-flycheck-mode         ; Enable syntax checking with flycheck
               global-so-long-mode          ; Mitigate performance for long lines
               counsel-projectile-mode      ; Manage and navigate projects
               recentf-mode                 ; Recently opened files
@@ -434,16 +439,16 @@
    (setq-default mode-line-format nil)
    #+END_SRC
 
-;;   New in Emacs 24.4 is the =prettify-symbols-mode=! It's neat.
-;;
-;;   #+BEGIN_SRC emacs-lisp
-;;   (setq-default prettify-symbols-alist '(("lambda" . ?λ)
-;;                                          ("delta" . ?Δ)
-;;                                          ("gamma" . ?Γ)
-;;                                          ("phi" . ?φ)
-;;                                          ("psi" . ?ψ)))
-;;   #+END_SRC
-;;
+   New in Emacs 24.4 is the =prettify-symbols-mode=! It's neat.
+
+   #+BEGIN_SRC emacs-lisp
+   (setq-default prettify-symbols-alist '(("lambda" . ?λ)
+                                          ("delta" . ?Δ)
+                                          ("gamma" . ?Γ)
+                                          ("phi" . ?φ)
+                                          ("psi" . ?ψ)))
+   #+END_SRC
+
    [[https://github.com/rnkn/olivetti][Olivetti]] is a package that simply centers the text of a buffer. It is very
    simple and beautiful. The default width is just a bit short.
 
@@ -501,7 +506,7 @@
                                 company-sort-by-backend-importance))
    #+END_SRC
 
-** Spelling
+** COMMENT Spelling
 
    Flyspell offers on-the-fly spell checking. We can enable flyspell for all
    text-modes with this snippet.
@@ -524,6 +529,16 @@
    state in a different buffer (this problem occurs if you only have one
    global cycle). We can implement this by using a [[http://www.gnu.org/software/emacs/manual/html_node/elisp/Closures.html][closure]].
 
+** Ledger
+
+   I use [[https://www.ledger-cli.org/][Ledger]] to keep track of my financial life. The default alignment for
+   post amounts is too narrow.
+
+   #+BEGIN_SRC emacs-lisp
+   (setq ledger-post-amount-alignment-column 60)
+   #+END_SRC
+
+   
 ;;   #+BEGIN_SRC emacs-lisp
 ;;   (defun cycle-languages ()
 ;;     "Changes the ispell dictionary to the first element in
@@ -537,26 +552,26 @@
 ;;         (ispell-change-dictionary
 ;;          (car (setq ispell-languages (cdr ispell-languages)))))))
 ;;   #+END_SRC
-
-   =flyspell= signals an error if there is no spell-checking tool is
-   installed. We can advice =turn-on-flyspell= and =flyspell-prog-mode= to
-   only try to enable =flyspell= if a spell-checking tool is available. Also
-   we want to enable cycling the languages by typing =C-c l=, so we bind the
-   function returned from =cycle-languages=.
-
-   #+BEGIN_SRC emacs-lisp
-   (defadvice turn-on-flyspell (before check nil activate)
-     "Turns on flyspell only if a spell-checking tool is installed."
-     (when (executable-find ispell-program-name)
-       (local-set-key (kbd "C-c l") (cycle-languages))))
-   #+END_SRC
-
-   #+BEGIN_SRC emacs-lisp
-   (defadvice flyspell-prog-mode (before check nil activate)
-     "Turns on flyspell only if a spell-checking tool is installed."
-     (when (executable-find ispell-program-name)
-       (local-set-key (kbd "C-c l") (cycle-languages))))
-    #+END_SRC
+;;
+;;   =flyspell= signals an error if there is no spell-checking tool is
+;;   installed. We can advice =turn-on-flyspell= and =flyspell-prog-mode= to
+;;   only try to enable =flyspell= if a spell-checking tool is available. Also
+;;   we want to enable cycling the languages by typing =C-c l=, so we bind the
+;;   function returned from =cycle-languages=.
+;;
+;;   #+BEGIN_SRC emacs-lisp
+;;   (defadvice turn-on-flyspell (before check nil activate)
+;;     "Turns on flyspell only if a spell-checking tool is installed."
+;;     (when (executable-find ispell-program-name)
+;;       (local-set-key (kbd "C-c l") (cycle-languages))))
+;;   #+END_SRC
+;;
+;;   #+BEGIN_SRC emacs-lisp
+;;   (defadvice flyspell-prog-mode (before check nil activate)
+;;     "Turns on flyspell only if a spell-checking tool is installed."
+;;     (when (executable-find ispell-program-name)
+;;       (local-set-key (kbd "C-c l") (cycle-languages))))
+;;    #+END_SRC
 
 ** Org
 
@@ -828,6 +843,24 @@
      (add-hook 'lsp-mode-hook #'lsp-enable-which-key-integration))
    #+END_SRC
 
+** Web
+
+   #+BEGIN_SRC emacs-lisp
+   (require 'lsp-mode)
+   (defun setup-web-mode ()
+     (setq web-mode-markup-indent-offset 2)
+     (local-set-key (kbd "RET") 'newline-and-indent)
+   )
+   (add-hook 'web-mode-hook  'setup-web-mode)
+   #+END_SRC
+
+   #+BEGIN_SRC emacs-lisp
+   (add-hook 'web-mode-hook #'lsp-deferred)
+   (add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
+   (add-to-list 'auto-mode-alist '("\\.css?\\'" . web-mode))
+   #+END_SRC
+
+
 ;;** Compilation
 ;;
 ;;   I often run ~latexmk -pdf -pvc~ in a compilation buffer, which recompiles
@@ -982,15 +1015,6 @@
 ;;             (lambda () (setq forward-sexp-function nil)))
 ;;   #+END_SRC
 ;;
-** HTML, CSS and Javascript?
-
-   TODO Some text here
-   
-   #+BEGIN_SRC emacs-lisp
-   (add-hook 'web-mode-hook 'lsp)
-   (add-to-list 'auto-mode-alist '("\\.html\\'" . web-mode))
-   #+END_SRC
-
 ;;** Java and C
 ;;
 ;;   The =c-mode-common-hook= is a general hook that work on all C-like
@@ -1242,14 +1266,14 @@
 ;;   (global-set-key (kbd "C-x b")   'ivy-switch-buffer)
 ;;   #+end_src
 ;;
-;;** Bindings for [[http://company-mode.github.io/][company-mode]]
-;;
-;;  #+BEGIN_SRC emacs-lisp
-;;  (define-key company-active-map (kbd "C-d") 'company-show-doc-buffer)
-;;  (define-key company-active-map (kbd "C-n") 'company-select-next)
-;;  (define-key company-active-map (kbd "C-p") 'company-select-previous)
-;;  (define-key company-active-map (kbd "<tab>") 'company-complete)
-;;  #+END_SRC
+** Bindings for [[http://company-mode.github.io/][company-mode]]
+
+  #+BEGIN_SRC emacs-lisp
+  (define-key company-active-map (kbd "C-d") 'company-show-doc-buffer)
+  (define-key company-active-map (kbd "C-n") 'company-select-next)
+  (define-key company-active-map (kbd "C-p") 'company-select-previous)
+  (define-key company-active-map (kbd "<tab>") 'company-complete)
+  #+END_SRC
 ;;
 ;;** Bindings for [[https://github.com/bbatsov/projectile][Projectile]]
 ;;
