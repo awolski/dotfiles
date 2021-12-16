@@ -198,6 +198,7 @@
                 ;;focus                ; Dim color of text in surrounding sections
                 flycheck             ; Modern on-the-fly syntax checking
                 flycheck-ledger      ; Syntax checking for ledger
+                format-all           ; Auto-format code in many languages
                 ;;golden-ratio         ; Automatic resizing windows to golden ratio
                 ;;haskell-mode         ; A Haskell editing mode
                 ;;jedi                 ; Python auto-completion for Emacs
