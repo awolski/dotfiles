@@ -1,2 +1,4 @@
-# Make vim the default editor.
-export EDITOR='nvim';
+# Make Emacs the default editor.
+export ALTERNATE_EDITOR=""
+export EDITOR="emacsclient -t"                  # $EDITOR opens in terminal
+export VISUAL="emacsclient -c -a emacs"         # $VISUAL opens in GUI mode

@@ -5,9 +5,7 @@
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
 
-alias ls='ls --color=auto'
 PS1='[\u@\h \W]\$ '
-export EDITOR=nvim
 
 # Set SSH_AUTH_SOCK so that SSH will use gpg-agent instead of ssh-agent
 unset SSH_AGENT_PID
