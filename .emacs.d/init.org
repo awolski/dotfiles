@@ -218,7 +218,8 @@
                 ;;org-roam             ; Roam Research replica with Org-mode
                 ;;org-roam-server      ; Org Roam Database Visualizer
                 paredit              ; minor mode for editing parentheses
-                password-store       ; Use password-store for auth source
+                pass                 ; Password management with pass
+                password-store       ; Use password-store for auth-source
                 pdf-tools            ; Emacs support library for PDF files
                 projectile           ; Manage and navigate projects in Emacs easily
                 ;;proof-general        ; A generic Emacs interface for proof assistants
@@ -327,9 +328,6 @@
    (setq epg-pinentry-mode 'loopback)
    (pinentry-start)
 
-   ;;; use pass (~/.password-store)
-   ;;; (see The Unix password store)
-   (setq auth-sources '(password-store))
    #+end_src
    
    By default the =narrow-to-region= command is disabled and issues a
@@ -383,7 +381,7 @@
 
    (when (version< emacs-version "24.4")
      (eval-after-load 'auto-compile
-       '((auto-compile-on-save-mode 1))))  ; compile .el files on save
+       '(auto-compile-on-save-mode 1)))   ; compile .el files on save
    #+END_SRC
 
 ** Mail
@@ -396,9 +394,8 @@
    (require 'org-mu4e)
    (require 'smtpmail)
 
-   (setq send-mail-function 'smtpmail-send-it)
-
-   (setq smtpmail-debug-info t
+   (setq send-mail-function 'smtpmail-send-it
+       smtpmail-debug-info t
        message-kill-buffer-on-exit t
        mu4e-get-mail-command "mbsync -a"
        mu4e-update-interval (* 10 60)
@@ -406,8 +403,8 @@
        mu4e-change-filenames-when-moving t
        mu4e-attachment-dir "~/Downloads/inbox"
        ;; Only ask if a context hasn't been previously picked
-       mu4e-compose-context-policy 'ask-if-none)
-
+       mu4e-compose-context-policy 'ask-if-none
+       auth-source-debug t)
 
    ;; show full addresses in view message (instead of just names)
    ;; toggle per name with M-RET
@@ -422,15 +419,16 @@
             (lambda (msg)
               (when msg
                 (string-prefix-p "/awolski" (mu4e-message-field msg :maildir))))
-          :vars '((user-mail-address . "tony@awolski.com")
-                  (user-full-name    . "Tony Wolski")
+          :vars '((user-mail-address     . "tony@awolski.com")
+                  (user-full-name        . "Tony Wolski")
+                  (smtpmail-smtp-user    . "tony@awolski.com")
                   (smtpmail-smtp-server  . "smtp.fastmail.com")
                   (smtpmail-smtp-service . 587)
                   (smtpmail-stream-type  . starttls)
-                  (mu4e-drafts-folder  . "/awolski/Drafts")
-                  (mu4e-sent-folder  . "/awolski/Sent")
-                  (mu4e-refile-folder  . "/awolski/Archive")
-                  (mu4e-trash-folder  . "/awolski/Trash")))
+                  (mu4e-drafts-folder    . "/awolski/Drafts")
+                  (mu4e-sent-folder      . "/awolski/Sent")
+                  (mu4e-refile-folder    . "/awolski/Archive")
+                  (mu4e-trash-folder     . "/awolski/Trash")))
 
          ;; yvant.io account
          (make-mu4e-context
@@ -439,24 +437,27 @@
             (lambda (msg)
               (when msg
                 (string-prefix-p "/yvant" (mu4e-message-field msg :maildir))))
-          :vars '((user-mail-address . "tony@yvant.io")
-                  (user-full-name    . "Tony Wolski")
+          :vars '((user-mail-address     . "tony@yvant.io")
+                  (user-full-name        . "Tony Wolski")
+                  (smtpmail-smtp-user    . "tony@yvant.io")
                   (smtpmail-smtp-server  . "smtp.fastmail.com")
                   (smtpmail-smtp-service . 587)
                   (smtpmail-stream-type  . starttls)
-                  (mu4e-drafts-folder  . "/yvant/Drafts")
-                  (mu4e-sent-folder  . "/yvant/Sent")
-                  (mu4e-refile-folder  . "/yvant/Archive")
-                  (mu4e-trash-folder  . "/yvant/Trash")))))
+                  (mu4e-drafts-folder    . "/yvant/Drafts")
+                  (mu4e-sent-folder      . "/yvant/Sent")
+                  (mu4e-refile-folder    . "/yvant/Archive")
+                  (mu4e-trash-folder     . "/yvant/Trash")))))
 
     (setq mu4e-maildir-shortcuts
       '(("/awolski/Inbox"   . ?i)
+        ("/awolski/Archive" . ?a)
+        ("/awolski/Drafts"  . ?d)
         ("/awolski/Sent"    . ?s)
         ("/awolski/Trash"   . ?t)
-        ("/awolski/Drafts"  . ?d)
-        ("/awolski/Archive" . ?a)
         ("/yvant/Inbox"     . ?y)
-        ("/yvant/Sent"      . ?x)))
+        ("/yvant/Archive"   . ?r)
+        ("/yvant/Drafts"    . ?f)     
+        ("/yvant/Sent"      . ?z)))
 
    #+end_src
    
@@ -626,42 +627,50 @@
    #+END_SRC
 
    
-;;   #+BEGIN_SRC emacs-lisp
-;;   (defun cycle-languages ()
-;;     "Changes the ispell dictionary to the first element in
-;;   ISPELL-LANGUAGES, and returns an interactive function that cycles
-;;   the languages in ISPELL-LANGUAGES when invoked."
-;;     (let ((ispell-languages '#1=("american" "norsk" . #1#)))
-;;       (ispell-change-dictionary (car ispell-languages))
-;;       (lambda ()
-;;         (interactive)
-;;         ;; Rotates the languages cycle and changes the ispell dictionary.
-;;         (ispell-change-dictionary
-;;          (car (setq ispell-languages (cdr ispell-languages)))))))
-;;   #+END_SRC
-;;
-;;   =flyspell= signals an error if there is no spell-checking tool is
-;;   installed. We can advice =turn-on-flyspell= and =flyspell-prog-mode= to
-;;   only try to enable =flyspell= if a spell-checking tool is available. Also
-;;   we want to enable cycling the languages by typing =C-c l=, so we bind the
-;;   function returned from =cycle-languages=.
-;;
-;;   #+BEGIN_SRC emacs-lisp
-;;   (defadvice turn-on-flyspell (before check nil activate)
-;;     "Turns on flyspell only if a spell-checking tool is installed."
-;;     (when (executable-find ispell-program-name)
-;;       (local-set-key (kbd "C-c l") (cycle-languages))))
-;;   #+END_SRC
-;;
-;;   #+BEGIN_SRC emacs-lisp
-;;   (defadvice flyspell-prog-mode (before check nil activate)
-;;     "Turns on flyspell only if a spell-checking tool is installed."
-;;     (when (executable-find ispell-program-name)
-;;       (local-set-key (kbd "C-c l") (cycle-languages))))
-;;    #+END_SRC
+   #+BEGIN_SRC emacs-lisp
+   (defun cycle-languages ()
+     "Changes the ispell dictionary to the first element in
+   ISPELL-LANGUAGES, and returns an interactive function that cycles
+   the languages in ISPELL-LANGUAGES when invoked."
+     (let ((ispell-languages '#1=("american" "norsk" . #1#)))
+       (ispell-change-dictionary (car ispell-languages))
+       (lambda ()
+         (interactive)
+         ;; Rotates the languages cycle and changes the ispell dictionary.
+         (ispell-change-dictionary
+          (car (setq ispell-languages (cdr ispell-languages)))))))
+   #+END_SRC
+
+   =flyspell= signals an error if there is no spell-checking tool is
+   installed. We can advice =turn-on-flyspell= and =flyspell-prog-mode= to
+   only try to enable =flyspell= if a spell-checking tool is available. Also
+   we want to enable cycling the languages by typing =C-c l=, so we bind the
+   function returned from =cycle-languages=.
+
+   #+BEGIN_SRC emacs-lisp
+   (defadvice turn-on-flyspell (before check nil activate)
+     "Turns on flyspell only if a spell-checking tool is installed."
+     (when (executable-find ispell-program-name)
+       (local-set-key (kbd "C-c l") (cycle-languages))))
+   #+END_SRC
+
+   #+BEGIN_SRC emacs-lisp
+   (defadvice flyspell-prog-mode (before check nil activate)
+     "Turns on flyspell only if a spell-checking tool is installed."
+     (when (executable-find ispell-program-name)
+       (local-set-key (kbd "C-c l") (cycle-languages))))
+    #+END_SRC
 
 ** Org
 
+   Use the key bindings suggested in Org mode's [[https://orgmode.org/manual/Activation.html][activation]] document.
+
+   #+begin_src emacs-lisp
+   (global-set-key (kbd "C-c l") #'org-store-link)
+   (global-set-key (kbd "C-c a") #'org-agenda)
+   (global-set-key (kbd "C-c c") #'org-capture)
+   #+end_src
+   
    When editing org-files with source-blocks, we want the source blocks to
    be themed as they would in their native mode.
 
@@ -859,66 +868,66 @@
 ;;                   :test 'string-equal)))))
 ;;   #+END_SRC
 ;;
-;;** Advice
-;;
-;;   An advice can be given to a function to make it behave differently. This
-;;   advice makes =eval-last-sexp= (bound to =C-x C-e=) replace the sexp with
-;;   the value.
-;;
-;;   #+BEGIN_SRC emacs-lisp
-;;   (defadvice eval-last-sexp (around replace-sexp (arg) activate)
-;;     "Replace sexp when called with a prefix argument."
-;;     (if arg
-;;         (let ((pos (point)))
-;;           ad-do-it
-;;           (goto-char pos)
-;;           (backward-kill-sexp)
-;;           (forward-sexp))
-;;       ad-do-it))
-;;   #+END_SRC
-;;
-;;   When interactively changing the theme (using =M-x load-theme=), the
-;;   current custom theme is not disabled. This often gives weird-looking
-;;   results; we can advice =load-theme= to always disable themes currently
-;;   enabled themes.
-;;
-;;   #+BEGIN_SRC emacs-lisp
-;;   (defadvice load-theme
-;;       (before disable-before-load (theme &optional no-confirm no-enable) activate)
-;;     (mapc 'disable-theme custom-enabled-themes))
-;;   #+END_SRC
-;;
-;;** global-scale-mode
-;;
-;;   These functions provide something close to ~text-scale-mode~, but for every
-;;   buffer, including the minibuffer and mode line.
-;;
-;;   #+BEGIN_SRC emacs-lisp
-;;   (let* ((default (face-attribute 'default :height))
-;;          (size default))
-;;
-;;     (defun global-scale-default ()
-;;       (interactive)
-;;       (global-scale-internal (setq size default)))
-;;
-;;     (defun global-scale-up ()
-;;       (interactive)
-;;       (global-scale-internal (setq size (+ size 20))))
-;;
-;;     (defun global-scale-down ()
-;;       (interactive)
-;;       (global-scale-internal (setq size (- size 20))))
-;;
-;;     (defun global-scale-internal (arg)
-;;       (set-face-attribute 'default (selected-frame) :height arg)
-;;       (set-temporary-overlay-map
-;;        (let ((map (make-sparse-keymap)))
-;;          (define-key map (kbd "C-=") 'global-scale-up)
-;;          (define-key map (kbd "C-+") 'global-scale-up)
-;;          (define-key map (kbd "C--") 'global-scale-down)
-;;          (define-key map (kbd "C-0") 'global-scale-default) map))))
-;;   #+END_SRC
-;;
+** Advice
+
+   An advice can be given to a function to make it behave differently. This
+   advice makes =eval-last-sexp= (bound to =C-x C-e=) replace the sexp with
+   the value.
+
+   #+BEGIN_SRC emacs-lisp
+   (defadvice eval-last-sexp (around replace-sexp (arg) activate)
+     "Replace sexp when called with a prefix argument."
+     (if arg
+         (let ((pos (point)))
+           ad-do-it
+           (goto-char pos)
+           (backward-kill-sexp)
+           (forward-sexp))
+       ad-do-it))
+   #+END_SRC
+
+   When interactively changing the theme (using =M-x load-theme=), the
+   current custom theme is not disabled. This often gives weird-looking
+   results; we can advice =load-theme= to always disable themes currently
+   enabled themes.
+
+   #+BEGIN_SRC emacs-lisp
+   (defadvice load-theme
+       (before disable-before-load (theme &optional no-confirm no-enable) activate)
+     (mapc 'disable-theme custom-enabled-themes))
+   #+END_SRC
+
+** global-scale-mode
+
+   These functions provide something close to ~text-scale-mode~, but for every
+   buffer, including the minibuffer and mode line.
+
+   #+BEGIN_SRC emacs-lisp
+   (let* ((default (face-attribute 'default :height))
+          (size default))
+
+     (defun global-scale-default ()
+       (interactive)
+       (global-scale-internal (setq size default)))
+
+     (defun global-scale-up ()
+       (interactive)
+       (global-scale-internal (setq size (+ size 20))))
+
+     (defun global-scale-down ()
+       (interactive)
+       (global-scale-internal (setq size (- size 20))))
+
+     (defun global-scale-internal (arg)
+       (set-face-attribute 'default (selected-frame) :height arg)
+       (set-transient-map
+        (let ((map (make-sparse-keymap)))
+          (define-key map (kbd "C-=") 'global-scale-up)
+          (define-key map (kbd "C-+") 'global-scale-up)
+          (define-key map (kbd "C--") 'global-scale-down)
+          (define-key map (kbd "C-0") 'global-scale-default) map))))
+   #+END_SRC
+
 * Mode specific
 ** LSP
 
@@ -1439,7 +1448,7 @@
 ;;  Copyright (c) 2020 - 2021 Tony Wolski
 ;;
 ;;  This program is free software: you can redistribute it and/or modify
-p;;  it under the terms of the GNU General Public License as published by
+;;  it under the terms of the GNU General Public License as published by
 ;;  the Free Software Foundation, either version 3 of the License, or
 ;;  (at your option) any later version.
 ;;
