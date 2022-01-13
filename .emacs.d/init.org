@@ -401,7 +401,7 @@
          mu4e-update-interval (* 10 60)
          ;; Prevent 'Maildir error: duplicate UID <id>' errors
          mu4e-change-filenames-when-moving t
-         mu4e-attachment-dir "~/Downloads/inbox"
+         mu4e-attachment-dir "~/Downloads"
          ;; Only ask if a context hasn't been previously picked
          mu4e-compose-context-policy 'ask-if-none
          auth-source-debug t)
@@ -409,9 +409,6 @@
    ;; show full addresses in view message (instead of just names)
    ;; toggle per name with M-RET
    (setq mu4e-view-show-addresses t)
-
-   ;; Empty the initial bookmark list
-   ;;(setq mu4e-bookmarks '())
 
    (setq mu4e-contexts
          (list
@@ -440,9 +437,9 @@
            (lambda (msg)
              (when msg
                (string-prefix-p "/yvant" (mu4e-message-field msg :maildir))))
-           :vars '((user-mail-address     . "tony@yvant.io")
+           :vars '((user-mail-address     . "tony@yvant.coop")
                    (user-full-name        . "Tony Wolski")
-                   (smtpmail-smtp-user    . "tony@yvant.io")
+                   (smtpmail-smtp-user    . "tony@yvant.coop")
                    (smtpmail-smtp-server  . "smtp.fastmail.com")
                    (smtpmail-smtp-service . 587)
                    (smtpmail-stream-type  . starttls)
@@ -459,15 +456,26 @@
            ("/yvant/Archive"   . ?k)
            ("/yvant/Trash"     . ?l)))
 
+   ;; Empty the initial bookmark list
+   (setq mu4e-bookmarks '())
+
+   ;; All inboxes
+   (defvar inbox-folders (string-join '("maildir:/awolski/INBOX"
+                                        "maildir:/yvant/INBOX")
+                                        " OR "))
+
+   (add-to-list 'mu4e-bookmarks
+                '(inbox-folders "Inbox" ?i))
+
+   ;; Prevent mu4e from permanently deleting trashed items
+   ;; This snippet was taken from the following article:
+   ;; http://cachestocaches.com/2017/3/complete-guide-email-emacs-using-mu-and-/
    (defun remove-nth-element (nth list)
      (if (zerop nth) (cdr list)
        (let ((last (nthcdr (1- nth) list)))
          (setcdr last (cddr last))
          list)))
 
-   ;; Prevent mu4e from permanently deleting trashed items
-   ;; This snippet was taken from the following article:
-   ;; http://cachestocaches.com/2017/3/complete-guide-email-emacs-using-mu-and-/
    (setq mu4e-marks (remove-nth-element 5 mu4e-marks))
    (add-to-list 'mu4e-marks
                 '(trash
@@ -620,7 +628,7 @@
                                 company-sort-by-backend-importance))
    #+END_SRC
 
-** COMMENT Spelling
+** Spelling
 
    Flyspell offers on-the-fly spell checking. We can enable flyspell for all
    text-modes with this snippet.
@@ -643,22 +651,12 @@
    state in a different buffer (this problem occurs if you only have one
    global cycle). We can implement this by using a [[http://www.gnu.org/software/emacs/manual/html_node/elisp/Closures.html][closure]].
 
-** Ledger
-
-   I use [[https://www.ledger-cli.org/][Ledger]] to keep track of my financial life. The default alignment for
-   post amounts is too narrow.
-
-   #+BEGIN_SRC emacs-lisp
-   (setq ledger-post-amount-alignment-column 60)
-   #+END_SRC
-
-   
-   #+BEGIN_SRC emacs-lisp
+      #+BEGIN_SRC emacs-lisp
    (defun cycle-languages ()
      "Changes the ispell dictionary to the first element in
    ISPELL-LANGUAGES, and returns an interactive function that cycles
    the languages in ISPELL-LANGUAGES when invoked."
-     (let ((ispell-languages '#1=("american" "norsk" . #1#)))
+     (let ((ispell-languages '#1=("british" "american" "norsk" . #1#)))
        (ispell-change-dictionary (car ispell-languages))
        (lambda ()
          (interactive)
@@ -677,81 +675,18 @@
    (defadvice turn-on-flyspell (before check nil activate)
      "Turns on flyspell only if a spell-checking tool is installed."
      (when (executable-find ispell-program-name)
-       (local-set-key (kbd "C-c l") (cycle-languages))))
+       (local-set-key (kbd "C-c i") (cycle-languages))))
    #+END_SRC
-
-   #+BEGIN_SRC emacs-lisp
-   (defadvice flyspell-prog-mode (before check nil activate)
-     "Turns on flyspell only if a spell-checking tool is installed."
-     (when (executable-find ispell-program-name)
-       (local-set-key (kbd "C-c l") (cycle-languages))))
-    #+END_SRC
-
-** COMMENT Org
-
-   Use the key bindings suggested in Org mode's [[https://orgmode.org/manual/Activation.html][activation]] document.
-
-   #+begin_src emacs-lisp
-   (global-set-key (kbd "C-c l") #'org-store-link)
-   (global-set-key (kbd "C-c a") #'org-agenda)
-   (global-set-key (kbd "C-c c") #'org-capture)
-   #+end_src
-
-   Use sane defaults.
-
-   #+begin_src emacs-lisp
-   (setq org-directory "~/h/org"
-         org-agenda-files (list org-directory)
-         org-default-notes-file (concat org-directory "/refile.org")
-         org-catch-invisible-edits 'smart)
-   #+end_src
-
-  #+begin_src emacs-lisp
-  ;; Capture templates for: TODO tasks, Notes, appointments, phone calls, meetings, and org-protocol
-  ;; (setq org-capture-templates
-  ;;       (quote (("t" "todo" entry (file "~/git/org/refile.org")
-  ;;                "* TODO %?\n%U\n%a\n" :clock-in t :clock-resume t)
-  ;;               ("r" "respond" entry (file "~/git/org/refile.org")
-  ;;                "* NEXT Respond to %:from on %:subject\nSCHEDULED: %t\n%U\n%a\n" :clock-in t :clock-resume t :immediate-finish t)
-  ;;               ("n" "note" entry (file "~/git/org/refile.org")
-  ;;                "* %? :NOTE:\n%U\n%a\n" :clock-in t :clock-resume t)
-  ;;               ("j" "Journal" entry (file+datetree "~/git/org/diary.org")
-  ;;                "* %?\n%U\n" :clock-in t :clock-resume t)
-  ;;               ("w" "org-protocol" entry (file "~/git/org/refile.org")
-  ;;                "* TODO Review %c\n%U\n" :immediate-finish t)
-  ;;               ("m" "Meeting" entry (file "~/git/org/refile.org")
-  ;;                "* MEETING with %? :MEETING:\n%U" :clock-in t :clock-resume t)
-  ;;               ("p" "Phone call" entry (file "~/git/org/refile.org")
-  ;;                "* PHONE %? :PHONE:\n%U" :clock-in t :clock-resume t)
-  ;;               ("h" "Habit" entry (file "~/git/org/refile.org")
-  ;;                 "* NEXT %?\n%U\n%a\nSCHEDULED: %(format-time-string \"%<<%Y-%m-%d %a .+1d/3d>>\")\n:PROPERTIES:\n:STYLE: habit\n:REPEAT_TO_STATE: NEXT\n:END:\n"))))
-  #+end_src
    
-   When editing org-files with source-blocks, we want the source blocks to
-   be themed as they would in their native mode.
+** Ledger
+
+   I use [[https://www.ledger-cli.org/][Ledger]] to keep track of my financial life. The default alignment for
+   post amounts is too narrow.
 
    #+BEGIN_SRC emacs-lisp
-   (setq org-src-fontify-natively t
-         org-src-tab-acts-natively t
-         org-confirm-babel-evaluate nil
-         org-edit-src-content-indentation 0)
+   (setq ledger-post-amount-alignment-column 60)
    #+END_SRC
 
-;;   This is quite an ugly fix for allowing code markup for expressions like
-;;   ="this string"=, because the quotation marks causes problems.
-;;
-;;   #+BEGIN_SRC emacs-lisp
-;;   (with-eval-after-load 'org
-;;     (require 'org-tempo)
-;;     (setcar (nthcdr 2 org-emphasis-regexp-components) " \t\n,")
-;;     (custom-set-variables `(org-emphasis-alist ',org-emphasis-alist)))
-;;   #+END_SRC
-;;
-   Enable org-bullets when opening org-files.
-
-   #+BEGIN_SRC emacs-lisp
-   ;;(add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
-   #+END_SRC
 
 *** COMMENT Org Roam
 
@@ -923,6 +858,119 @@
 ;;                   :test 'string-equal)))))
 ;;   #+END_SRC
 ;;
+** Org
+
+   Use the key bindings suggested in Org mode's [[https://orgmode.org/manual/Activation.html][activation]] document.
+
+   #+begin_src emacs-lisp
+   (global-set-key (kbd "C-c l") #'org-store-link)
+   (global-set-key (kbd "C-c a") #'org-agenda)
+   (global-set-key (kbd "C-c c") #'org-capture)
+   #+end_src
+
+   Use sane defaults.
+
+   #+begin_src emacs-lisp
+   (setq org-directory "~/h/org"
+         org-agenda-files (list org-directory)
+         org-default-notes-file (concat org-directory "/refile.org")
+         org-catch-invisible-edits 'smart
+         org-startup-folded t)
+   #+end_src
+
+   Refiling...
+   
+   #+begin_src emacs-lisp
+   (setq org-refile-use-outline-path 'file
+         org-outline-path-complete-in-steps nil
+         org-refile-targets '((org-agenda-files :maxlevel . 9)))
+   #+end_src
+
+   TODO keywords.
+   
+   #+begin_src emacs-lisp
+   (setq org-todo-keywords
+         (quote ((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d)")
+                 (sequence "WAITING(w@/!)" "HOLD(h@/!)" "|" "CANCELLED(c@/!)" "PHONE" "MEETING"))))
+
+   (setq org-todo-keyword-faces
+         (quote (("TODO" :foreground "#e76f51" :weight bold)
+                 ("NEXT" :foreground "#457b9d" :weight bold)
+                 ("DONE" :foreground "#2a9daf" :weight bold)
+                 ("WAITING" :foreground "#f4a261" :weight bold)
+                 ("HOLD" :foreground "#e9c46a" :weight bold)
+                 ("CANCELLED" :foreground "#2a9daf" :weight bold)
+                 ("MEETING" :foreground "#2a9daf" :weight bold)
+                 ("PHONE" :foreground "#2a9daf" :weight bold))))
+   #+end_src
+
+   #+begin_src emacs-lisp
+   (setq org-use-fast-todo-selection t)
+   #+end_src
+   
+   Capture templates for notes, todo etc.
+   
+  #+begin_src emacs-lisp
+  (setq org-capture-templates
+        '(("t" "Task" entry (file+headline "~/h/org/refile.org" "Refile")
+           "* TODO %?\n  %u\n  %a\n" :clock-in t :clock-resume t)
+          ("r" "Respond" entry (file+headline "~/h/org/refile.org" "Refile")
+           "* NEXT Respond to %:from on %:subject\nSCHEDULED: %t\n%U\n%a\n" :clock-in t :clock-resume t :immediate-finish t)
+          ("n" "Note" entry (file+headline  "~/h/org/refile.org" "Refile")
+           "* %? :NOTE:\n  %U\n  %a\n" :clock-in t :clock-resume t)))
+
+    ;; (setq org-capture-templates
+    ;;       (quote (("t" "todo" entry (file "~/git/org/refile.org")
+    ;;                "* TODO %?\n%U\n%a\n" :clock-in t :clock-resume t)
+    ;;               ("r" "respond" entry (file "~/git/org/refile.org")
+    ;;                "* NEXT Respond to %:from on %:subject\nSCHEDULED: %t\n%U\n%a\n" :clock-in t :clock-resume t :immediate-finish t)
+    ;;               ("n" "note" entry (file "~/git/org/refile.org")
+    ;;                "* %? :NOTE:\n%U\n%a\n" :clock-in t :clock-resume t)
+    ;;               ("j" "Journal" entry (file+datetree "~/git/org/diary.org")
+    ;;                "* %?\n%U\n" :clock-in t :clock-resume t)
+    ;;               ("w" "org-protocol" entry (file "~/git/org/refile.org")
+    ;;                "* TODO Review %c\n%U\n" :immediate-finish t)
+    ;;               ("m" "Meeting" entry (file "~/git/org/refile.org")
+    ;;                "* MEETING with %? :MEETING:\n%U" :clock-in t :clock-resume t)
+    ;;               ("p" "Phone call" entry (file "~/git/org/refile.org")
+    ;;                "* PHONE %? :PHONE:\n%U" :clock-in t :clock-resume t)
+    ;;               ("h" "Habit" entry (file "~/git/org/refile.org")
+    ;;                "* NEXT %?\n%U\n%a\nSCHEDULED: %(format-time-string \"%<<%Y-%m-%d %a .+1d/3d>>\")\n:PROPERTIES:\n:STYLE: habit\n:REPEAT_TO_STATE: NEXT\n:END:\n"))))
+  #+end_src
+
+  Keybindings straight to capture templates.
+  
+  #+begin_src emacs-lisp
+  ;;(define-key global-map (kbd "C-c r")
+  ;;  (lambda () (interactive) (org-capture nil "r")))
+  #+end_src
+  
+   When editing org-files with source-blocks, we want the source blocks to
+   be themed as they would in their native mode.
+
+   #+BEGIN_SRC emacs-lisp
+   (setq org-src-fontify-natively t
+         org-src-tab-acts-natively t
+         org-confirm-babel-evaluate nil
+         org-edit-src-content-indentation 0)
+   #+END_SRC
+
+;;   This is quite an ugly fix for allowing code markup for expressions like
+;;   ="this string"=, because the quotation marks causes problems.
+;;
+;;   #+BEGIN_SRC emacs-lisp
+;;   (with-eval-after-load 'org
+;;     (require 'org-tempo)
+;;     (setcar (nthcdr 2 org-emphasis-regexp-components) " \t\n,")
+;;     (custom-set-variables `(org-emphasis-alist ',org-emphasis-alist)))
+;;   #+END_SRC
+;;
+   Enable org-bullets when opening org-files.
+
+   #+BEGIN_SRC emacs-lisp
+   ;;(add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
+   #+END_SRC
+
 ** Advice
 
    An advice can be given to a function to make it behave differently. This
@@ -1000,6 +1048,9 @@
    #+BEGIN_SRC emacs-lisp
    (require 'lsp-mode)
    (defun setup-web-mode ()
+     (defvar web-mode-markup-indent-offset)
+     (defvar web-mode-css-indent-offset)
+     (defvar web-mode-js-indent-offset 2)
      (setq web-mode-markup-indent-offset 2)
      (setq web-mode-css-indent-offset 4)
      (setq web-mode-js-indent-offset 2)
