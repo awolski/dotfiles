@@ -895,13 +895,13 @@
 
    (setq org-todo-keyword-faces
          (quote (("TODO" :foreground "#e76f51" :weight bold)
-                 ("NEXT" :foreground "#457b9d" :weight bold)
-                 ("DONE" :foreground "#2a9daf" :weight bold)
+                 ("NEXT" :foreground "#289d8f" :weight bold)
+                 ("DONE" :foreground "#6b705c" :weight bold)
                  ("WAITING" :foreground "#f4a261" :weight bold)
                  ("HOLD" :foreground "#e9c46a" :weight bold)
-                 ("CANCELLED" :foreground "#2a9daf" :weight bold)
-                 ("MEETING" :foreground "#2a9daf" :weight bold)
-                 ("PHONE" :foreground "#2a9daf" :weight bold))))
+                 ("CANCELLED" :foreground "#6b705c" :weight bold)
+                 ("MEETING" :foreground "#6b705c" :weight bold)
+                 ("PHONE" :foreground "#6b705c" :weight bold))))
    #+end_src
 
    #+begin_src emacs-lisp
