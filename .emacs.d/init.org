@@ -419,16 +419,17 @@
            (lambda (msg)
              (when msg
                (string-prefix-p "/awolski" (mu4e-message-field msg :maildir))))
-           :vars '((user-mail-address     . "tony@awolski.com")
-                   (user-full-name        . "Tony Wolski")
-                   (smtpmail-smtp-user    . "tony@awolski.com")
-                   (smtpmail-smtp-server  . "smtp.fastmail.com")
-                   (smtpmail-smtp-service . 587)
-                   (smtpmail-stream-type  . starttls)
-                   (mu4e-drafts-folder    . "/awolski/Drafts")
-                   (mu4e-sent-folder      . "/awolski/Sent")
-                   (mu4e-refile-folder    . "/awolski/Archive")
-                   (mu4e-trash-folder     . "/awolski/Trash")))
+           :vars '((user-mail-address      . "tony@awolski.com")
+                   (user-full-name         . "Tony Wolski")
+                   (mu4e-compose-signature . "Tony\n\n\https://awol.ski")
+                   (smtpmail-smtp-user     . "tony@awolski.com")
+                   (smtpmail-smtp-server   . "smtp.fastmail.com")
+                   (smtpmail-smtp-service  . 587)
+                   (smtpmail-stream-type   . starttls)
+                   (mu4e-drafts-folder     . "/awolski/Drafts")
+                   (mu4e-sent-folder       . "/awolski/Sent")
+                   (mu4e-refile-folder     . "/awolski/Archive")
+                   (mu4e-trash-folder      . "/awolski/Trash")))
 
           ;; yvant.io account
           (make-mu4e-context
@@ -437,16 +438,17 @@
            (lambda (msg)
              (when msg
                (string-prefix-p "/yvant" (mu4e-message-field msg :maildir))))
-           :vars '((user-mail-address     . "tony@yvant.coop")
-                   (user-full-name        . "Tony Wolski")
-                   (smtpmail-smtp-user    . "tony@yvant.coop")
-                   (smtpmail-smtp-server  . "smtp.fastmail.com")
-                   (smtpmail-smtp-service . 587)
-                   (smtpmail-stream-type  . starttls)
-                   (mu4e-drafts-folder    . "/yvant/Drafts")
-                   (mu4e-sent-folder      . "/yvant/Sent")
-                   (mu4e-refile-folder    . "/yvant/Archive")
-                   (mu4e-trash-folder     . "/yvant/Trash")))))
+           :vars '((user-mail-address      . "tony@yvant.coop")
+                   (user-full-name         . "Tony Wolski")
+                   (mu4e-compose-signature . "Tony\n\n\https://yvant.coop")                
+                   (smtpmail-smtp-user     . "tony@yvant.coop")
+                   (smtpmail-smtp-server   . "smtp.fastmail.com")
+                   (smtpmail-smtp-service  . 587)
+                   (smtpmail-stream-type   . starttls)
+                   (mu4e-drafts-folder     . "/yvant/Drafts")
+                   (mu4e-sent-folder       . "/yvant/Sent")
+                   (mu4e-refile-folder     . "/yvant/Archive")
+                   (mu4e-trash-folder      . "/yvant/Trash")))))
 
    (setq mu4e-maildir-shortcuts
          '(("/awolski/Inbox"   . ?i)
@@ -494,6 +496,8 @@
    ;; Don't ask to quit
    (setq mu4e-confirm-quit nil)
    #+end_src
+
+   #+RESULTS:
    
 ** Visual
 
