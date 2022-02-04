@@ -228,7 +228,7 @@
                   ;;slime                ; Superior Lisp Interaction Mode for Emacs
                   ;;smex                 ; M-x interface with Ido-style fuzzy matching
                   try                  ; Try out Emacs packages
-                  ;;vterm                ; A terminal via libvterm
+                  vterm                ; A terminal via libvterm
                   web-mode             ; Major mode for editing HTML, CSS, JavaScript
                   which-key            ; Display available keybindings in popup
                   ;;z3-mode)))           ; z3/SMTLIBv2 interactive development
@@ -876,7 +876,7 @@
    Use sane defaults.
 
    #+begin_src emacs-lisp
-   (setq org-directory "~/h/org"
+   (setq org-directory "~/org"
          org-agenda-files (list org-directory)
          org-default-notes-file (concat org-directory "/refile.org")
          org-catch-invisible-edits 'smart
@@ -917,11 +917,11 @@
    
   #+begin_src emacs-lisp
   (setq org-capture-templates
-        '(("t" "Task" entry (file+headline "~/h/org/refile.org" "Refile")
+        '(("t" "Task" entry (file+headline "~/org/refile.org" "Refile")
            "* TODO %?\n  %u\n  %a\n" :clock-in t :clock-resume t)
-          ("r" "Respond" entry (file+headline "~/h/org/refile.org" "Refile")
+          ("r" "Respond" entry (file+headline "~/org/refile.org" "Refile")
            "* NEXT Respond to %:from on %:subject\nSCHEDULED: %t\n%U\n%a\n" :clock-in t :clock-resume t :immediate-finish t)
-          ("n" "Note" entry (file+headline  "~/h/org/refile.org" "Refile")
+          ("n" "Note" entry (file+headline  "~/org/refile.org" "Refile")
            "* %? :NOTE:\n  %U\n  %a\n" :clock-in t :clock-resume t)))
 
     ;; (setq org-capture-templates
