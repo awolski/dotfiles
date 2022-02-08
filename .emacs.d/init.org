@@ -330,7 +330,7 @@
    (pinentry-start)
 
    #+end_src
-   
+
    By default the =narrow-to-region= command is disabled and issues a
    warning, because it might confuse new users. I find it useful sometimes,
    and don't want to be warned.
@@ -441,7 +441,7 @@
                (string-prefix-p "/yvant" (mu4e-message-field msg :maildir))))
            :vars '((user-mail-address      . "tony@yvant.coop")
                    (user-full-name         . "Tony Wolski")
-                   (mu4e-compose-signature . "Tony\n\n\https://yvant.coop")                
+                   (mu4e-compose-signature . "Tony\n\n\https://yvant.coop")
                    (smtpmail-smtp-user     . "tony@yvant.coop")
                    (smtpmail-smtp-server   . "smtp.fastmail.com")
                    (smtpmail-smtp-service  . 587)
@@ -485,7 +485,7 @@
                   :char ("d" . "▼")
                   :prompt "dtrash"
                   :dyn-target (lambda (target msg) (mu4e-get-trash-folder msg))
-                  :action (lambda (docid msg target) 
+                  :action (lambda (docid msg target)
                             (mu4e~proc-move docid
                                             (mu4e~mark-check-target target) "-N"))))
 
@@ -499,7 +499,7 @@
    #+end_src
 
    #+RESULTS:
-   
+
 ** Visual
 
    Change the color-theme to =leuven=.
@@ -635,8 +635,13 @@
 
 ** Spelling
 
-   Flyspell offers on-the-fly spell checking. We can enable flyspell for all
-   text-modes with this snippet.
+   Flyspell offers on-the-fly spell checking. Let's Use aspell instead of ispell.
+
+   #+BEGIN_SRC emacs-lisp
+   (setq ispell-list-command "--list")
+   #+END_SRC
+
+   We can enable flyspell for all text-modes with this snippet.
 
    #+BEGIN_SRC emacs-lisp
    (add-hook 'text-mode-hook 'turn-on-flyspell)
@@ -682,7 +687,7 @@
      (when (executable-find ispell-program-name)
        (local-set-key (kbd "C-c i") (cycle-languages))))
    #+END_SRC
-   
+
 ** Ledger
 
    I use [[https://www.ledger-cli.org/][Ledger]] to keep track of my financial life. The default alignment for
@@ -884,7 +889,7 @@
    #+end_src
 
    Refiling...
-   
+
    #+begin_src emacs-lisp
    (setq org-refile-use-outline-path 'file
          org-outline-path-complete-in-steps nil
@@ -892,7 +897,7 @@
    #+end_src
 
    TODO keywords.
-   
+
    #+begin_src emacs-lisp
    (setq org-todo-keywords
          (quote ((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d)")
@@ -912,9 +917,9 @@
    #+begin_src emacs-lisp
    (setq org-use-fast-todo-selection t)
    #+end_src
-   
+
    Capture templates for notes, todo etc.
-   
+
   #+begin_src emacs-lisp
   (setq org-capture-templates
         '(("t" "Task" entry (file+headline "~/org/refile.org" "Refile")
@@ -944,12 +949,12 @@
   #+end_src
 
   Keybindings straight to capture templates.
-  
+
   #+begin_src emacs-lisp
   ;;(define-key global-map (kbd "C-c r")
   ;;  (lambda () (interactive) (org-capture nil "r")))
   #+end_src
-  
+
    When editing org-files with source-blocks, we want the source blocks to
    be themed as they would in their native mode.
 
@@ -1047,7 +1052,7 @@
      (define-key lsp-mode-map (kbd "C-c f") lsp-command-map)
      (add-hook 'lsp-mode-hook #'lsp-enable-which-key-integration))
    #+END_SRC
-   
+
 ** Web
 
    #+BEGIN_SRC emacs-lisp
