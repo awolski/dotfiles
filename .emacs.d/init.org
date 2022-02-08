@@ -927,7 +927,9 @@
           ("r" "Respond" entry (file+headline "~/org/refile.org" "Refile")
            "* NEXT Respond to %:from on %:subject\nSCHEDULED: %t\n%U\n%a\n" :clock-in t :clock-resume t :immediate-finish t)
           ("n" "Note" entry (file+headline  "~/org/refile.org" "Refile")
-           "* %? :NOTE:\n  %U\n  %a\n" :clock-in t :clock-resume t)))
+           "* %? :NOTE:\n  %U\n  %a\n" :clock-in t :clock-resume t)
+          ("j" "Journal" entry (file+datetree "~/org/journal.org")
+           "* %?\n  %U\n" :clock-in t :clock-resume t :tree-type week)))
 
     ;; (setq org-capture-templates
     ;;       (quote (("t" "todo" entry (file "~/git/org/refile.org")
