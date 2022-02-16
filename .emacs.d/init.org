@@ -399,7 +399,7 @@
          smtpmail-debug-info t
          message-kill-buffer-on-exit t
          mu4e-get-mail-command "mbsync -a"
-         mu4e-update-interval (* 10 60)
+         mu4e-update-interval (* 60 60)
          ;; Prevent 'Maildir error: duplicate UID <id>' errors
          mu4e-change-filenames-when-moving t
          mu4e-attachment-dir "~/Downloads"
@@ -885,6 +885,7 @@
          org-agenda-files (list org-directory)
          org-default-notes-file (concat org-directory "/refile.org")
          org-catch-invisible-edits 'smart
+         org-hierarchical-todo-statistics t
          org-startup-folded t)
    #+end_src
 
@@ -900,12 +901,14 @@
 
    #+begin_src emacs-lisp
    (setq org-todo-keywords
-         (quote ((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d)")
+         (quote ((sequence "TODO(t)" "NEXT(n)" "SOMEDAY(s)" "ACTIVE(a)" "|" "DONE(d)")
                  (sequence "WAITING(w@/!)" "HOLD(h@/!)" "|" "CANCELLED(c@/!)" "PHONE" "MEETING"))))
 
    (setq org-todo-keyword-faces
          (quote (("TODO" :foreground "#e76f51" :weight bold)
                  ("NEXT" :foreground "#289d8f" :weight bold)
+                 ("SOMEDAY" :foreground "#ddbea9" :weight bold)
+                 ("ACTIVE" :foreground "#94d2bd" :weight bold)              
                  ("DONE" :foreground "#6b705c" :weight bold)
                  ("WAITING" :foreground "#f4a261" :weight bold)
                  ("HOLD" :foreground "#e9c46a" :weight bold)
@@ -914,6 +917,65 @@
                  ("PHONE" :foreground "#6b705c" :weight bold))))
    #+end_src
 
+   Configure custom agenda views.
+
+   #+begin_src emacs-lisp
+   (setq org-agenda-custom-commands
+         '(("d" "Dashboard"
+            ((agenda "" ((org-agenda-span 5)))
+             (todo "NEXT"
+                   ((org-agenda-overriding-header "Next Tasks")))
+             (tags-todo "YVANT/TODO"
+                   ((org-agenda-overriding-header "Yvant Tasks")))
+             (todo "WAITING"
+                   ((org-agenda-overriding-header "Waiting")))
+             (tags "REFILE"
+                   ((org-agenda-overriding-header "To Refile")))
+             (todo "ACTIVE"
+                   ((org-agenda-overriding-header "Active Projects")))))
+
+           ("n" "Next Tasks"
+            ((todo "NEXT"
+                   ((org-agenda-overriding-header "Next Tasks")))))
+
+
+           ("W" "Work Tasks" tags-todo "+work")
+
+           ;; Low-effort next actions
+           ("e" tags-todo "+TODO=\"NEXT\"+Effort<15&+Effort>0"
+            ((org-agenda-overriding-header "Low Effort Tasks")
+             (org-agenda-max-todos 20)
+             (org-agenda-files org-agenda-files)))
+
+           ("w" "Workflow Status"
+            ((todo "WAIT"
+                   ((org-agenda-overriding-header "Waiting on External")
+                    (org-agenda-files org-agenda-files)))
+             (todo "REVIEW"
+                   ((org-agenda-overriding-header "In Review")
+                    (org-agenda-files org-agenda-files)))
+             (todo "PLAN"
+                   ((org-agenda-overriding-header "In Planning")
+                    (org-agenda-todo-list-sublevels nil)
+                    (org-agenda-files org-agenda-files)))
+             (todo "BACKLOG"
+                   ((org-agenda-overriding-header "Project Backlog")
+                    (org-agenda-todo-list-sublevels nil)
+                    (org-agenda-files org-agenda-files)))
+             (todo "READY"
+                   ((org-agenda-overriding-header "Ready for Work")
+                    (org-agenda-files org-agenda-files)))
+             (todo "ACTIVE"
+                   ((org-agenda-overriding-header "Active Projects")
+                    (org-agenda-files org-agenda-files)))
+             (todo "COMPLETED"
+                   ((org-agenda-overriding-header "Completed Projects")
+                    (org-agenda-files org-agenda-files)))
+             (todo "CANC"
+                   ((org-agenda-overriding-header "Cancelled Projects")
+                    (org-agenda-files org-agenda-files)))))))
+   #+end_src
+   
    #+begin_src emacs-lisp
    (setq org-use-fast-todo-selection t)
    #+end_src
@@ -966,63 +1028,6 @@
          org-confirm-babel-evaluate nil
          org-edit-src-content-indentation 0)
    #+END_SRC
-
-   Configure custom agenda views.
-
-   #+begin_src emacs-lisp
-   (setq org-agenda-custom-commands
-         '(("d" "Dashboard"
-            ((agenda "" ((org-deadline-warning-days 7)))
-             (todo "NEXT"
-                   ((org-agenda-overriding-header "Next Tasks")))
-             (todo "WAITING"
-                   ((org-agenda-overriding-header "Waiting on External")))
-             (tags "REFILE"
-                   ((org-agenda-overriding-header "Tasks to Refile")))
-             (tags-todo "agenda/ACTIVE"
-                   ((org-agenda-overriding-header "Active Projects")))))
-
-           ("n" "Next Tasks"
-            ((todo "NEXT"
-                   ((org-agenda-overriding-header "Next Tasks")))))
-
-
-           ("W" "Work Tasks" tags-todo "+work")
-
-           ;; Low-effort next actions
-           ("e" tags-todo "+TODO=\"NEXT\"+Effort<15&+Effort>0"
-            ((org-agenda-overriding-header "Low Effort Tasks")
-             (org-agenda-max-todos 20)
-             (org-agenda-files org-agenda-files)))
-
-           ("w" "Workflow Status"
-            ((todo "WAIT"
-                   ((org-agenda-overriding-header "Waiting on External")
-                    (org-agenda-files org-agenda-files)))
-             (todo "REVIEW"
-                   ((org-agenda-overriding-header "In Review")
-                    (org-agenda-files org-agenda-files)))
-             (todo "PLAN"
-                   ((org-agenda-overriding-header "In Planning")
-                    (org-agenda-todo-list-sublevels nil)
-                    (org-agenda-files org-agenda-files)))
-             (todo "BACKLOG"
-                   ((org-agenda-overriding-header "Project Backlog")
-                    (org-agenda-todo-list-sublevels nil)
-                    (org-agenda-files org-agenda-files)))
-             (todo "READY"
-                   ((org-agenda-overriding-header "Ready for Work")
-                    (org-agenda-files org-agenda-files)))
-             (todo "ACTIVE"
-                   ((org-agenda-overriding-header "Active Projects")
-                    (org-agenda-files org-agenda-files)))
-             (todo "COMPLETED"
-                   ((org-agenda-overriding-header "Completed Projects")
-                    (org-agenda-files org-agenda-files)))
-             (todo "CANC"
-                   ((org-agenda-overriding-header "Cancelled Projects")
-                    (org-agenda-files org-agenda-files)))))))
-   #+end_src
 
 ;;   This is quite an ugly fix for allowing code markup for expressions like
 ;;   ="this string"=, because the quotation marks causes problems.
