@@ -209,9 +209,8 @@
                 lsp-java             ; Java support for lsp-mode
                 magit                ; control Git from Emacs
                 markdown-mode        ; Emacs Major mode for Markdown-formatted files
-                ;;maude-mode           ; Emacs mode for the programming language Maude
                 ;;minizinc-mode        ; Major mode for MiniZinc code
-                ;;multiple-cursors     ; Multiple cursors for Emacs
+                multiple-cursors     ; Multiple cursors for Emacs
                 ob-http              ; Make http request within org-mode babel
                 olivetti             ; Minor mode for a nice writing environment
                 org                  ; Outline-based notes management and organizer
@@ -225,7 +224,6 @@
                 pinentry             ; Allows pinentry prompt via minibuffer
                 projectile           ; Manage and navigate projects in Emacs easily
                 ;;proof-general        ; A generic Emacs interface for proof assistants
-                ;;racket-mode          ; Major mode for Racket language
                 ;;slime                ; Superior Lisp Interaction Mode for Emacs
                 ;;smex                 ; M-x interface with Ido-style fuzzy matching
                 try                  ; Try out Emacs packages
@@ -1472,33 +1470,6 @@
 ;;         '("--ghc-options=-ferror-spans -fshow-loaded-modules"))
 ;;   #+END_SRC
 ;;
-;;** Maude
-;;
-;;   Use =---= for comments in Maude.
-;;
-;;   #+BEGIN_SRC emacs-lisp
-;;   (add-hook 'maude-mode-hook
-;;             (lambda ()
-;;               (setq-local comment-start "---")))
-;;
-;;   (with-eval-after-load 'maude-mode
-;;    (add-to-list 'maude-command-options "-no-wrap"))
-;;   #+END_SRC
-;;
-;;** Minizinc
-;;
-;;   #+BEGIN_SRC emacs-lisp
-;;   (add-to-list 'auto-mode-alist '("\\.mzn\\'" . minizinc-mode))
-;;
-;;   (defun minizinc-setup ()
-;;     (let ((command (concat "minizinc " (buffer-file-name) " "))
-;;           (f (concat (file-name-base (buffer-file-name)) ".dzn")))
-;;       (local-set-key (kbd "C-c C-c") 'recompile)
-;;       (setq-local compile-command (concat command (if (file-exists-p f) f "")))))
-;;
-;;   (add-hook 'minizinc-mode-hook 'minizinc-setup)
-;;   #+END_SRC
-;;
 ;;** Coq
 ;;
 ;;   #+BEGIN_SRC emacs-lisp
@@ -1532,30 +1503,30 @@
 ;;  (define-key custom-bindings-map (kbd "C-<")  'er/contract-region)
 ;;  #+END_SRC
 ;;
-;;** Bindings for [[https://github.com/magnars/multiple-cursors.el][multiple-cursors]]
-;;
-;;  #+BEGIN_SRC emacs-lisp
-;;  (define-key custom-bindings-map (kbd "C-c e")  'mc/edit-lines)
-;;  (define-key custom-bindings-map (kbd "C-c a")  'mc/mark-all-like-this)
-;;  (define-key custom-bindings-map (kbd "C-c n")  'mc/mark-next-like-this)
-;;  #+END_SRC
-;;
-;;** Bindings for [[https://magit.vc/][Magit]]
-;;
-;;  #+BEGIN_SRC emacs-lisp
-;;  (define-key custom-bindings-map (kbd "C-c m") 'magit-status)
-;;  #+END_SRC
-;;
-;;** Bindings for [[https://github.com/abo-abo/swiper][Counsel]]
-;;
-;;   #+begin_src emacs-lisp
-;;   (global-set-key (kbd "C-c i")     'swiper-isearch)
-;;   (global-set-key (kbd "M-x")     'counsel-M-x)
-;;   (global-set-key (kbd "C-x C-f") 'counsel-find-file)
-;;   (global-set-key (kbd "M-y")     'counsel-yank-pop)
-;;   (global-set-key (kbd "C-x b")   'ivy-switch-buffer)
-;;   #+end_src
-;;
+** Bindings for [[https://github.com/magnars/multiple-cursors.el][multiple-cursors]]
+
+  #+BEGIN_SRC emacs-lisp
+  (define-key custom-bindings-map (kbd "C-c e")  'mc/edit-lines)
+  (define-key custom-bindings-map (kbd "C-c a")  'mc/mark-all-like-this)
+  (define-key custom-bindings-map (kbd "C-c n")  'mc/mark-next-like-this)
+  #+END_SRC
+
+** Bindings for [[https://magit.vc/][Magit]]
+
+  #+BEGIN_SRC emacs-lisp
+  (define-key custom-bindings-map (kbd "C-c m") 'magit-status)
+  #+END_SRC
+
+** Bindings for [[https://github.com/abo-abo/swiper][Counsel]]
+
+   #+begin_src emacs-lisp
+   (global-set-key (kbd "C-c i")   'swiper-isearch)
+   (global-set-key (kbd "M-x")     'counsel-M-x)
+   (global-set-key (kbd "C-x C-f") 'counsel-find-file)
+   (global-set-key (kbd "M-y")     'counsel-yank-pop)
+   (global-set-key (kbd "C-x b")   'ivy-switch-buffer)
+   #+end_src
+
 ** Bindings for [[http://company-mode.github.io/][company-mode]]
 
   #+BEGIN_SRC emacs-lisp
@@ -1584,18 +1555,18 @@
    (define-key custom-bindings-map (kbd "C-c o") 'olivetti-mode)
    #+END_SRC
 
-;;** Bindings for built-ins
-;;
-;;  #+BEGIN_SRC emacs-lisp
-;;  (define-key custom-bindings-map (kbd "M-u")         'upcase-dwim)
-;;  (define-key custom-bindings-map (kbd "M-c")         'capitalize-dwim)
-;;  (define-key custom-bindings-map (kbd "M-l")         'downcase-dwim)
-;;  (define-key custom-bindings-map (kbd "M-]")         'other-frame)
-;;  (define-key custom-bindings-map (kbd "C-j")         'newline-and-indent)
-;;  (define-key custom-bindings-map (kbd "C-c s")       'ispell-word)
-;;  (define-key comint-mode-map     (kbd "C-l")         'clear-comint)
-;;  #+END_SRC
-;;
+** Bindings for built-ins
+
+  #+BEGIN_SRC emacs-lisp
+  (define-key custom-bindings-map (kbd "M-u")         'upcase-dwim)
+  (define-key custom-bindings-map (kbd "M-c")         'capitalize-dwim)
+  (define-key custom-bindings-map (kbd "M-l")         'downcase-dwim)
+  (define-key custom-bindings-map (kbd "M-]")         'other-frame)
+  (define-key custom-bindings-map (kbd "C-j")         'newline-and-indent)
+  (define-key custom-bindings-map (kbd "C-c s")       'ispell-word)
+  (define-key comint-mode-map     (kbd "C-l")         'clear-comint)
+  #+END_SRC
+
 ** Bindings for functions defined [[sec:defuns][above]].
 
   #+BEGIN_SRC emacs-lisp
@@ -1624,15 +1595,15 @@
 ;;  (with-eval-after-load 'org
 ;;    (define-key org-mode-map (kbd "C-'") 'org-sync-pdf))
   #+END_SRC
-;;
-;;  Lastly we need to activate the map by creating and activating the
-;;  =minor-mode=.
-;;
-;;  #+BEGIN_SRC emacs-lisp
-;;  (define-minor-mode custom-bindings-mode
-;;    "A mode that activates custom-bindings."
-;;    t nil custom-bindings-map)
-;;  #+END_SRC
+
+  Lastly we need to activate the map by creating and activating the
+  =minor-mode=.
+
+  #+BEGIN_SRC emacs-lisp
+  (define-minor-mode custom-bindings-mode
+    "A mode that activates custom-bindings."
+    t nil custom-bindings-map)
+  #+END_SRC
 ;;* License
 ;;
 ;;  My Emacs configurations written in Org mode.
