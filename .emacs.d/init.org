@@ -181,67 +181,68 @@
    installed. To ensure we install missing packages if they are missing.
 
    #+BEGIN_SRC emacs-lisp
-        (let* ((package--builtins nil)
-               (packages
-                '(auto-compile         ; automatically compile Emacs libraries
-                  ;;cider                ; Clojure Interactive Development Environment
-                  ;;clj-refactor         ; Commands for refactoring Clojure code
-                  company              ; Modular text completion framework
-                  ;;company-coq          ; A collection of extensions PG's Coq mode
-                  counsel              ; Various completion functions using Ivy
-                  counsel-projectile   ; Ivy integration for Projectile
-                  define-word          ; display the definition of word at point
-                  diff-hl              ; Highlight uncommitted changes using VC
-                  doom-themes          ; An opinionated pack of modern color-themes
-                  ;;erlang               ; Erlang major mode
-                  ;;expand-region        ; Increase selected region by semantic units
-                  ;;focus                ; Dim color of text in surrounding sections
-                  flycheck             ; Modern on-the-fly syntax checking
-                  flycheck-ledger      ; Syntax checking for ledger
-                  format-all           ; Auto-format code in many languages
-                  ;;golden-ratio         ; Automatic resizing windows to golden ratio
-                  ;;haskell-mode         ; A Haskell editing mode
-                  ;;jedi                 ; Python auto-completion for Emacs
-                  js2-mode             ; Improved JavaScript editing mode
-                  ledger-mode          ; Major mode for editing ledger files
-                  lsp-mode             ; LSP mode
-                  lsp-ui               ; LSP UI
-                  ;;lsp-java             ; Java support for lsp-mode
-                  magit                ; control Git from Emacs
-                  markdown-mode        ; Emacs Major mode for Markdown-formatted files
-                  ;;maude-mode           ; Emacs mode for the programming language Maude
-                  ;;minizinc-mode        ; Major mode for MiniZinc code
-                  ;;multiple-cursors     ; Multiple cursors for Emacs
-                  olivetti             ; Minor mode for a nice writing environment
-                  org                  ; Outline-based notes management and organizer
-                  org-bullets          ; Show bullets in org-mode as UTF-8 characters
-                  ;;org-roam             ; Roam Research replica with Org-mode
-                  ;;org-roam-server      ; Org Roam Database Visualizer
-                  paredit              ; minor mode for editing parentheses
-                  pass                 ; Password management with pass
-                  password-store       ; Use password-store for auth-source
-                  pdf-tools            ; Emacs support library for PDF files
-                  pinentry             ; Allows pinentry prompt via minibuffer
-                  projectile           ; Manage and navigate projects in Emacs easily
-                  ;;proof-general        ; A generic Emacs interface for proof assistants
-                  ;;racket-mode          ; Major mode for Racket language
-                  ;;slime                ; Superior Lisp Interaction Mode for Emacs
-                  ;;smex                 ; M-x interface with Ido-style fuzzy matching
-                  try                  ; Try out Emacs packages
-                  vterm                ; A terminal via libvterm
-                  web-mode             ; Major mode for editing HTML, CSS, JavaScript
-                  which-key            ; Display available keybindings in popup
-                  ;;z3-mode)))           ; z3/SMTLIBv2 interactive development
-                  )))
-     ;;     (when (memq window-system '(mac ns))
-     ;;       (push 'exec-path-from-shell packages)
-     ;;       (push 'reveal-in-osx-finder packages))
-          (let ((packages (seq-remove 'package-installed-p packages)))
-            (print packages)
-            (when packages
-              ;; Install uninstalled packages
-              (package-refresh-contents)
-              (mapc 'package-install packages))))
+      (let* ((package--builtins nil)
+             (packages
+              '(auto-compile         ; automatically compile Emacs libraries
+                ;;cider                ; Clojure Interactive Development Environment
+                ;;clj-refactor         ; Commands for refactoring Clojure code
+                company              ; Modular text completion framework
+                ;;company-coq          ; A collection of extensions PG's Coq mode
+                counsel              ; Various completion functions using Ivy
+                counsel-projectile   ; Ivy integration for Projectile
+                define-word          ; display the definition of word at point
+                diff-hl              ; Highlight uncommitted changes using VC
+                doom-themes          ; An opinionated pack of modern color-themes
+                ;;erlang               ; Erlang major mode
+                ;;expand-region        ; Increase selected region by semantic units
+                ;;focus                ; Dim color of text in surrounding sections
+                flycheck             ; Modern on-the-fly syntax checking
+                flycheck-ledger      ; Syntax checking for ledger
+                format-all           ; Auto-format code in many languages
+                golden-ratio         ; Automatic resizing windows to golden ratio
+                ;;haskell-mode         ; A Haskell editing mode
+                ;;jedi                 ; Python auto-completion for Emacs
+                js2-mode             ; Improved JavaScript editing mode
+                ledger-mode          ; Major mode for editing ledger files
+                lsp-mode             ; LSP mode
+                lsp-ui               ; LSP UI
+                lsp-java             ; Java support for lsp-mode
+                magit                ; control Git from Emacs
+                markdown-mode        ; Emacs Major mode for Markdown-formatted files
+                ;;maude-mode           ; Emacs mode for the programming language Maude
+                ;;minizinc-mode        ; Major mode for MiniZinc code
+                ;;multiple-cursors     ; Multiple cursors for Emacs
+                ob-http              ; Make http request within org-mode babel
+                olivetti             ; Minor mode for a nice writing environment
+                org                  ; Outline-based notes management and organizer
+                org-bullets          ; Show bullets in org-mode as UTF-8 characters
+                ;;org-roam             ; Roam Research replica with Org-mode
+                ;;org-roam-server      ; Org Roam Database Visualizer
+                paredit              ; minor mode for editing parentheses
+                pass                 ; Password management with pass
+                password-store       ; Use password-store for auth-source
+                pdf-tools            ; Emacs support library for PDF files
+                pinentry             ; Allows pinentry prompt via minibuffer
+                projectile           ; Manage and navigate projects in Emacs easily
+                ;;proof-general        ; A generic Emacs interface for proof assistants
+                ;;racket-mode          ; Major mode for Racket language
+                ;;slime                ; Superior Lisp Interaction Mode for Emacs
+                ;;smex                 ; M-x interface with Ido-style fuzzy matching
+                try                  ; Try out Emacs packages
+                vterm                ; A terminal via libvterm
+                web-mode             ; Major mode for editing HTML, CSS, JavaScript
+                which-key            ; Display available keybindings in popup
+                ;;z3-mode)))           ; z3/SMTLIBv2 interactive development
+                )))
+   ;;     (when (memq window-system '(mac ns))
+   ;;       (push 'exec-path-from-shell packages)
+   ;;       (push 'reveal-in-osx-finder packages))
+        (let ((packages (seq-remove 'package-installed-p packages)))
+          (print packages)
+          (when packages
+            ;; Install uninstalled packages
+            (package-refresh-contents)
+            (mapc 'package-install packages))))
    #+END_SRC
 
 ** Sane defaults
@@ -344,6 +345,8 @@
 ;;   #+BEGIN_SRC emacs-lisp
 ;;   (add-hook 'doc-view-mode-hook 'auto-revert-mode)
 ;;   #+END_SRC
+
+
 
 ** Modes
 
@@ -698,7 +701,7 @@
    #+END_SRC
 
 
-*** COMMENT Org Roam
+** COMMENT Org Roam
 
     Trying out [[https://www.orgroam.com/][org-roam]] for organizing notes.
 
@@ -868,7 +871,16 @@
 ;;                   :test 'string-equal)))))
 ;;   #+END_SRC
 ;;
-** Org
+** Org Mode
+
+   Activate Org Babel languages.
+
+   #+begin_src emacs-lisp
+   (org-babel-do-load-languages
+    'org-babel-load-languages
+    '((shell . t)
+      (http . t)))
+   #+end_src
 
    Use the key bindings suggested in Org mode's [[https://orgmode.org/manual/Activation.html][activation]] document.
 
@@ -908,7 +920,7 @@
          (quote (("TODO" :foreground "#e76f51" :weight bold)
                  ("NEXT" :foreground "#289d8f" :weight bold)
                  ("SOMEDAY" :foreground "#ddbea9" :weight bold)
-                 ("ACTIVE" :foreground "#94d2bd" :weight bold)              
+                 ("ACTIVE" :foreground "#94d2bd" :weight bold)
                  ("DONE" :foreground "#6b705c" :weight bold)
                  ("WAITING" :foreground "#f4a261" :weight bold)
                  ("HOLD" :foreground "#e9c46a" :weight bold)
@@ -975,7 +987,7 @@
                    ((org-agenda-overriding-header "Cancelled Projects")
                     (org-agenda-files org-agenda-files)))))))
    #+end_src
-   
+
    #+begin_src emacs-lisp
    (setq org-use-fast-todo-selection t)
    #+end_src
@@ -1138,7 +1150,6 @@
    (add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
    (add-to-list 'auto-mode-alist '("\\.css?\\'" . web-mode))
    #+END_SRC
-
 
 ;;** Compilation
 ;;
