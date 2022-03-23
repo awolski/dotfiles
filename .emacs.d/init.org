@@ -189,18 +189,17 @@
                 company              ; Modular text completion framework
                 ;;company-coq          ; A collection of extensions PG's Coq mode
                 counsel              ; Various completion functions using Ivy
+                counsel-jq           ; Traverse complex JSON and YAML structures with live feedback
                 counsel-projectile   ; Ivy integration for Projectile
                 define-word          ; display the definition of word at point
                 diff-hl              ; Highlight uncommitted changes using VC
                 doom-themes          ; An opinionated pack of modern color-themes
-                ;;erlang               ; Erlang major mode
                 ;;expand-region        ; Increase selected region by semantic units
-                ;;focus                ; Dim color of text in surrounding sections
+                focus                ; Dim color of text in surrounding sections
                 flycheck             ; Modern on-the-fly syntax checking
                 flycheck-ledger      ; Syntax checking for ledger
                 format-all           ; Auto-format code in many languages
                 golden-ratio         ; Automatic resizing windows to golden ratio
-                ;;haskell-mode         ; A Haskell editing mode
                 ;;jedi                 ; Python auto-completion for Emacs
                 js2-mode             ; Improved JavaScript editing mode
                 ledger-mode          ; Major mode for editing ledger files
@@ -209,7 +208,6 @@
                 lsp-java             ; Java support for lsp-mode
                 magit                ; control Git from Emacs
                 markdown-mode        ; Emacs Major mode for Markdown-formatted files
-                ;;minizinc-mode        ; Major mode for MiniZinc code
                 multiple-cursors     ; Multiple cursors for Emacs
                 ob-http              ; Make http request within org-mode babel
                 olivetti             ; Minor mode for a nice writing environment
@@ -222,19 +220,16 @@
                 password-store       ; Use password-store for auth-source
                 pdf-tools            ; Emacs support library for PDF files
                 pinentry             ; Allows pinentry prompt via minibuffer
+                powerthesaurus       ; Powerthesaurus integration for Emacs
                 projectile           ; Manage and navigate projects in Emacs easily
-                ;;proof-general        ; A generic Emacs interface for proof assistants
-                ;;slime                ; Superior Lisp Interaction Mode for Emacs
-                ;;smex                 ; M-x interface with Ido-style fuzzy matching
+                restclient           ; HTTP REST client tool for Emacs
+                slime                ; Superior Lisp Interaction Mode for Emacs
+                smex                 ; M-x interface with Ido-style fuzzy matching
                 try                  ; Try out Emacs packages
                 vterm                ; A terminal via libvterm
                 web-mode             ; Major mode for editing HTML, CSS, JavaScript
                 which-key            ; Display available keybindings in popup
-                ;;z3-mode)))           ; z3/SMTLIBv2 interactive development
                 )))
-   ;;     (when (memq window-system '(mac ns))
-   ;;       (push 'exec-path-from-shell packages)
-   ;;       (push 'reveal-in-osx-finder packages))
         (let ((packages (seq-remove 'package-installed-p packages)))
           (print packages)
           (when packages
@@ -338,13 +333,11 @@
 ;;   (put 'narrow-to-region 'disabled nil)
 ;;   #+END_SRC
 
-   Automaticly revert =doc-view=-buffers when the file changes on disk.
+   Automatically revert =doc-view=-buffers when the file changes on disk.
 
-;;   #+BEGIN_SRC emacs-lisp
-;;   (add-hook 'doc-view-mode-hook 'auto-revert-mode)
-;;   #+END_SRC
-
-
+   #+BEGIN_SRC emacs-lisp
+   (add-hook 'doc-view-mode-hook 'auto-revert-mode)
+   #+END_SRC
 
 ** Modes
 
@@ -354,8 +347,7 @@
 
    #+BEGIN_SRC emacs-lisp
    (dolist (mode
-            '(
-              menu-bar-mode                ; No menu bar, more room for text
+            '(menu-bar-mode                ; No menu bar, more room for text
               tool-bar-mode                ; No toolbars, more room for text
               scroll-bar-mode              ; No scroll bars either
               blink-cursor-mode))          ; The blinking cursor gets old
@@ -499,17 +491,27 @@
    (setq mu4e-confirm-quit nil)
    #+end_src
 
+   View and reply to iCalendar events.
+
+   #+begin_src emacs-lisp
+   (require 'mu4e-icalendar)
+   (mu4e-icalendar-setup)
+
+   ;; Trash invitations after sending a response
+   (setq mu4e-icalendar-trash-after-reply t)
+   #+end_src
+
    #+RESULTS:
 
 ** Visual
 
-   Change the color-theme to =leuven=.
+   Change the color-theme to =doom-one=.
 
    #+BEGIN_SRC emacs-lisp
    (load-theme 'doom-one t)
    #+END_SRC
 
-   =leuven= is my preferred light theme, but =monokai= makes a very nice
+   =doom-one-light= is my preferred light theme, but =doom-one= makes a very nice
    dark theme. I want to be able to cycle between these.
 
    #+BEGIN_SRC emacs-lisp
@@ -667,7 +669,7 @@
      "Changes the ispell dictionary to the first element in
    ISPELL-LANGUAGES, and returns an interactive function that cycles
    the languages in ISPELL-LANGUAGES when invoked."
-     (let ((ispell-languages '#1=("british" "american" "norsk" . #1#)))
+     (let ((ispell-languages '#1=("british" "american" . #1#)))
        (ispell-change-dictionary (car ispell-languages))
        (lambda ()
          (interactive)
@@ -907,7 +909,24 @@
          org-refile-targets '((org-agenda-files :maxlevel . 9)))
    #+end_src
 
-   TODO keywords.
+   Enable iCalendar to Org sync functionality for [[https://www.djcbsoftware.nl/code/mu/mu4e/iCalendar.html][mu4e]].
+
+   #+begin_src emacs-lisp
+   (setq gnus-icalendar-org-capture-file "~/org/calendar.org")
+   (setq gnus-icalendar-org-capture-headline '("Calendar"))
+   (gnus-icalendar-org-setup)
+
+   ;; Extract the event time directly from the iCalendar event
+   (defun my-catch-event-time (orig-fun &rest args)
+     "Set org-overriding-default-time to the start time of the capture event"
+     (let ((org-overriding-default-time (date-to-time
+                                         (gnus-icalendar-event:start (car args)))))
+       (apply orig-fun args)))
+
+   (advice-add 'gnus-icalendar:org-event-save :around #'my-catch-event-time)
+   #+end_src
+
+   Keywords for todo states.
 
    #+begin_src emacs-lisp
    (setq org-todo-keywords
@@ -946,44 +965,7 @@
 
            ("n" "Next Tasks"
             ((todo "NEXT"
-                   ((org-agenda-overriding-header "Next Tasks")))))
-
-
-           ("W" "Work Tasks" tags-todo "+work")
-
-           ;; Low-effort next actions
-           ("e" tags-todo "+TODO=\"NEXT\"+Effort<15&+Effort>0"
-            ((org-agenda-overriding-header "Low Effort Tasks")
-             (org-agenda-max-todos 20)
-             (org-agenda-files org-agenda-files)))
-
-           ("w" "Workflow Status"
-            ((todo "WAIT"
-                   ((org-agenda-overriding-header "Waiting on External")
-                    (org-agenda-files org-agenda-files)))
-             (todo "REVIEW"
-                   ((org-agenda-overriding-header "In Review")
-                    (org-agenda-files org-agenda-files)))
-             (todo "PLAN"
-                   ((org-agenda-overriding-header "In Planning")
-                    (org-agenda-todo-list-sublevels nil)
-                    (org-agenda-files org-agenda-files)))
-             (todo "BACKLOG"
-                   ((org-agenda-overriding-header "Project Backlog")
-                    (org-agenda-todo-list-sublevels nil)
-                    (org-agenda-files org-agenda-files)))
-             (todo "READY"
-                   ((org-agenda-overriding-header "Ready for Work")
-                    (org-agenda-files org-agenda-files)))
-             (todo "ACTIVE"
-                   ((org-agenda-overriding-header "Active Projects")
-                    (org-agenda-files org-agenda-files)))
-             (todo "COMPLETED"
-                   ((org-agenda-overriding-header "Completed Projects")
-                    (org-agenda-files org-agenda-files)))
-             (todo "CANC"
-                   ((org-agenda-overriding-header "Cancelled Projects")
-                    (org-agenda-files org-agenda-files)))))))
+                   ((org-agenda-overriding-header "Next Tasks")))))))
    #+end_src
 
    #+begin_src emacs-lisp
@@ -993,33 +975,27 @@
    Capture templates for notes, todo etc.
 
   #+begin_src emacs-lisp
-    (setq org-capture-templates
-          '(("t" "Task" entry (file "~/org/refile.org")
-             "* TODO %?\n  %u\n  %a\n" :clock-in t :clock-resume t)
-            ("r" "Respond" entry (file "~/org/refile.org")
-             "* NEXT Respond to %:from on %:subject\nSCHEDULED: %t\n%U\n%a\n" :clock-in t :clock-resume t :immediate-finish t)
-            ("n" "Note" entry (file  "~/org/refile.org")
-             "* %? :NOTE:\n  %U\n  %a\n" :clock-in t :clock-resume t)
-            ("j" "Journal" entry (file+datetree "~/org/journal.org")
-             "* %?\n  %U\n" :clock-in t :clock-resume t :tree-type week)
-            ("m" "Meeting" entry (file "~/org/agenda.org")
-             "* MEETING with %? :MEETING:\n  %U" :clock-in t :clock-resume t)))
+  (setq org-capture-templates
+        '(("t" "Task" entry (file "~/org/refile.org")
+           "* TODO %?\n  %u\n  %a\n" :clock-in t :clock-resume t)
+          ("r" "Respond" entry (file "~/org/refile.org")
+           "* NEXT Respond to %:from on %:subject\nSCHEDULED: %t\n%U\n%a\n" :clock-in t :clock-resume t :immediate-finish t)
+          ("n" "Note" entry (file  "~/org/refile.org")
+           "* %? :NOTE:\n  %U\n  %a\n" :clock-in t :clock-resume t)
+          ("j" "Journal" entry (file+datetree "~/org/journal.org")
+           "* %?\n  %U\n" :clock-in t :clock-resume t :tree-type week)
+          ("#" "Event" entry (file+olp+datetree "~/org/calendar.org")
+           "%i" :immediate-finish t)
+          ("m" "Meeting" entry (file "~/org/agenda.org")
+           "* MEETING with %? :MEETING:\n  %U" :clock-in t :clock-resume t)))
 
-      ;; (setq org-capture-templates
-      ;;       (quote (("t" "todo" entry (file "~/git/org/refile.org")
-      ;;                "* TODO %?\n%U\n%a\n" :clock-in t :clock-resume t)
-      ;;               ("r" "respond" entry (file "~/git/org/refile.org")
-      ;;                "* NEXT Respond to %:from on %:subject\nSCHEDULED: %t\n%U\n%a\n" :clock-in t :clock-resume t :immediate-finish t)
-      ;;               ("n" "note" entry (file "~/git/org/refile.org")
-      ;;                "* %? :NOTE:\n%U\n%a\n" :clock-in t :clock-resume t)
-      ;;               ("j" "Journal" entry (file+datetree "~/git/org/diary.org")
-      ;;                "* %?\n%U\n" :clock-in t :clock-resume t)
-      ;;               ("w" "org-protocol" entry (file "~/git/org/refile.org")
-      ;;                "* TODO Review %c\n%U\n" :immediate-finish t)
-      ;;               ("p" "Phone call" entry (file "~/git/org/refile.org")
-      ;;                "* PHONE %? :PHONE:\n%U" :clock-in t :clock-resume t)
-      ;;               ("h" "Habit" entry (file "~/git/org/refile.org")
-      ;;                "* NEXT %?\n%U\n%a\nSCHEDULED: %(format-time-string \"%<<%Y-%m-%d %a .+1d/3d>>\")\n:PROPERTIES:\n:STYLE: habit\n:REPEAT_TO_STATE: NEXT\n:END:\n"))))
+  ;; (setq org-capture-templates
+  ;;               ("w" "org-protocol" entry (file "~/git/org/refile.org")
+  ;;                "* TODO Review %c\n%U\n" :immediate-finish t)
+  ;;               ("p" "Phone call" entry (file "~/git/org/refile.org")
+  ;;                "* PHONE %? :PHONE:\n%U" :clock-in t :clock-resume t)
+  ;;               ("h" "Habit" entry (file "~/git/org/refile.org")
+  ;;                "* NEXT %?\n%U\n%a\nSCHEDULED: %(format-time-string \"%<<%Y-%m-%d %a .+1d/3d>>\")\n:PROPERTIES:\n:STYLE: habit\n:REPEAT_TO_STATE: NEXT\n:END:\n"))))
   #+end_src
 
   Keybindings straight to capture templates.
@@ -1160,46 +1136,46 @@
 ;;   (add-hook 'compilation-filter-hook 'comint-truncate-buffer)
 ;;   #+END_SRC
 ;;
-;;** Shell
-;;
-;;   Inspired by [[https://github.com/torenord/.emacs.d][torenord]], I maintain quick access to shell buffers with bindings
-;;   ~M-1~ to ~M-9~. In addition, the ~M-§~ (on an international English
-;;   keyboard) toggles between the last visited shell, and the last visited
-;;   non-shell buffer. The following functions facilitate this, and are bound in
-;;   the [[Key bindings]] section.
-;;
-;;   #+BEGIN_SRC emacs-lisp
-;;   (let ((last-vterm ""))
-;;     (defun toggle-vterm ()
-;;       (interactive)
-;;       (cond ((string-match-p "^\\vterm<[1-9][0-9]*>$" (buffer-name))
-;;              (goto-non-vterm-buffer))
-;;             ((get-buffer last-vterm) (switch-to-buffer last-vterm))
-;;             (t (vterm (setq last-vterm "vterm<1>")))))
-;;
-;;     (defun switch-vterm (n)
-;;       (let ((buffer-name (format "vterm<%d>" n)))
-;;         (setq last-vterm buffer-name)
-;;         (cond ((get-buffer buffer-name)
-;;                (switch-to-buffer buffer-name))
-;;               (t (vterm buffer-name)
-;;                  (rename-buffer buffer-name)))))
-;;
-;;     (defun goto-non-vterm-buffer ()
-;;       (let* ((r "^\\vterm<[1-9][0-9]*>$")
-;;              (vterm-buffer-p (lambda (b) (string-match-p r (buffer-name b))))
-;;              (non-vterms (cl-remove-if vterm-buffer-p (buffer-list))))
-;;         (when non-vterms
-;;           (switch-to-buffer (car non-vterms))))))
-;;   #+END_SRC
-;;
-;;   Don't query whether or not the ~shell~-buffer should be killed, just kill
-;;   it.
-;;
-;;   #+BEGIN_SRC emacs-lisp
-;;   (defadvice vterm (after kill-with-no-query nil activate)
-;;     (set-process-query-on-exit-flag (get-buffer-process ad-return-value) nil))
-;;   #+END_SRC
+** Shell
+
+   Inspired by [[https://github.com/torenord/.emacs.d][torenord]], I maintain quick access to shell buffers with bindings
+   ~M-1~ to ~M-9~. In addition, the ~M-§~ (on an international English
+   keyboard) toggles between the last visited shell, and the last visited
+   non-shell buffer. The following functions facilitate this, and are bound in
+   the [[Key bindings]] section.
+
+   #+BEGIN_SRC emacs-lisp
+   (let ((last-vterm ""))
+     (defun toggle-vterm ()
+       (interactive)
+       (cond ((string-match-p "^\\vterm<[1-9][0-9]*>$" (buffer-name))
+              (goto-non-vterm-buffer))
+             ((get-buffer last-vterm) (switch-to-buffer last-vterm))
+             (t (vterm (setq last-vterm "vterm<1>")))))
+
+     (defun switch-vterm (n)
+       (let ((buffer-name (format "vterm<%d>" n)))
+         (setq last-vterm buffer-name)
+         (cond ((get-buffer buffer-name)
+                (switch-to-buffer buffer-name))
+               (t (vterm buffer-name)
+                  (rename-buffer buffer-name)))))
+
+     (defun goto-non-vterm-buffer ()
+       (let* ((r "^\\vterm<[1-9][0-9]*>$")
+              (vterm-buffer-p (lambda (b) (string-match-p r (buffer-name b))))
+              (non-vterms (cl-remove-if vterm-buffer-p (buffer-list))))
+         (when non-vterms
+           (switch-to-buffer (car non-vterms))))))
+   #+END_SRC
+
+   Don't query whether or not the ~shell~-buffer should be killed, just kill
+   it.
+
+   #+BEGIN_SRC emacs-lisp
+   (defadvice vterm (after kill-with-no-query nil activate)
+     (set-process-query-on-exit-flag (get-buffer-process ad-return-value) nil))
+   #+END_SRC
 ;;
 ;;   Use zsh:
 ;;
@@ -1507,7 +1483,7 @@
 
   #+BEGIN_SRC emacs-lisp
   (define-key custom-bindings-map (kbd "C-c e")  'mc/edit-lines)
-  (define-key custom-bindings-map (kbd "C-c a")  'mc/mark-all-like-this)
+  (define-key custom-bindings-map (kbd "C-c f")  'mc/mark-all-like-this)
   (define-key custom-bindings-map (kbd "C-c n")  'mc/mark-next-like-this)
   #+END_SRC
 
@@ -1570,30 +1546,31 @@
 ** Bindings for functions defined [[sec:defuns][above]].
 
   #+BEGIN_SRC emacs-lisp
-;;  (define-key global-map          (kbd "M-p")     'jump-to-previous-like-this)
-;;  (define-key global-map          (kbd "M-n")     'jump-to-next-like-this)
-;;  (define-key custom-bindings-map (kbd "M-,")     'jump-to-previous-like-this)
-;;  (define-key custom-bindings-map (kbd "M-.")     'jump-to-next-like-this)
-;;  (define-key custom-bindings-map (kbd "C-c .")   (cycle-themes))
-;;  (define-key custom-bindings-map (kbd "C-x k")   'kill-this-buffer-unless-scratch)
-;;  (define-key custom-bindings-map (kbd "C-c C-0") 'global-scale-default)
-;;  (define-key custom-bindings-map (kbd "C-c C-=") 'global-scale-up)
-;;  (define-key custom-bindings-map (kbd "C-c C-+") 'global-scale-up)
-;;  (define-key custom-bindings-map (kbd "C-c C--") 'global-scale-down)
-;;  (define-key custom-bindings-map (kbd "C-c j")   'cycle-spacing-delete-newlines)
-;;  (define-key custom-bindings-map (kbd "C-c d")   'duplicate-thing)
-  (define-key custom-bindings-map (kbd "<C-tab>") 'tidy)
-;;  (define-key custom-bindings-map (kbd "C-z")     'toggle-vterm)
-;;  (dolist (n (number-sequence 1 9))
-;;    (global-set-key (kbd (concat "M-" (int-to-string n)))
-;;                    (lambda () (interactive) (switch-vterm n))))
-;;  (define-key custom-bindings-map (kbd "C-c C-q")
-;;    '(lambda ()
-;;       (interactive)
-;;       (focus-mode 1)
-;;       (focus-read-only-mode 1)))
-;;  (with-eval-after-load 'org
-;;    (define-key org-mode-map (kbd "C-'") 'org-sync-pdf))
+  ;;  (define-key global-map          (kbd "M-p")     'jump-to-previous-like-this)
+  ;;  (define-key global-map          (kbd "M-n")     'jump-to-next-like-this)
+  ;;  (define-key custom-bindings-map (kbd "M-,")     'jump-to-previous-like-this)
+  ;;  (define-key custom-bindings-map (kbd "M-.")     'jump-to-next-like-this)
+  ;;  (define-key custom-bindings-map (kbd "C-c .")   (cycle-themes))
+  ;;  (define-key custom-bindings-map (kbd "C-x k")   'kill-this-buffer-unless-scratch)
+  ;;  (define-key custom-bindings-map (kbd "C-c C-0") 'global-scale-default)
+  ;;  (define-key custom-bindings-map (kbd "C-c C-=") 'global-scale-up)
+  ;;  (define-key custom-bindings-map (kbd "C-c C-+") 'global-scale-up)
+  ;;  (define-key custom-bindings-map (kbd "C-c C--") 'global-scale-down)
+
+  ;;  (define-key custom-bindings-map (kbd "C-c j")   'cycle-spacing-delete-newlines)
+  ;;  (define-key custom-bindings-map (kbd "C-c d")   'duplicate-thing)
+    (define-key custom-bindings-map (kbd "<C-tab>") 'tidy)
+  ;;  (define-key custom-bindings-map (kbd "C-z")     'toggle-vterm)
+  ;;  (dolist (n (number-sequence 1 9))
+  ;;    (global-set-key (kbd (concat "M-" (int-to-string n)))
+  ;;                    (lambda () (interactive) (switch-vterm n))))
+  ;;  (define-key custom-bindings-map (kbd "C-c C-q")
+  ;;    '(lambda ()
+  ;;       (interactive)
+  ;;       (focus-mode 1)
+  ;;       (focus-read-only-mode 1)))
+  ;;  (with-eval-after-load 'org
+  ;;    (define-key org-mode-map (kbd "C-'") 'org-sync-pdf))
   #+END_SRC
 
   Lastly we need to activate the map by creating and activating the
