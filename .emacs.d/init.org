@@ -501,8 +501,6 @@
    (setq mu4e-icalendar-trash-after-reply t)
    #+end_src
 
-   #+RESULTS:
-
 ** Visual
 
    Change the color-theme to =doom-one=.
@@ -982,10 +980,10 @@
            "* NEXT Respond to %:from on %:subject\nSCHEDULED: %t\n%U\n%a\n" :clock-in t :clock-resume t :immediate-finish t)
           ("n" "Note" entry (file  "~/org/refile.org")
            "* %? :NOTE:\n  %U\n  %a\n" :clock-in t :clock-resume t)
-          ("j" "Journal" entry (file+datetree "~/org/journal.org")
+          ("j" "Journal" entry (file+olp+datetree "~/org/journal.org")
            "* %?\n  %U\n" :clock-in t :clock-resume t :tree-type week)
           ("#" "Event" entry (file+olp+datetree "~/org/calendar.org")
-           "%i" :immediate-finish t)
+           "%i" :immediate-finish t :tree-type week)
           ("m" "Meeting" entry (file "~/org/agenda.org")
            "* MEETING with %? :MEETING:\n  %U" :clock-in t :clock-resume t)))
 
