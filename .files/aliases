@@ -73,3 +73,6 @@ alias dotfiles="/usr/bin/git --git-dir=$HOME/.dotfiles.git/ --work-tree=$HOME"
 # Don't break old muscle memory
 alias config=dotfiles
 
+# Scan Yubikey and re-create stubs. Useful when switching between Yubikeys
+# https://github.com/drduh/YubiKey-Guide#switching-between-two-or-more-yubikeys
+alias yubinit='gpg-connect-agent "scd serialno" "learn --force" /bye'
