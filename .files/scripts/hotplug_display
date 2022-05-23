@@ -1,0 +1,19 @@
+#! /usr/bin/env bash
+
+# Rule for executing commands when an external screen is plugged in.
+# Credits go to: https://ruedigergad.com/2012/01/28/hotplug-an-external-screen-to-your-laptop-on-linux/
+
+# Add this to /etc/udev/rules.d/95-hotplug-monitor.rules
+# ACTION=="change", SUBSYSTEM=="drm", ENV{DISPLAY}=":1", ENV{XAUTHORITY}="/home/tony/.Xauthority", RUN+="/home/tony/.files/scripts/hotplug_display"
+
+export DISPLAY=:0.0
+
+function connect(){
+    xrandr --output DP-2 --auto --above eDP-1
+}
+
+function disconnect(){
+    xrandr --output DP-2 --off
+}
+
+xrandr | grep "DP-2 connected" &> /dev/null && connect || disconnect
