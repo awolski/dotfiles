@@ -2,8 +2,11 @@
     "vim.useCtrlKeys": true,
     "vim.vimrc.enable": true,
     "vim.visualModeKeyBindings": [
-    
+
     ],
+    "vim.handleKeys": {
+        "<C-w q>": false
+    }
     "vim.insertModeKeyBindings": [
         {
             "before": ["j", "k"],
@@ -19,5 +22,6 @@
     },
     "files.trimTrailingWhitespace": true,
     "terminal.integrated.scrollback": 10000,
-    "diffEditor.renderSideBySide": false
+    "diffEditor.renderSideBySide": false,
+    "workbench.editor.untitled.hint": "hidden"
 }
