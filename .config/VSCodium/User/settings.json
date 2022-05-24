@@ -1,16 +1,19 @@
 {
     "vim.useCtrlKeys": true,
     "vim.vimrc.enable": true,
-    "vim.visualModeKeyBindings": [
-
-    ],
+    "vim.visualModeKeyBindings": [],
     "vim.handleKeys": {
         "<C-w q>": false
-    }
+    },
     "vim.insertModeKeyBindings": [
         {
-            "before": ["j", "k"],
-            "after": ["<Esc>"]
+            "before": [
+                "j",
+                "k"
+            ],
+            "after": [
+                "<Esc>"
+            ]
         }
     ],
     "editor.tabSize": 2,
@@ -23,5 +26,32 @@
     "files.trimTrailingWhitespace": true,
     "terminal.integrated.scrollback": 10000,
     "diffEditor.renderSideBySide": false,
-    "workbench.editor.untitled.hint": "hidden"
+    "workbench.editor.untitled.hint": "hidden",
+    "[terraform]": {
+        "editor.defaultFormatter": "hashicorp.terraform",
+        "editor.formatOnSave": true,
+        "editor.formatOnSaveMode": "file"
+    },
+    "[terraform-vars]": {
+        "editor.defaultFormatter": "hashicorp.terraform",
+        "editor.formatOnSave": true,
+        "editor.formatOnSaveMode": "file"
+    },
+    "terraform-ls.experimentalFeatures": {
+        "prefillRequiredFields": true,
+        "validateOnSave": true
+    },
+    "terraform.languageServer": {
+
+        "external": true,
+        "pathToBinary": "/usr/bin/terraform-ls",
+        "args": [
+            "serve"
+        ],
+        "maxNumberOfProblems": 100,
+        "trace.server": "off"
+    },
+    "files.trimTrailingWhitespace": true,
+    "files.insertFinalNewline": true,
+    "files.trimFinalNewlines": true,
 }
