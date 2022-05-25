@@ -54,4 +54,6 @@
     "files.trimTrailingWhitespace": true,
     "files.insertFinalNewline": true,
     "files.trimFinalNewlines": true,
+    "workbench.editor.limit.enabled": true,
+    "workbench.editor.limit.value": 4,
 }

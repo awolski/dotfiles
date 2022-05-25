@@ -19,6 +19,16 @@
         "when": "suggestWidgetVisible"
     },
     {
+        "key": "ctrl+n",
+        "command": "selectNextSuggestion",
+        "when": "suggestWidgetVisible"
+    },
+    {
+        "key": "ctrl+p",
+        "command": "selectPrevSuggestion",
+        "when": "suggestWidgetVisible"
+    },
+    {
         "key": "ctrl+j",
         "command": "workbench.action.quickOpenSelectNext",
         "when": "inQuickOpen"
@@ -49,7 +59,7 @@
     {
         "key": "ctrl+n",
         "command": "workbench.action.files.newUntitledFile",
-        "when": "!inQuickOpen"
+        "when": "!inQuickOpen && !suggestWidgetVisible"
     },
     {
         "key": "ctrl+n",
