@@ -1,10 +1,5 @@
-# Firejail profile alias for Visual Studio Code
+# Firejail profile alias for VSCodium
+# Persistent local customizations
+include vscodium.local
 
-noblacklist ${HOME}/.VSCodium
-noblacklist ${HOME}/.vimrc
 noblacklist ${HOME}/w
-
-noblacklist /var/run/docker.sock
-
-# Redirect
-include code.profile
