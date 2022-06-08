@@ -6,4 +6,6 @@ setxkbmap gb -option 'ctrl:nocaps'
 
 xset -b
 
+exec emacs &
+
 exec i3
