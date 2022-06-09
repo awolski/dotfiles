@@ -324,7 +324,12 @@
    #+begin_src emacs-lisp
    (setq epg-pinentry-mode 'loopback)
    (pinentry-start)
+   #+end_src
 
+   When I /wouldn't/ I want to remove whitespace when saving a file?
+
+   #+begin_src emacs-lisp
+   (add-hook 'before-save-hook 'delete-trailing-whitespace)
    #+end_src
 
    By default the =narrow-to-region= command is disabled and issues a
