@@ -181,61 +181,63 @@
    installed. To ensure we install missing packages if they are missing.
 
    #+BEGIN_SRC emacs-lisp
-      (let* ((package--builtins nil)
-             (packages
-              '(auto-compile         ; automatically compile Emacs libraries
-                ;;cider                ; Clojure Interactive Development Environment
-                ;;clj-refactor         ; Commands for refactoring Clojure code
-                company              ; Modular text completion framework
-                ;;company-coq          ; A collection of extensions PG's Coq mode
-                counsel              ; Various completion functions using Ivy
-                counsel-jq           ; Traverse complex JSON and YAML structures with live feedback
-                counsel-projectile   ; Ivy integration for Projectile
-                define-word          ; display the definition of word at point
-                diff-hl              ; Highlight uncommitted changes using VC
-                doom-themes          ; An opinionated pack of modern color-themes
-                ;;expand-region        ; Increase selected region by semantic units
-                focus                ; Dim color of text in surrounding sections
-                flycheck             ; Modern on-the-fly syntax checking
-                flycheck-ledger      ; Syntax checking for ledger
-                format-all           ; Auto-format code in many languages
-                golden-ratio         ; Automatic resizing windows to golden ratio
-                ;;jedi                 ; Python auto-completion for Emacs
-                js2-mode             ; Improved JavaScript editing mode
-                ledger-mode          ; Major mode for editing ledger files
-                lsp-mode             ; LSP mode
-                lsp-ui               ; LSP UI
-                lsp-java             ; Java support for lsp-mode
-                magit                ; control Git from Emacs
-                markdown-mode        ; Emacs Major mode for Markdown-formatted files
-                multiple-cursors     ; Multiple cursors for Emacs
-                ob-http              ; Make http request within org-mode babel
-                olivetti             ; Minor mode for a nice writing environment
-                org                  ; Outline-based notes management and organizer
-                org-bullets          ; Show bullets in org-mode as UTF-8 characters
-                ;;org-roam             ; Roam Research replica with Org-mode
-                ;;org-roam-server      ; Org Roam Database Visualizer
-                paredit              ; minor mode for editing parentheses
-                pass                 ; Password management with pass
-                password-store       ; Use password-store for auth-source
-                pdf-tools            ; Emacs support library for PDF files
-                pinentry             ; Allows pinentry prompt via minibuffer
-                powerthesaurus       ; Powerthesaurus integration for Emacs
-                projectile           ; Manage and navigate projects in Emacs easily
-                restclient           ; HTTP REST client tool for Emacs
-                slime                ; Superior Lisp Interaction Mode for Emacs
-                smex                 ; M-x interface with Ido-style fuzzy matching
-                try                  ; Try out Emacs packages
-                vterm                ; A terminal via libvterm
-                web-mode             ; Major mode for editing HTML, CSS, JavaScript
-                which-key            ; Display available keybindings in popup
-                )))
-        (let ((packages (seq-remove 'package-installed-p packages)))
-          (print packages)
-          (when packages
-            ;; Install uninstalled packages
-            (package-refresh-contents)
-            (mapc 'package-install packages))))
+   (let* ((package--builtins nil)
+          (packages
+           '(auto-compile         ; automatically compile Emacs libraries
+             ;;cider                ; Clojure Interactive Development Environment
+             ;;clj-refactor         ; Commands for refactoring Clojure code
+             company              ; Modular text completion framework
+             ;;company-coq          ; A collection of extensions PG's Coq mode
+             counsel              ; Various completion functions using Ivy
+             counsel-jq           ; Traverse complex JSON and YAML structures with live feedback
+             counsel-projectile   ; Ivy integration for Projectile
+             define-word          ; display the definition of word at point
+             diff-hl              ; Highlight uncommitted changes using VC
+             doom-themes          ; An opinionated pack of modern color-themes
+             ;;expand-region        ; Increase selected region by semantic units
+             focus                ; Dim color of text in surrounding sections
+             flycheck             ; Modern on-the-fly syntax checking
+             flycheck-ledger      ; Syntax checking for ledger
+             format-all           ; Auto-format code in many languages
+             golden-ratio         ; Automatic resizing windows to golden ratio
+             ;;jedi                 ; Python auto-completion for Emacs
+             js2-mode             ; Improved JavaScript editing mode
+             ledger-mode          ; Major mode for editing ledger files
+             lsp-mode             ; LSP mode
+             lsp-ui               ; LSP UI
+             lsp-java             ; Java support for lsp-mode
+             magit                ; control Git from Emacs
+             markdown-mode        ; Emacs Major mode for Markdown-formatted files
+             multiple-cursors     ; Multiple cursors for Emacs
+             multi-vterm          ; Manage multiple vterms in Emacs
+             ob-http              ; Make http request within org-mode babel
+             olivetti             ; Minor mode for a nice writing environment
+             org                  ; Outline-based notes management and organizer
+             org-bullets          ; Show bullets in org-mode as UTF-8 characters
+             ;;org-roam             ; Roam Research replica with Org-mode
+             ;;org-roam-server      ; Org Roam Database Visualizer
+             paredit              ; minor mode for editing parentheses
+             pass                 ; Password management with pass
+             password-store       ; Use password-store for auth-source
+             pdf-tools            ; Emacs support library for PDF files
+             pinentry             ; Allows pinentry prompt via minibuffer
+             powerthesaurus       ; Powerthesaurus integration for Emacs
+             projectile           ; Manage and navigate projects in Emacs easily
+             restclient           ; HTTP REST client tool for Emacs
+             slime                ; Superior Lisp Interaction Mode for Emacs
+             smex                 ; M-x interface with Ido-style fuzzy matching
+             terraform-mode       ; Major mode for editing Terraform files
+             try                  ; Try out Emacs packages
+             vterm                ; A terminal via libvterm
+             web-mode             ; Major mode for editing HTML, CSS, JavaScript
+             which-key            ; Display available keybindings in popup
+             )))
+     (let ((packages (seq-remove 'package-installed-p packages)))
+       (print packages)
+       (when packages
+         ;; Install uninstalled packages
+         (package-refresh-contents)
+         (mapc 'package-install packages))))
    #+END_SRC
 
 ** Sane defaults
@@ -501,6 +503,21 @@
    (setq mu4e-icalendar-trash-after-reply t)
    #+end_src
 
+   #+begin_src emacs-lisp
+   (require 'mu4e-thread-folding)
+
+   (add-to-list 'mu4e-header-info-custom
+                '(:empty . (:name "Empty"
+                                  :shortname ""
+                                  :function (lambda (msg) "  "))))
+   (setq mu4e-headers-fields '((:empty         .    2)
+                               (:human-date    .   12)
+                               (:flags         .    6)
+                               (:mailing-list  .   10)
+                               (:from          .   22)
+                               (:subject       .   nil)))
+   #+end_src
+
 ** Visual
 
    Change the color-theme to =doom-one=.
@@ -697,7 +714,6 @@
    #+BEGIN_SRC emacs-lisp
    (setq ledger-post-amount-alignment-column 60)
    #+END_SRC
-
 
 ** COMMENT Org Roam
 
@@ -896,7 +912,8 @@
          org-default-notes-file (concat org-directory "/refile.org")
          org-catch-invisible-edits 'smart
          org-hierarchical-todo-statistics nil
-         org-startup-folded t)
+         org-startup-folded t
+         org-adapt-indentation t)
    #+end_src
 
    Refiling...
@@ -984,7 +1001,7 @@
            "* %?\n  %U\n" :clock-in t :clock-resume t :tree-type week)
           ("#" "Event" entry (file+olp+datetree "~/org/calendar.org")
            "%i" :immediate-finish t :tree-type week)
-          ("m" "Meeting" entry (file "~/org/agenda.org")
+          ("m" "Meeting" entry (file+olp+datetree "~/org/calendar.org")
            "* MEETING with %? :MEETING:\n  %U" :clock-in t :clock-resume t)))
 
   ;; (setq org-capture-templates
@@ -1277,37 +1294,51 @@
 ;;             (lambda () (setq forward-sexp-function nil)))
 ;;   #+END_SRC
 ;;
-;;** Java and C
-;;
-;;   The =c-mode-common-hook= is a general hook that work on all C-like
-;;   languages (C, C++, Java, etc...). I like being able to quickly compile
-;;   using =C-c C-c= (instead of =M-x compile=), a habit from =latex-mode=.
-;;
-;;   #+BEGIN_SRC emacs-lisp
-;;   (defun c-setup ()
-;;     (local-set-key (kbd "C-c C-c") 'compile))
-;;
-;;   (add-hook 'c-mode-hook 'c-setup)
-;;   #+END_SRC
-;;
-;;   Some statements in Java appear often, and become tedious to write
-;;   out. We can use abbrevs to speed this up.
-;;
-;;   #+BEGIN_SRC emacs-lisp
-;;   (define-abbrev-table 'java-mode-abbrev-table
-;;     '(("psv" "public static void main(String[] args) {" nil 0)
-;;       ("sopl" "System.out.println" nil 0)
-;;       ("sop" "System.out.printf" nil 0)))
-;;   #+END_SRC
-;;
-;;   To be able to use the abbrev table defined above, =abbrev-mode= must be
-;;   activated.
-;;
-;;   #+BEGIN_SRC emacs-lisp
-;;   (add-hook 'java-mode-hook 'lsp)
-;;   (add-hook 'java-mode-hook 'yas-minor-mode)
-;;   #+END_SRC
-;;
+** Terraform
+
+   I write a lot of Terraform.
+
+   #+begin_src emacs-lisp
+   (lsp-register-client
+    (make-lsp-client :new-connection (lsp-stdio-connection '("terraform-ls" "serve"))
+                     :major-modes '(terraform-mode)
+                     :server-id 'terraform-ls))
+
+   (add-hook 'terraform-mode-hook #'lsp-deferred)
+   #+end_src
+
+** Java and C
+
+   The =c-mode-common-hook= is a general hook that work on all C-like
+   languages (C, C++, Java, etc...). I like being able to quickly compile
+   using =C-c C-c= (instead of =M-x compile=), a habit from =latex-mode=.
+
+#   #+BEGIN_SRC emacs-lisp
+#   (defun c-setup ()
+#     (local-set-key (kbd "C-c C-c") 'compile))
+#
+#   (add-hook 'c-mode-hook 'c-setup)
+#   #+END_SRC
+
+   Some statements in Java appear often, and become tedious to write
+   out. We can use abbrevs to speed this up.
+
+   #+BEGIN_SRC emacs-lisp
+   (define-abbrev-table 'java-mode-abbrev-table
+     '(("psv" "public static void main(String[] args) {" nil 0)
+       ("sopl" "System.out.println" nil 0)
+       ("sop" "System.out.printf" nil 0)))
+   #+END_SRC
+
+   To be able to use the abbrev table defined above, =abbrev-mode= must be
+   activated.
+
+   #+BEGIN_SRC emacs-lisp
+   (require 'lsp-java)
+   (add-hook 'java-mode-hook #'lsp-deferred)
+   (add-hook 'java-mode-hook 'yas-minor-mode)
+   #+END_SRC
+
 ;;** Assembler
 ;;
 ;;   When writing assembler code I use =#= for comments. By defining
@@ -1470,13 +1501,13 @@
   (define-key custom-bindings-map (kbd "C-c D") 'define-word-at-point)
   #+END_SRC
 
-;;** Bindings for [[https://github.com/magnars/expand-region.el][expand-region]]
-;;
-;;  #+BEGIN_SRC emacs-lisp
-;;  (define-key custom-bindings-map (kbd "C->")  'er/expand-region)
-;;  (define-key custom-bindings-map (kbd "C-<")  'er/contract-region)
-;;  #+END_SRC
-;;
+** Bindings for [[https://github.com/magnars/expand-region.el][expand-region]]
+
+  #+BEGIN_SRC emacs-lisp
+  (define-key custom-bindings-map (kbd "C->")  'er/expand-region)
+  (define-key custom-bindings-map (kbd "C-<")  'er/contract-region)
+  #+END_SRC
+
 ** Bindings for [[https://github.com/magnars/multiple-cursors.el][multiple-cursors]]
 
   #+BEGIN_SRC emacs-lisp
@@ -1540,6 +1571,15 @@
   (define-key custom-bindings-map (kbd "C-c s")       'ispell-word)
   (define-key comint-mode-map     (kbd "C-l")         'clear-comint)
   #+END_SRC
+** Bindings for [[https://github.com/rougier/mu4e-thread-folding][mu4e-thread-folding]]
+
+  #+BEGIN_SRC emacs-lisp
+  (define-key mu4e-headers-mode-map (kbd "<tab>")     'mu4e-headers-toggle-at-point)
+  (define-key mu4e-headers-mode-map (kbd "<left>")    'mu4e-headers-fold-at-point)
+  (define-key mu4e-headers-mode-map (kbd "<S-left>")  'mu4e-headers-fold-all)
+  (define-key mu4e-headers-mode-map (kbd "<right>")   'mu4e-headers-unfold-at-point)
+  (define-key mu4e-headers-mode-map (kbd "<S-right>") 'mu4e-headers-unfold-all)
+  #+END_SRC
 
 ** Bindings for functions defined [[sec:defuns][above]].
 
@@ -1579,6 +1619,7 @@
     "A mode that activates custom-bindings."
     t nil custom-bindings-map)
   #+END_SRC
+
 ;;* License
 ;;
 ;;  My Emacs configurations written in Org mode.
