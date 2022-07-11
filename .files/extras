@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+# Enable aws cli command completion
+aws_completer=$(which aws_completer)
+if [ -n "$aws_completer" ]; then
+  complete -C '"$aws_completer"' aws
+fi
