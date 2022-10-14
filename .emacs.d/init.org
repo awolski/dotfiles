@@ -194,6 +194,7 @@
              define-word          ; display the definition of word at point
              diff-hl              ; Highlight uncommitted changes using VC
              doom-themes          ; An opinionated pack of modern color-themes
+             emms                 ; Emacs multi-Media System, a media player
              ;;expand-region        ; Increase selected region by semantic units
              focus                ; Dim color of text in surrounding sections
              flycheck             ; Modern on-the-fly syntax checking
@@ -407,10 +408,6 @@
          mu4e-compose-context-policy 'ask-if-none
          auth-source-debug t)
 
-   ;; show full addresses in view message (instead of just names)
-   ;; toggle per name with M-RET
-   (setq mu4e-view-show-addresses t)
-
    (setq mu4e-contexts
          (list
           ;; awolski.com account
@@ -506,21 +503,6 @@
 
    ;; Trash invitations after sending a response
    (setq mu4e-icalendar-trash-after-reply t)
-   #+end_src
-
-   #+begin_src emacs-lisp
-   (require 'mu4e-thread-folding)
-
-   (add-to-list 'mu4e-header-info-custom
-                '(:empty . (:name "Empty"
-                                  :shortname ""
-                                  :function (lambda (msg) "  "))))
-   (setq mu4e-headers-fields '((:empty         .    2)
-                               (:human-date    .   12)
-                               (:flags         .    6)
-                               (:mailing-list  .   10)
-                               (:from          .   22)
-                               (:subject       .   nil)))
    #+end_src
 
 ** Visual
@@ -619,6 +601,19 @@
          ivy-count-format "(%d/%d) "
          ivy-on-del-error-function 'ignore)
    (ivy-mode 1)
+   #+end_src
+
+** EMMS
+
+   It's quite convenient to be able to control media from within Emacs. [[https://www.emacswiki.org/emacs/EMMS][EMMS]]
+   coupled with [[https://itsfoss.com/mpv-video-player/][mpv]] is a great lightweight choice.
+
+   #+begin_src emacs-lisp
+   (require 'emms-setup)
+   (emms-all)
+
+   (setq emms-player-list '(emms-player-mpv))
+   (setq emms-source-file-default-directory "~/Downloads")
    #+end_src
 
 ** PDF Tools
@@ -1576,16 +1571,6 @@
   (define-key custom-bindings-map (kbd "C-c s")       'ispell-word)
   (define-key comint-mode-map     (kbd "C-l")         'clear-comint)
   #+END_SRC
-** Bindings for [[https://github.com/rougier/mu4e-thread-folding][mu4e-thread-folding]]
-
-  #+BEGIN_SRC emacs-lisp
-  (define-key mu4e-headers-mode-map (kbd "<tab>")     'mu4e-headers-toggle-at-point)
-  (define-key mu4e-headers-mode-map (kbd "<left>")    'mu4e-headers-fold-at-point)
-  (define-key mu4e-headers-mode-map (kbd "<S-left>")  'mu4e-headers-fold-all)
-  (define-key mu4e-headers-mode-map (kbd "<right>")   'mu4e-headers-unfold-at-point)
-  (define-key mu4e-headers-mode-map (kbd "<S-right>") 'mu4e-headers-unfold-all)
-  #+END_SRC
-
 ** Bindings for functions defined [[sec:defuns][above]].
 
   #+BEGIN_SRC emacs-lisp
