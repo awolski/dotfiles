@@ -5,3 +5,9 @@ aws_completer=$(which aws_completer)
 if [ -n "$aws_completer" ]; then
   complete -C '"$aws_completer"' aws
 fi
+
+# Enable packer cli command completion
+packer=$(which packer)
+if [ -n "$packer" ]; then
+  complete -C '"$packer"' packer
+fi
