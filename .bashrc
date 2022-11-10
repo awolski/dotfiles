@@ -32,7 +32,9 @@ fi
 for file in ~/.files/bin/*; do
 	[ -r "$file" ] && [ -f "$file" ] && ln -sf "$file" "$HOME/.local/bin"
 done
-#export PATH="$HOME/.local/bin:$PATH"
+
+# Add ~/.local/bin to PATH
+echo "$PATH" | grep -q "$HOME/.local/bin" || export PATH="$HOME/.local/bin:$PATH"
 
 # Start Xorg at boot
 if [ -z "${DISPLAY}" ] && [ "${XDG_VTNR}" -eq 1 ]; then
