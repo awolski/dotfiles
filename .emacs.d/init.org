@@ -1615,9 +1615,10 @@
   =minor-mode=.
 
   #+BEGIN_SRC emacs-lisp
-  (define-minor-mode custom-bindings-mode
-    "A mode that activates custom-bindings."
-    t nil custom-bindings-map)
+    (define-minor-mode custom-bindings-mode
+      "A mode that activates custom-bindings."
+      :init-value nil
+      :keymap custom-bindings-map)
   #+END_SRC
 
 ;;* License
