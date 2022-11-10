@@ -199,6 +199,7 @@
              focus                ; Dim color of text in surrounding sections
              flycheck             ; Modern on-the-fly syntax checking
              flycheck-ledger      ; Syntax checking for ledger
+             forge                ; Work with Git Forges, like GitHub, in Magit
              format-all           ; Auto-format code in many languages
              golden-ratio         ; Automatic resizing windows to golden ratio
              ;;jedi                 ; Python auto-completion for Emacs
@@ -400,7 +401,7 @@
          smtpmail-debug-info t
          message-kill-buffer-on-exit t
          mu4e-get-mail-command "mbsync -a"
-         mu4e-update-interval (* 60 60)
+         ;; mu4e-update-interval (* 60 60)
          ;; Prevent 'Maildir error: duplicate UID <id>' errors
          mu4e-change-filenames-when-moving t
          mu4e-attachment-dir "~/Downloads"
@@ -603,6 +604,15 @@
    (ivy-mode 1)
    #+end_src
 
+** Magit
+
+   Magit is awesome. Let's use [[https://github.com/magit/forge][Forge]] too.
+
+   #+begin_src emacs-lisp
+    (with-eval-after-load 'magit
+      (require 'forge))
+   #+end_src
+
 ** EMMS
 
    It's quite convenient to be able to control media from within Emacs. [[https://www.emacswiki.org/emacs/EMMS][EMMS]]
@@ -613,7 +623,7 @@
    (emms-all)
 
    (setq emms-player-list '(emms-player-mpv))
-   (setq emms-source-file-default-directory "~/Downloads")
+   (setq emms-source-file-default-directory "~/media")
    #+end_src
 
 ** PDF Tools
@@ -990,27 +1000,27 @@
    Capture templates for notes, todo etc.
 
   #+begin_src emacs-lisp
-  (setq org-capture-templates
-        '(("t" "Task" entry (file "~/org/refile.org")
-           "* TODO %?\n  %u\n  %a\n" :clock-in t :clock-resume t)
-          ("r" "Respond" entry (file "~/org/refile.org")
-           "* NEXT Respond to %:from on %:subject\nSCHEDULED: %t\n%U\n%a\n" :clock-in t :clock-resume t :immediate-finish t)
-          ("n" "Note" entry (file  "~/org/refile.org")
-           "* %? :NOTE:\n  %U\n  %a\n" :clock-in t :clock-resume t)
-          ("j" "Journal" entry (file+olp+datetree "~/org/journal.org")
-           "* %?\n  %U\n" :clock-in t :clock-resume t :tree-type week)
-          ("#" "Event" entry (file+olp+datetree "~/org/calendar.org")
-           "%i" :immediate-finish t :tree-type week)
-          ("m" "Meeting" entry (file+olp+datetree "~/org/calendar.org")
-           "* MEETING with %? :MEETING:\n  %U" :clock-in t :clock-resume t)))
+    (setq org-capture-templates
+          '(("t" "Task" entry (file "~/org/refile.org")
+             "* TODO %?\n  %u\n  %a\n" :clock-in t :clock-resume t)
+            ("r" "Respond" entry (file "~/org/refile.org")
+             "* NEXT Respond to %:from on %:subject\nSCHEDULED: %t\n%U\n%a\n" :clock-in t :clock-resume t :immediate-finish t)
+            ("n" "Note" entry (file  "~/org/refile.org")
+             "* %? :NOTE:\n  %U\n  %a\n" :clock-in t :clock-resume t)
+            ("j" "Journal" entry (file+olp+datetree "~/org/journal.org")
+             "* %?\n  %U\n" :clock-in t :clock-resume t :tree-type week)
+;            ("#" "used by gnus-icalendar-org" entry (file+olp+datetree "~/org/calendar.org")
+;             "%i %?\n" :time-prompt t :tree-type week)
+            ("m" "Meeting" entry (file+olp+datetree "~/org/calendar.org")
+             "* MEETING with %? :MEETING:\n  %U" :clock-in t :clock-resume t)))
 
-  ;; (setq org-capture-templates
-  ;;               ("w" "org-protocol" entry (file "~/git/org/refile.org")
-  ;;                "* TODO Review %c\n%U\n" :immediate-finish t)
-  ;;               ("p" "Phone call" entry (file "~/git/org/refile.org")
-  ;;                "* PHONE %? :PHONE:\n%U" :clock-in t :clock-resume t)
-  ;;               ("h" "Habit" entry (file "~/git/org/refile.org")
-  ;;                "* NEXT %?\n%U\n%a\nSCHEDULED: %(format-time-string \"%<<%Y-%m-%d %a .+1d/3d>>\")\n:PROPERTIES:\n:STYLE: habit\n:REPEAT_TO_STATE: NEXT\n:END:\n"))))
+    ;; (setq org-capture-templates
+    ;;               ("w" "org-protocol" entry (file "~/git/org/refile.org")
+    ;;                "* TODO Review %c\n%U\n" :immediate-finish t)
+    ;;               ("p" "Phone call" entry (file "~/git/org/refile.org")
+    ;;                "* PHONE %? :PHONE:\n%U" :clock-in t :clock-resume t)
+    ;;               ("h" "Habit" entry (file "~/git/org/refile.org")
+    ;;                "* NEXT %?\n%U\n%a\nSCHEDULED: %(format-time-string \"%<<%Y-%m-%d %a .+1d/3d>>\")\n:PROPERTIES:\n:STYLE: habit\n:REPEAT_TO_STATE: NEXT\n:END:\n"))))
   #+end_src
 
   Keybindings straight to capture templates.
