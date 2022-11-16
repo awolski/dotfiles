@@ -214,6 +214,8 @@
              olivetti             ; Minor mode for a nice writing environment
              org                  ; Outline-based notes management and organizer
              org-bullets          ; Show bullets in org-mode as UTF-8 characters
+             orgit                ; Link to Magit buffers from Org documents
+             orgit-forge          ; Org links to Forge Issue buffers
              ;;org-roam             ; Roam Research replica with Org-mode
              ;;org-roam-server      ; Org Roam Database Visualizer
              paredit              ; minor mode for editing parentheses
