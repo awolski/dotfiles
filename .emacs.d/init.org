@@ -194,6 +194,7 @@
              define-word          ; display the definition of word at point
              diff-hl              ; Highlight uncommitted changes using VC
              doom-themes          ; An opinionated pack of modern color-themes
+             eglot                ; Emacs Polyglot; LSP client that stays out of your way
              emms                 ; Emacs multi-Media System, a media player
              ;;expand-region        ; Increase selected region by semantic units
              focus                ; Dim color of text in surrounding sections
@@ -205,9 +206,6 @@
              ;;jedi                 ; Python auto-completion for Emacs
              js2-mode             ; Improved JavaScript editing mode
              ledger-mode          ; Major mode for editing ledger files
-             lsp-mode             ; LSP mode
-             lsp-ui               ; LSP UI
-             lsp-java             ; Java support for lsp-mode
              magit                ; control Git from Emacs
              markdown-mode        ; Emacs Major mode for Markdown-formatted files
              multiple-cursors     ; Multiple cursors for Emacs
@@ -386,6 +384,18 @@
      (eval-after-load 'auto-compile
        '(auto-compile-on-save-mode 1)))   ; compile .el files on save
    #+END_SRC
+
+** Pass
+
+   I use the awesome [[https://www.passwordstore.org/][pass]], the standard unix password manager, to manage
+   secrets securely.
+
+   #+begin_src emacs-lisp
+   (auth-source-pass-enable)
+   (setq auth-source-debug t)
+   (setq auth-source-do-cache nil)
+   (setq auth-sources '(password-store))
+   #+end_src
 
 ** Mail
 
@@ -1117,38 +1127,6 @@
    #+END_SRC
 
 * Mode specific
-** LSP
-
-   LSP mode works really well, especially with languages like Java, which
-   traditionally has had quite poor Emacs support.
-
-   #+BEGIN_SRC emacs-lisp
-   (with-eval-after-load 'lsp-mode
-     (define-key lsp-mode-map (kbd "C-c f") lsp-command-map)
-     (add-hook 'lsp-mode-hook #'lsp-enable-which-key-integration))
-   #+END_SRC
-
-** Web
-
-   #+BEGIN_SRC emacs-lisp
-   (require 'lsp-mode)
-   (defun setup-web-mode ()
-     (defvar web-mode-markup-indent-offset)
-     (defvar web-mode-css-indent-offset)
-     (defvar web-mode-js-indent-offset 2)
-     (setq web-mode-markup-indent-offset 2)
-     (setq web-mode-css-indent-offset 4)
-     (setq web-mode-js-indent-offset 2)
-     (local-set-key (kbd "RET") 'newline-and-indent)
-   )
-   (add-hook 'web-mode-hook  'setup-web-mode)
-   #+END_SRC
-
-   #+BEGIN_SRC emacs-lisp
-   (add-hook 'web-mode-hook #'lsp-deferred)
-   (add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
-   (add-to-list 'auto-mode-alist '("\\.css?\\'" . web-mode))
-   #+END_SRC
 
 ;;** Compilation
 ;;
@@ -1304,51 +1282,6 @@
 ;;             (lambda () (setq forward-sexp-function nil)))
 ;;   #+END_SRC
 ;;
-** Terraform
-
-   I write a lot of Terraform.
-
-   #+begin_src emacs-lisp
-   (lsp-register-client
-    (make-lsp-client :new-connection (lsp-stdio-connection '("terraform-ls" "serve"))
-                     :major-modes '(terraform-mode)
-                     :server-id 'terraform-ls))
-
-   (add-hook 'terraform-mode-hook #'lsp-deferred)
-   #+end_src
-
-** Java and C
-
-   The =c-mode-common-hook= is a general hook that work on all C-like
-   languages (C, C++, Java, etc...). I like being able to quickly compile
-   using =C-c C-c= (instead of =M-x compile=), a habit from =latex-mode=.
-
-#   #+BEGIN_SRC emacs-lisp
-#   (defun c-setup ()
-#     (local-set-key (kbd "C-c C-c") 'compile))
-#
-#   (add-hook 'c-mode-hook 'c-setup)
-#   #+END_SRC
-
-   Some statements in Java appear often, and become tedious to write
-   out. We can use abbrevs to speed this up.
-
-   #+BEGIN_SRC emacs-lisp
-   (define-abbrev-table 'java-mode-abbrev-table
-     '(("psv" "public static void main(String[] args) {" nil 0)
-       ("sopl" "System.out.println" nil 0)
-       ("sop" "System.out.printf" nil 0)))
-   #+END_SRC
-
-   To be able to use the abbrev table defined above, =abbrev-mode= must be
-   activated.
-
-   #+BEGIN_SRC emacs-lisp
-   (require 'lsp-java)
-   (add-hook 'java-mode-hook #'lsp-deferred)
-   (add-hook 'java-mode-hook 'yas-minor-mode)
-   #+END_SRC
-
 ;;** Assembler
 ;;
 ;;   When writing assembler code I use =#= for comments. By defining
