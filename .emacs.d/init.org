@@ -198,8 +198,8 @@
              emms                 ; Emacs multi-Media System, a media player
              ;;expand-region        ; Increase selected region by semantic units
              focus                ; Dim color of text in surrounding sections
-             flycheck             ; Modern on-the-fly syntax checking
-             flycheck-ledger      ; Syntax checking for ledger
+;             flycheck             ; Modern on-the-fly syntax checking
+;            flycheck-ledger      ; Syntax checking for ledger
              forge                ; Work with Git Forges, like GitHub, in Magit
              format-all           ; Auto-format code in many languages
              golden-ratio         ; Automatic resizing windows to golden ratio
@@ -374,7 +374,7 @@
               dirtrack-mode                ; directory tracking in *shell*
               global-company-mode          ; Auto-completion everywhere
               global-diff-hl-mode          ; Highlight uncommitted changes
-              global-flycheck-mode         ; Enable syntax checking with flycheck
+;              global-flycheck-mode         ; Enable syntax checking with flycheck
               global-so-long-mode          ; Mitigate performance for long lines
               counsel-projectile-mode      ; Manage and navigate projects
               recentf-mode                 ; Recently opened files
@@ -581,7 +581,7 @@
                       `(:inherit font-lock-comment-face))))
         'face `(:underline ,(face-foreground 'font-lock-comment-face))))))
 
-   (setq-default mode-line-format nil)
+   ;(setq-default mode-line-format nil)
    #+END_SRC
 
    New in Emacs 24.4 is the =prettify-symbols-mode=! It's neat.
@@ -935,6 +935,7 @@
          org-catch-invisible-edits 'smart
          org-hierarchical-todo-statistics nil
          org-startup-folded t
+         org-agenda-window-setup 'current-window
          org-adapt-indentation t)
    #+end_src
 
@@ -991,8 +992,8 @@
             ((agenda "" ((org-agenda-span 5)))
              (todo "NEXT"
                    ((org-agenda-overriding-header "Next Tasks")))
-             (tags-todo "YVANT/TODO"
-                   ((org-agenda-overriding-header "Yvant Tasks")))
+             (tags-todo "PEERJ/TODO"
+                   ((org-agenda-overriding-header "PeerJ Tasks")))
              (todo "WAITING"
                    ((org-agenda-overriding-header "Waiting")))
              (tags "REFILE"
@@ -1012,27 +1013,31 @@
    Capture templates for notes, todo etc.
 
   #+begin_src emacs-lisp
-    (setq org-capture-templates
-          '(("t" "Task" entry (file "~/org/refile.org")
-             "* TODO %?\n  %u\n  %a\n" :clock-in t :clock-resume t)
-            ("r" "Respond" entry (file "~/org/refile.org")
-             "* NEXT Respond to %:from on %:subject\nSCHEDULED: %t\n%U\n%a\n" :clock-in t :clock-resume t :immediate-finish t)
-            ("n" "Note" entry (file  "~/org/refile.org")
-             "* %? :NOTE:\n  %U\n  %a\n" :clock-in t :clock-resume t)
-            ("j" "Journal" entry (file+olp+datetree "~/org/journal.org")
-             "* %?\n  %U\n" :clock-in t :clock-resume t :tree-type week)
-;            ("#" "used by gnus-icalendar-org" entry (file+olp+datetree "~/org/calendar.org")
-;             "%i %?\n" :time-prompt t :tree-type week)
-            ("m" "Meeting" entry (file+olp+datetree "~/org/calendar.org")
-             "* MEETING with %? :MEETING:\n  %U" :clock-in t :clock-resume t)))
+  (setq org-capture-templates
+        '(("t" "Task" entry (file "~/org/refile.org")
+           "* TODO %?\n  %u\n  %a\n" :clock-in t :clock-resume t)
+          ("r" "Respond" entry (file "~/org/refile.org")
+           "* NEXT Respond to %:from on %:subject\nSCHEDULED: %t\n%U\n%a\n" :clock-in t :clock-resume t :immediate-finish t)
+          ("n" "Note" entry (file  "~/org/refile.org")
+           "* %? :NOTE:\n  %U\n  %a\n" :clock-in t :clock-resume t)
+          ("j" "Journal" entry (file+olp+datetree "~/org/journal.org")
+           "* %?\n  %U\n" :clock-in t :clock-resume t :tree-type week)
+          ("e" "E" entry (file+olp+datetree "~/org/e.org")
+           "* %?\n  %U\n" :clock-in t :clock-resume t :tree-type week)
+          ("g" "Forge Topic" entry (file "~/org/refile.org")
+           "* TODO %:description\n  %?\n  %a\n  %u\n" :clock-in t :clock-resume t)
+                                          ;            ("#" "used by gnus-icalendar-org" entry (file+olp+datetree "~/org/calendar.org")
+                                          ;             "%i %?\n" :time-prompt t :tree-type week)
+          ("m" "Meeting" entry (file+olp+datetree "~/org/calendar.org")
+           "* MEETING with %? :MEETING:\n  %U" :clock-in t :clock-resume t)))
 
-    ;; (setq org-capture-templates
-    ;;               ("w" "org-protocol" entry (file "~/git/org/refile.org")
-    ;;                "* TODO Review %c\n%U\n" :immediate-finish t)
-    ;;               ("p" "Phone call" entry (file "~/git/org/refile.org")
-    ;;                "* PHONE %? :PHONE:\n%U" :clock-in t :clock-resume t)
-    ;;               ("h" "Habit" entry (file "~/git/org/refile.org")
-    ;;                "* NEXT %?\n%U\n%a\nSCHEDULED: %(format-time-string \"%<<%Y-%m-%d %a .+1d/3d>>\")\n:PROPERTIES:\n:STYLE: habit\n:REPEAT_TO_STATE: NEXT\n:END:\n"))))
+  ;; (setq org-capture-templates
+  ;;               ("w" "org-protocol" entry (file "~/git/org/refile.org")
+  ;;                "* TODO Review %c\n%U\n" :immediate-finish t)
+  ;;               ("p" "Phone call" entry (file "~/git/org/refile.org")
+  ;;                "* PHONE %? :PHONE:\n%U" :clock-in t :clock-resume t)
+  ;;               ("h" "Habit" entry (file "~/git/org/refile.org")
+  ;;                "* NEXT %?\n%U\n%a\nSCHEDULED: %(format-time-string \"%<<%Y-%m-%d %a .+1d/3d>>\")\n:PROPERTIES:\n:STYLE: habit\n:REPEAT_TO_STATE: NEXT\n:END:\n"))))
   #+end_src
 
   Keybindings straight to capture templates.
@@ -1426,6 +1431,22 @@
 ;;   (add-hook 'coq-mode-hook #'company-coq-mode)
 ;;   #+END_SRC
 ;;
+** Terraform
+
+   #+begin_src emacs-lisp
+    (with-eval-after-load 'eglot
+   (add-to-list 'eglot-server-programs
+               '(terraform-mode . ("terraform-ls" "serve"))))
+    (add-hook 'terraform-mode-hook 'eglot-ensure)
+   #+end_src
+
+# ** Markdown
+
+#   #+begin_src emacs-lisp
+#   (add-to-list 'eglot-server-programs '(markdown-mode . ("marksman")))
+#   (add-hook 'markdown-mode-hook #'eglot-ensure)
+#   #+end_src
+
 * Key bindings
 
   Inspired by [[http://stackoverflow.com/questions/683425/globally-override-key-binding-in-emacs][this StackOverflow post]] I keep a =custom-bindings-map= that
