@@ -37,24 +37,16 @@
         "editor.formatOnSave": true,
         "editor.formatOnSaveMode": "file"
     },
-    "terraform-ls.experimentalFeatures": {
-        "prefillRequiredFields": true,
-        "validateOnSave": true
-    },
-    "terraform.languageServer": {
-
-        "external": true,
-        "pathToBinary": "/usr/bin/terraform-ls",
-        "args": [
-            "serve"
-        ],
-        "maxNumberOfProblems": 100,
-        "trace.server": "off"
-    },
     "files.trimTrailingWhitespace": true,
     "files.insertFinalNewline": true,
     "files.trimFinalNewlines": true,
     "workbench.editor.limit.enabled": true,
     "workbench.editor.limit.value": 4,
     "workbench.colorTheme": "Visual Studio Light",
+    "editor.formatOnSave": true,
+    "terraform.languageServer.enable": true,
+    "terraform.languageServer.path": "/usr/bin/terraform-ls",
+    "terraform.experimentalFeatures.validateOnSave": true,
+    "terraform.experimentalFeatures.prefillRequiredFields": true,
+    "redhat.telemetry.enabled": false,
 }
