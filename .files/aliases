@@ -64,7 +64,7 @@ alias dcd="docker-compose down"
 
 # Utils
 alias myip="curl https://am.i.mullvad.net/ip"
-alias dm="xrandr --output $(xrandr | awk '$1 != "eDP-1" && $2 == "connected" {print $1}') --auto --above eDP-1"
+alias dm="xrandr --output $(xrandr | awk '$1 != "eDP-1" && $2 == "connected" {print $1}') --auto --left-of eDP-1"
 alias sm="xrandr --output $(xrandr | awk '$1 != "eDP-1" && $2 == "connected" {print $1}') --off"
 
 alias h="/usr/bin/git --git-dir=$HOME/h/.git/ --work-tree=$HOME/h"

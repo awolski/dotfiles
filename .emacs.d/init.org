@@ -198,8 +198,8 @@
              emms                 ; Emacs multi-Media System, a media player
              ;;expand-region        ; Increase selected region by semantic units
              focus                ; Dim color of text in surrounding sections
-;             flycheck             ; Modern on-the-fly syntax checking
-;            flycheck-ledger      ; Syntax checking for ledger
+             ;;flycheck             ; Modern on-the-fly syntax checking
+             ;;flycheck-ledger      ; Syntax checking for ledger
              forge                ; Work with Git Forges, like GitHub, in Magit
              format-all           ; Auto-format code in many languages
              golden-ratio         ; Automatic resizing windows to golden ratio
@@ -214,6 +214,7 @@
              olivetti             ; Minor mode for a nice writing environment
              org                  ; Outline-based notes management and organizer
              org-bullets          ; Show bullets in org-mode as UTF-8 characters
+             org-ql               ; Org query language, includes search commands and saved views
              orgit                ; Link to Magit buffers from Org documents
              orgit-forge          ; Org links to Forge Issue buffers
              ;;org-roam             ; Roam Research replica with Org-mode
@@ -374,7 +375,7 @@
               dirtrack-mode                ; directory tracking in *shell*
               global-company-mode          ; Auto-completion everywhere
               global-diff-hl-mode          ; Highlight uncommitted changes
-;              global-flycheck-mode         ; Enable syntax checking with flycheck
+              ;;global-flycheck-mode         ; Enable syntax checking with flycheck
               global-so-long-mode          ; Mitigate performance for long lines
               counsel-projectile-mode      ; Manage and navigate projects
               recentf-mode                 ; Recently opened files
@@ -621,8 +622,8 @@
    Magit is awesome. Let's use [[https://github.com/magit/forge][Forge]] too.
 
    #+begin_src emacs-lisp
-    (with-eval-after-load 'magit
-      (require 'forge))
+   (with-eval-after-load 'magit
+     (require 'forge))
    #+end_src
 
 ** EMMS
@@ -701,7 +702,7 @@
    state in a different buffer (this problem occurs if you only have one
    global cycle). We can implement this by using a [[http://www.gnu.org/software/emacs/manual/html_node/elisp/Closures.html][closure]].
 
-      #+BEGIN_SRC emacs-lisp
+   #+BEGIN_SRC emacs-lisp
    (defun cycle-languages ()
      "Changes the ispell dictionary to the first element in
    ISPELL-LANGUAGES, and returns an interactive function that cycles
@@ -739,141 +740,141 @@
 
 ** COMMENT Org Roam
 
-    Trying out [[https://www.orgroam.com/][org-roam]] for organizing notes.
+   Trying out [[https://www.orgroam.com/][org-roam]] for organizing notes.
 
-    #+begin_src emacs-lisp
-    (setq org-roam-directory "~/Dropbox/org-roam")
-    (add-hook 'after-init-hook 'org-roam-mode)
+   #+begin_src emacs-lisp
+   (setq org-roam-directory "~/Dropbox/org-roam")
+   (add-hook 'after-init-hook 'org-roam-mode)
 
-    (setq org-roam-dailies-capture-templates
-          '(("d" "dagbok" entry
-             #'org-roam-capture--get-point
-             "\n* %?"
-             :file-name "daily/dagbok-%<%Y-%m-%d>"
-             :head "#+title: Dagbok %<%Y-%m-%d>\n")
+   (setq org-roam-dailies-capture-templates
+         '(("d" "dagbok" entry
+            #'org-roam-capture--get-point
+            "\n* %?"
+            :file-name "daily/dagbok-%<%Y-%m-%d>"
+            :head "#+title: Dagbok %<%Y-%m-%d>\n")
 
-            ("r" "reading" entry
-             #'org-roam-capture--get-point
-             "\n* %?"
-             :file-name "daily/reading-%<%Y-%m-%d>"
-             :head "#+title: Reading %<%Y-%m-%d>\n")))
+           ("r" "reading" entry
+            #'org-roam-capture--get-point
+            "\n* %?"
+            :file-name "daily/reading-%<%Y-%m-%d>"
+            :head "#+title: Reading %<%Y-%m-%d>\n")))
 
-    (with-eval-after-load 'org-roam
-      (define-key org-roam-mode-map (kbd "C-c r l") 'org-roam)
-      (define-key org-roam-mode-map (kbd "C-c r d") 'org-roam-dailies-today)
-      (define-key org-roam-mode-map (kbd "C-c r f") 'org-roam-find-file)
-      (define-key org-roam-mode-map (kbd "C-c r g") 'org-roam-graph)
+   (with-eval-after-load 'org-roam
+     (define-key org-roam-mode-map (kbd "C-c r l") 'org-roam)
+     (define-key org-roam-mode-map (kbd "C-c r d") 'org-roam-dailies-today)
+     (define-key org-roam-mode-map (kbd "C-c r f") 'org-roam-find-file)
+     (define-key org-roam-mode-map (kbd "C-c r g") 'org-roam-graph)
 
-      (define-key org-mode-map (kbd "C-c r i") 'org-roam-insert)
-      (define-key org-mode-map (kbd "C-c r I") 'org-roam-insert-immediate))
-    #+end_src
+     (define-key org-mode-map (kbd "C-c r i") 'org-roam-insert)
+     (define-key org-mode-map (kbd "C-c r I") 'org-roam-insert-immediate))
+   #+end_src
 
-    #+begin_src emacs-lisp
-    (setq org-roam-server-host "127.0.0.1"
-          org-roam-server-port 8080
-          org-roam-server-authenticate nil
-          org-roam-server-export-inline-images t
-          org-roam-server-serve-files nil
-          org-roam-server-served-file-extensions '("pdf" "mp4" "ogv")
-          org-roam-server-network-poll t
-          org-roam-server-network-arrows nil
-          org-roam-server-network-label-truncate t
-          org-roam-server-network-label-truncate-length 60
-          org-roam-server-network-label-wrap-length 20)
-    #+end_src
+   #+begin_src emacs-lisp
+   (setq org-roam-server-host "127.0.0.1"
+         org-roam-server-port 8080
+         org-roam-server-authenticate nil
+         org-roam-server-export-inline-images t
+         org-roam-server-serve-files nil
+         org-roam-server-served-file-extensions '("pdf" "mp4" "ogv")
+         org-roam-server-network-poll t
+         org-roam-server-network-arrows nil
+         org-roam-server-network-label-truncate t
+         org-roam-server-network-label-truncate-length 60
+         org-roam-server-network-label-wrap-length 20)
+   #+end_src
 
-;;** Interactive functions
-;;   <<sec:defuns>>
-;;
-;;   =just-one-space= removes all whitespace around a point - giving it a
-;;   negative argument it removes newlines as well. We wrap a interactive
-;;   function around it to be able to bind it to a key. In Emacs 24.4
-;;   =cycle-spacing= was introduced, and it works like =just-one-space=, but
-;;   when run in succession it cycles between one, zero and the original
-;;   number of spaces.
-;;
-;;   #+BEGIN_SRC emacs-lisp
-;;   (defun cycle-spacing-delete-newlines ()
-;;     "Removes whitespace before and after the point."
-;;     (interactive)
-;;     (if (version< emacs-version "24.4")
-;;         (just-one-space -1)
-;;       (cycle-spacing -1)))
-;;   #+END_SRC
-;;
-;;   Often I want to find other occurrences of a word I'm at, or more
-;;   specifically the symbol (or tag) I'm at. The
-;;   =isearch-forward-symbol-at-point= in Emacs 24.4 works well for this, but
-;;   I don't want to be bothered with the =isearch= interface. Rather jump
-;;   quickly between occurrences of a symbol, or if non is found, don't do
-;;   anything.
-;;
-;;   #+BEGIN_SRC emacs-lisp
-;;   (defun jump-to-symbol-internal (&optional backwardp)
-;;     "Jumps to the next symbol near the point if such a symbol
-;;   exists. If BACKWARDP is non-nil it jumps backward."
-;;     (let* ((point (point))
-;;            (bounds (find-tag-default-bounds))
-;;            (beg (car bounds)) (end (cdr bounds))
-;;            (str (isearch-symbol-regexp (find-tag-default)))
-;;            (search (if backwardp 'search-backward-regexp
-;;                      'search-forward-regexp)))
-;;       (goto-char (if backwardp beg end))
-;;       (funcall search str nil t)
-;;       (cond ((<= beg (point) end) (goto-char point))
-;;             (backwardp (forward-char (- point beg)))
-;;             (t  (backward-char (- end point))))))
-;;
-;;   (defun jump-to-previous-like-this ()
-;;     "Jumps to the previous occurrence of the symbol at point."
-;;     (interactive)
-;;     (jump-to-symbol-internal t))
-;;
-;;   (defun jump-to-next-like-this ()
-;;     "Jumps to the next occurrence of the symbol at point."
-;;     (interactive)
-;;     (jump-to-symbol-internal))
-;;   #+END_SRC
-;;
-;;   I sometimes regret killing the =*scratch*=-buffer, and have realized I
-;;   never want to actually kill it. I just want to get it out of the way, and
-;;   clean it up. The function below does just this for the
-;;   =*scratch*=-buffer, and works like =kill-this-buffer= for any other
-;;   buffer. It removes all buffer content and buries the buffer (this means
-;;   making it the least likely candidate for =other-buffer=).
-;;
-;;   #+BEGIN_SRC emacs-lisp
-;;   (defun kill-this-buffer-unless-scratch ()
-;;     "Works like `kill-this-buffer' unless the current buffer is the
-;;   ,*scratch* buffer. In witch case the buffer content is deleted and
-;;   the buffer is buried."
-;;     (interactive)
-;;     (if (not (string= (buffer-name) "*scratch*"))
-;;         (kill-this-buffer)
-;;       (delete-region (point-min) (point-max))
-;;       (switch-to-buffer (other-buffer))
-;;       (bury-buffer "*scratch*")))
-;;   #+END_SRC
-;;
-;;   To duplicate either selected text or a line we define this interactive
-;;   function.
-;;
-;;   #+BEGIN_SRC emacs-lisp
-;;   (defun duplicate-thing (comment)
-;;     "Duplicates the current line, or the region if active. If an argument is
-;;   given, the duplicated region will be commented out."
-;;     (interactive "P")
-;;     (save-excursion
-;;       (let ((start (if (region-active-p) (region-beginning) (point-at-bol)))
-;;             (end   (if (region-active-p) (region-end) (point-at-eol)))
-;;             (fill-column most-positive-fixnum))
-;;         (goto-char end)
-;;         (unless (region-active-p)
-;;           (newline))
-;;         (insert (buffer-substring start end))
-;;         (when comment (comment-region start end)))))
-;;   #+END_SRC
-;;
+   ;;** Interactive functions
+   ;;   <<sec:defuns>>
+   ;;
+   ;;   =just-one-space= removes all whitespace around a point - giving it a
+   ;;   negative argument it removes newlines as well. We wrap a interactive
+   ;;   function around it to be able to bind it to a key. In Emacs 24.4
+   ;;   =cycle-spacing= was introduced, and it works like =just-one-space=, but
+   ;;   when run in succession it cycles between one, zero and the original
+   ;;   number of spaces.
+   ;;
+   ;;   #+BEGIN_SRC emacs-lisp
+   ;;   (defun cycle-spacing-delete-newlines ()
+   ;;     "Removes whitespace before and after the point."
+   ;;     (interactive)
+   ;;     (if (version< emacs-version "24.4")
+   ;;         (just-one-space -1)
+   ;;       (cycle-spacing -1)))
+   ;;   #+END_SRC
+   ;;
+   ;;   Often I want to find other occurrences of a word I'm at, or more
+   ;;   specifically the symbol (or tag) I'm at. The
+   ;;   =isearch-forward-symbol-at-point= in Emacs 24.4 works well for this, but
+   ;;   I don't want to be bothered with the =isearch= interface. Rather jump
+   ;;   quickly between occurrences of a symbol, or if non is found, don't do
+   ;;   anything.
+   ;;
+   ;;   #+BEGIN_SRC emacs-lisp
+   ;;   (defun jump-to-symbol-internal (&optional backwardp)
+   ;;     "Jumps to the next symbol near the point if such a symbol
+   ;;   exists. If BACKWARDP is non-nil it jumps backward."
+   ;;     (let* ((point (point))
+   ;;            (bounds (find-tag-default-bounds))
+   ;;            (beg (car bounds)) (end (cdr bounds))
+   ;;            (str (isearch-symbol-regexp (find-tag-default)))
+   ;;            (search (if backwardp 'search-backward-regexp
+   ;;                      'search-forward-regexp)))
+   ;;       (goto-char (if backwardp beg end))
+   ;;       (funcall search str nil t)
+   ;;       (cond ((<= beg (point) end) (goto-char point))
+   ;;             (backwardp (forward-char (- point beg)))
+   ;;             (t  (backward-char (- end point))))))
+   ;;
+   ;;   (defun jump-to-previous-like-this ()
+   ;;     "Jumps to the previous occurrence of the symbol at point."
+   ;;     (interactive)
+   ;;     (jump-to-symbol-internal t))
+   ;;
+   ;;   (defun jump-to-next-like-this ()
+   ;;     "Jumps to the next occurrence of the symbol at point."
+   ;;     (interactive)
+   ;;     (jump-to-symbol-internal))
+   ;;   #+END_SRC
+   ;;
+   ;;   I sometimes regret killing the =*scratch*=-buffer, and have realized I
+   ;;   never want to actually kill it. I just want to get it out of the way, and
+   ;;   clean it up. The function below does just this for the
+   ;;   =*scratch*=-buffer, and works like =kill-this-buffer= for any other
+   ;;   buffer. It removes all buffer content and buries the buffer (this means
+   ;;   making it the least likely candidate for =other-buffer=).
+   ;;
+   ;;   #+BEGIN_SRC emacs-lisp
+   ;;   (defun kill-this-buffer-unless-scratch ()
+   ;;     "Works like `kill-this-buffer' unless the current buffer is the
+   ;;   ,*scratch* buffer. In witch case the buffer content is deleted and
+   ;;   the buffer is buried."
+   ;;     (interactive)
+   ;;     (if (not (string= (buffer-name) "*scratch*"))
+   ;;         (kill-this-buffer)
+   ;;       (delete-region (point-min) (point-max))
+   ;;       (switch-to-buffer (other-buffer))
+   ;;       (bury-buffer "*scratch*")))
+   ;;   #+END_SRC
+   ;;
+   ;;   To duplicate either selected text or a line we define this interactive
+   ;;   function.
+   ;;
+   ;;   #+BEGIN_SRC emacs-lisp
+   ;;   (defun duplicate-thing (comment)
+   ;;     "Duplicates the current line, or the region if active. If an argument is
+   ;;   given, the duplicated region will be commented out."
+   ;;     (interactive "P")
+   ;;     (save-excursion
+   ;;       (let ((start (if (region-active-p) (region-beginning) (point-at-bol)))
+   ;;             (end   (if (region-active-p) (region-end) (point-at-eol)))
+   ;;             (fill-column most-positive-fixnum))
+   ;;         (goto-char end)
+   ;;         (unless (region-active-p)
+   ;;           (newline))
+   ;;         (insert (buffer-substring start end))
+   ;;         (when comment (comment-region start end)))))
+   ;;   #+END_SRC
+   ;;
    To tidy up a buffer we define this function borrowed from [[https://github.com/simenheg][simenheg]].
 
    #+BEGIN_SRC emacs-lisp
@@ -887,26 +888,26 @@
        (untabify beg (if (< end (point-max)) end (point-max)))))
    #+END_SRC
 
-;;   Org mode does currently not support synctex (which enables you to jump from
-;;   a point in your TeX-file to the corresponding point in the pdf), and it
-;;   [[http://comments.gmane.org/gmane.emacs.orgmode/69454][seems like a tricky problem]].
-;;
-;;   Calling this function from an org-buffer jumps to the corresponding section
-;;   in the exported pdf (given that the pdf-file exists), using pdf-tools.
-;;
-;;   #+BEGIN_SRC emacs-lisp
-;;   (defun org-sync-pdf ()
-;;     (interactive)
-;;     (let ((headline (nth 4 (org-heading-components)))
-;;           (pdf (concat (file-name-base (buffer-name)) ".pdf")))
-;;       (when (file-exists-p pdf)
-;;         (find-file-other-window pdf)
-;;         (pdf-links-action-perform
-;;          (cl-find headline (pdf-info-outline pdf)
-;;                   :key (lambda (alist) (cdr (assoc 'title alist)))
-;;                   :test 'string-equal)))))
-;;   #+END_SRC
-;;
+   ;;   Org mode does currently not support synctex (which enables you to jump from
+   ;;   a point in your TeX-file to the corresponding point in the pdf), and it
+   ;;   [[http://comments.gmane.org/gmane.emacs.orgmode/69454][seems like a tricky problem]].
+   ;;
+   ;;   Calling this function from an org-buffer jumps to the corresponding section
+   ;;   in the exported pdf (given that the pdf-file exists), using pdf-tools.
+   ;;
+   ;;   #+BEGIN_SRC emacs-lisp
+   ;;   (defun org-sync-pdf ()
+   ;;     (interactive)
+   ;;     (let ((headline (nth 4 (org-heading-components)))
+   ;;           (pdf (concat (file-name-base (buffer-name)) ".pdf")))
+   ;;       (when (file-exists-p pdf)
+   ;;         (find-file-other-window pdf)
+   ;;         (pdf-links-action-perform
+   ;;          (cl-find headline (pdf-info-outline pdf)
+   ;;                   :key (lambda (alist) (cdr (assoc 'title alist)))
+   ;;                   :test 'string-equal)))))
+   ;;   #+END_SRC
+   ;;
 ** Org Mode
 
    Activate Org Babel languages.
@@ -936,7 +937,7 @@
          org-hierarchical-todo-statistics nil
          org-startup-folded t
          org-agenda-window-setup 'current-window
-         org-adapt-indentation t)
+         org-adapt-indentation f)
    #+end_src
 
    Refiling...
@@ -987,23 +988,72 @@
    Configure custom agenda views.
 
    #+begin_src emacs-lisp
-   (setq org-agenda-custom-commands
-         '(("d" "Dashboard"
-            ((agenda "" ((org-agenda-span 5)))
-             (todo "NEXT"
-                   ((org-agenda-overriding-header "Next Tasks")))
-             (tags-todo "PEERJ/TODO"
-                   ((org-agenda-overriding-header "PeerJ Tasks")))
-             (todo "WAITING"
-                   ((org-agenda-overriding-header "Waiting")))
-             (tags "REFILE"
-                   ((org-agenda-overriding-header "To Refile")))
-             (todo "ACTIVE"
-                   ((org-agenda-overriding-header "Active Projects")))))
+   ;; Do not dim blocked tasks
+   (setq org-agenda-dim-blocked-tasks nil)
 
-           ("n" "Next Tasks"
-            ((todo "NEXT"
-                   ((org-agenda-overriding-header "Next Tasks")))))))
+   ;; Compact the block agenda view
+   (setq org-agenda-compact-blocks t)
+
+   (setq org-agenda-custom-commands
+         '(("N" "Notes" tags "NOTE"
+            ((org-agenda-overriding-header "Notes")
+             (org-tags-match-list-sublevels t)))
+           ("h" "Habits" tags-todo "STYLE=\"habit\""
+            ((org-agenda-overriding-header "Habits")
+             (org-agenda-sorting-strategy
+              '(todo-state-down effort-up category-keep))))
+           (" " "Agenda"
+            ((agenda "" ((org-agenda-span 1)))
+             (tags "REFILE"
+                   ((org-agenda-overriding-header "Tasks to Refile")
+                    (org-tags-match-list-sublevels nil)))
+             (tags-todo "-CANCELLED/!"
+                        ((org-agenda-overriding-header "Stuck Projects")
+                         (org-agenda-skip-function 'bh/skip-non-stuck-projects)
+                         (org-agenda-sorting-strategy
+                          '(category-keep))))
+             (tags-todo "-HOLD-CANCELLED/!"
+                        ((org-agenda-overriding-header "Projects")
+                         (org-agenda-skip-function 'bh/skip-non-projects)
+                         (org-tags-match-list-sublevels 'indented)
+                         (org-agenda-sorting-strategy
+                          '(category-keep))))
+             (tags-todo "-REFILE-CANCELLED-WAITING-HOLD/!"
+                        ((org-agenda-overriding-header (concat "Project Subtasks"
+                                                               (if bh/hide-scheduled-and-waiting-next-tasks
+                                                                   ""
+                                                                 " (including WAITING and SCHEDULED tasks)")))
+                         (org-agenda-skip-function 'bh/skip-non-project-tasks)
+                         (org-agenda-todo-ignore-scheduled bh/hide-scheduled-and-waiting-next-tasks)
+                         (org-agenda-todo-ignore-deadlines bh/hide-scheduled-and-waiting-next-tasks)
+                         (org-agenda-todo-ignore-with-date bh/hide-scheduled-and-waiting-next-tasks)
+                         (org-agenda-sorting-strategy
+                          '(category-keep))))
+             (tags-todo "-REFILE-CANCELLED-WAITING-HOLD/!"
+                        ((org-agenda-overriding-header (concat "Standalone Tasks"
+                                                               (if bh/hide-scheduled-and-waiting-next-tasks
+                                                                   ""
+                                                                 " (including WAITING and SCHEDULED tasks)")))
+                         (org-agenda-skip-function 'bh/skip-project-tasks)
+                         (org-agenda-todo-ignore-scheduled bh/hide-scheduled-and-waiting-next-tasks)
+                         (org-agenda-todo-ignore-deadlines bh/hide-scheduled-and-waiting-next-tasks)
+                         (org-agenda-todo-ignore-with-date bh/hide-scheduled-and-waiting-next-tasks)
+                         (org-agenda-sorting-strategy
+                          '(category-keep))))
+             (tags-todo "-CANCELLED+WAITING|HOLD/!"
+                        ((org-agenda-overriding-header (concat "Waiting and Postponed Tasks"
+                                                               (if bh/hide-scheduled-and-waiting-next-tasks
+                                                                   ""
+                                                                 " (including WAITING and SCHEDULED tasks)")))
+                         (org-agenda-skip-function 'bh/skip-non-tasks)
+                         (org-tags-match-list-sublevels nil)
+                         (org-agenda-todo-ignore-scheduled bh/hide-scheduled-and-waiting-next-tasks)
+                         (org-agenda-todo-ignore-deadlines bh/hide-scheduled-and-waiting-next-tasks)))
+             (tags "-REFILE/"
+                   ((org-agenda-overriding-header "Tasks to Archive")
+                    (org-agenda-skip-function 'bh/skip-non-archivable-tasks)
+                    (org-tags-match-list-sublevels nil)))
+             ))))
    #+end_src
 
    #+begin_src emacs-lisp
@@ -1012,40 +1062,45 @@
 
    Capture templates for notes, todo etc.
 
-  #+begin_src emacs-lisp
-  (setq org-capture-templates
-        '(("t" "Task" entry (file "~/org/refile.org")
-           "* TODO %?\n  %u\n  %a\n" :clock-in t :clock-resume t)
-          ("r" "Respond" entry (file "~/org/refile.org")
-           "* TODO Respond to %:from on %:subject\nSCHEDULED: %t\n%U\n%a\n" :clock-in t :clock-resume t :immediate-finish t)
-          ("n" "Note" entry (file  "~/org/refile.org")
-           "* %? :NOTE:\n  %U\n  %a\n" :clock-in t :clock-resume t)
-          ("j" "Journal" entry (file+olp+datetree "~/org/journal.org")
-           "* %?\n  %U\n" :clock-in t :clock-resume t :tree-type week)
-          ("e" "E" entry (file+olp+datetree "~/org/d.org" "Journal")
-           "* %?\n  %U\n" :tree-type week)
-          ("g" "Forge Topic" entry (file "~/org/refile.org")
-           "* TODO %:description\n  %?\n  %a\n  %u\n" :clock-in t :clock-resume t)
-                                          ;            ("#" "used by gnus-icalendar-org" entry (file+olp+datetree "~/org/calendar.org")
-                                          ;             "%i %?\n" :time-prompt t :tree-type week)
-          ("m" "Meeting" entry (file+olp+datetree "~/org/calendar.org")
-           "* MEETING with %? :MEETING:\n  %U" :clock-in t :clock-resume t)))
+   #+begin_src emacs-lisp
+   (setq org-capture-templates
+         '(("t" "Task" entry (file "~/org/refile.org")
+            "* TODO %?\n  %u\n  %a\n" :clock-in t :clock-resume t)
+           ("r" "Respond" entry (file "~/org/refile.org")
+            "* NEXT Respond to %:from on %:subject\nSCHEDULED: %t\n%U\n%a\n" :clock-in t :clock-resume t :immediate-finish t)
+           ("n" "Note" entry (file  "~/org/refile.org")
+            "* %? :NOTE:\n  %U\n  %a\n" :clock-in t :clock-resume t)
+           ("j" "Journal" entry (file+olp+datetree "~/org/journal.org")
+            "* %?\n  %U\n" :clock-in t :clock-resume t :tree-type week)
+           ("d" "Templates for my divorce")
+           ("dj" "Divorce Journal" entry (file+olp+datetree "~/org/divorce.org" "Journal")
+            "* %?\n  %U\n" :tree-type week)
+           ("de" "Childcare Emma" table-line (file+olp "~/org/divorce.org" "Childcare" "Emma")
+            "|%^T|%^T|||%^{prompt|Both|Bodhi|Eira}||" :table-line-pos "II-1" :kill-buffer t :jump-to-captured t)
+           ("dt" "Childcare Tony" table-line (file+olp "~/org/divorce.org" "Childcare" "Tony")
+            "|%^T|%^T|||%^{prompt|Both|Bodhi|Eira}||" :table-line-pos "II-1" :kill-buffer t :jump-to-captured t)
+           ("g" "Forge Topic" entry (file "~/org/refile.org")
+            "* TODO %:description\n  %?\n  %a\n  %u\n" :clock-in t :clock-resume t)
+           ("#" "used by gnus-icalendar-org" entry (file+olp+datetree "~/org/calendar.org")
+             "%i %?\n" :time-prompt t :tree-type week)
+           ("m" "Meeting" entry (file+olp+datetree "~/org/calendar.org")
+            "* MEETING with %? :MEETING:\n  %U" :clock-in t :clock-resume t)))
 
-  ;; (setq org-capture-templates
-  ;;               ("w" "org-protocol" entry (file "~/git/org/refile.org")
-  ;;                "* TODO Review %c\n%U\n" :immediate-finish t)
-  ;;               ("p" "Phone call" entry (file "~/git/org/refile.org")
-  ;;                "* PHONE %? :PHONE:\n%U" :clock-in t :clock-resume t)
-  ;;               ("h" "Habit" entry (file "~/git/org/refile.org")
-  ;;                "* NEXT %?\n%U\n%a\nSCHEDULED: %(format-time-string \"%<<%Y-%m-%d %a .+1d/3d>>\")\n:PROPERTIES:\n:STYLE: habit\n:REPEAT_TO_STATE: NEXT\n:END:\n"))))
-  #+end_src
+   ;; (setq org-capture-templates
+   ;;               ("w" "org-protocol" entry (file "~/git/org/refile.org")
+   ;;                "* TODO Review %c\n%U\n" :immediate-finish t)
+   ;;               ("p" "Phone call" entry (file "~/git/org/refile.org")
+   ;;                "* PHONE %? :PHONE:\n%U" :clock-in t :clock-resume t)
+   ;;               ("h" "Habit" entry (file "~/git/org/refile.org")
+   ;;                "* NEXT %?\n%U\n%a\nSCHEDULED: %(format-time-string \"%<<%Y-%m-%d %a .+1d/3d>>\")\n:PROPERTIES:\n:STYLE: habit\n:REPEAT_TO_STATE: NEXT\n:END:\n"))))
+   #+end_src
 
-  Keybindings straight to capture templates.
+   Keybindings straight to capture templates.
 
-  #+begin_src emacs-lisp
-  ;;(define-key global-map (kbd "C-c r")
-  ;;  (lambda () (interactive) (org-capture nil "r")))
-  #+end_src
+   #+begin_src emacs-lisp
+   ;;(define-key global-map (kbd "C-c r")
+   ;;  (lambda () (interactive) (org-capture nil "r")))
+   #+end_src
 
    When editing org-files with source-blocks, we want the source blocks to
    be themed as they would in their native mode.
@@ -1057,16 +1112,296 @@
          org-edit-src-content-indentation 0)
    #+END_SRC
 
-;;   This is quite an ugly fix for allowing code markup for expressions like
-;;   ="this string"=, because the quotation marks causes problems.
-;;
-;;   #+BEGIN_SRC emacs-lisp
-;;   (with-eval-after-load 'org
-;;     (require 'org-tempo)
-;;     (setcar (nthcdr 2 org-emphasis-regexp-components) " \t\n,")
-;;     (custom-set-variables `(org-emphasis-alist ',org-emphasis-alist)))
-;;   #+END_SRC
-;;
+   Org helper functions.
+
+   #+begin_src emacs-lisp
+   (defun bh/is-project-p ()
+     "Any task with a todo keyword subtask"
+     (save-restriction
+       (widen)
+       (let ((has-subtask)
+             (subtree-end (save-excursion (org-end-of-subtree t)))
+             (is-a-task (member (nth 2 (org-heading-components)) org-todo-keywords-1)))
+         (save-excursion
+           (forward-line 1)
+           (while (and (not has-subtask)
+                       (< (point) subtree-end)
+                       (re-search-forward "^\*+ " subtree-end t))
+             (when (member (org-get-todo-state) org-todo-keywords-1)
+               (setq has-subtask t))))
+         (and is-a-task has-subtask))))
+
+   (defun bh/is-project-subtree-p ()
+     "Any task with a todo keyword that is in a project subtree.
+                    Callers of this function already widen the buffer view."
+     (let ((task (save-excursion (org-back-to-heading 'invisible-ok)
+                                 (point))))
+       (save-excursion
+         (bh/find-project-task)
+         (if (equal (point) task)
+             nil
+           t))))
+
+   (defun bh/is-task-p ()
+     "Any task with a todo keyword and no subtask"
+     (save-restriction
+       (widen)
+       (let ((has-subtask)
+             (subtree-end (save-excursion (org-end-of-subtree t)))
+             (is-a-task (member (nth 2 (org-heading-components)) org-todo-keywords-1)))
+         (save-excursion
+           (forward-line 1)
+           (while (and (not has-subtask)
+                       (< (point) subtree-end)
+                       (re-search-forward "^\*+ " subtree-end t))
+             (when (member (org-get-todo-state) org-todo-keywords-1)
+               (setq has-subtask t))))
+         (and is-a-task (not has-subtask)))))
+
+   (defun bh/is-subproject-p ()
+     "Any task which is a subtask of another project"
+     (let ((is-subproject)
+           (is-a-task (member (nth 2 (org-heading-components)) org-todo-keywords-1)))
+       (save-excursion
+         (while (and (not is-subproject) (org-up-heading-safe))
+           (when (member (nth 2 (org-heading-components)) org-todo-keywords-1)
+             (setq is-subproject t))))
+       (and is-a-task is-subproject)))
+
+   (defun bh/list-sublevels-for-projects-indented ()
+     "Set org-tags-match-list-sublevels so when restricted to a subtree
+            we list all subtasks. This is normally used by skipping functions where
+          this variable is already local to the agenda."
+
+     (if (marker-buffer org-agenda-restrict-begin)
+         (setq org-tags-match-list-sublevels 'indented)
+       (setq org-tags-match-list-sublevels nil))
+     nil)
+
+   (defun bh/list-sublevels-for-projects ()
+     "Set org-tags-match-list-sublevels so when restricted to a subtree
+                we list all subtasks.  This is normally used by skipping functions
+                where this variable is already local to the agenda."
+     (if (marker-buffer org-agenda-restrict-begin)
+         (setq org-tags-match-list-sublevels t)
+       (setq org-tags-match-list-sublevels nil))
+     nil)
+
+   (defvar bh/hide-scheduled-and-waiting-next-tasks t)
+
+   (defun bh/toggle-next-task-display ()
+     (interactive)
+     (setq bh/hide-scheduled-and-waiting-next-tasks (not bh/hide-scheduled-and-waiting-next-tasks))
+     (when  (equal major-mode 'org-agenda-mode)
+       (org-agenda-redo))
+     (message "%s WAITING and SCHEDULED NEXT Tasks" (if bh/hide-scheduled-and-waiting-next-tasks "Hide" "Show")))
+
+   (defun bh/skip-non-stuck-projects ()
+     "Skip trees that are not stuck projects"
+     ;; (bh/list-sublevels-for-projects-indented)
+     (save-restriction
+       (widen)
+       (let ((next-headline (save-excursion (or (outline-next-heading) (point-max)))))
+         (if (bh/is-project-p)
+             (let* ((subtree-end (save-excursion (org-end-of-subtree t)))
+                    (has-next ))
+               (save-excursion
+                 (forward-line 1)
+                 (while (and (not has-next) (< (point) subtree-end) (re-search-forward "^\\*+ NEXT " subtree-end t))
+                   (unless (member "WAITING" (org-get-tags))
+                     (setq has-next t))))
+               (if has-next
+                   next-headline
+                 nil)) ; a stuck project, has subtasks but no next task
+           next-headline))))
+
+   (defun bh/skip-non-projects ()
+     "Skip trees that are not projects"
+     ;; (bh/list-sublevels-for-projects-indented)
+     (if (save-excursion (bh/skip-non-stuck-projects))
+         (save-restriction
+           (widen)
+           (let ((subtree-end (save-excursion (org-end-of-subtree t))))
+             (cond
+              ((bh/is-project-p)
+               nil)
+              ((and (bh/is-project-subtree-p) (not (bh/is-task-p)))
+               nil)
+              (t
+               subtree-end))))
+       (save-excursion (org-end-of-subtree t))))
+
+   (defun bh/skip-non-tasks ()
+     "Show non-project tasks.
+       Skip project and sub-project tasks, habits, and project related tasks."
+     (save-restriction
+       (widen)
+       (let ((next-headline (save-excursion (or (outline-next-heading) (point-max)))))
+         (cond
+          ((bh/is-task-p)
+           nil)
+          (t
+           next-headline)))))
+
+   (defun bh/skip-project-trees-and-habits ()
+     "Skip trees that are projects"
+     (save-restriction
+       (widen)
+       (let ((subtree-end (save-excursion (org-end-of-subtree t))))
+         (cond
+          ((bh/is-project-p)
+           subtree-end)
+          ;;       ((org-is-habit-p)
+          ;;        subtree-end)
+          (t
+           nil)))))
+
+   (defun bh/skip-projects-and-habits-and-single-tasks ()
+     "Skip trees that are projects, tasks that are habits, single non-project tasks"
+     (save-restriction
+       (widen)
+       (let ((next-headline (save-excursion (or (outline-next-heading) (point-max)))))
+         (cond
+          ;;       ((org-is-habit-p)
+          ;;        next-headline)
+          ((and bh/hide-scheduled-and-waiting-next-tasks
+                (member "WAITING" (org-get-tags)))
+           next-headline)
+          ((bh/is-project-p)
+           next-headline)
+          ((and (bh/is-task-p) (not (bh/is-project-subtree-p)))
+           next-headline)
+          (t
+           nil)))))
+
+   (defun bh/skip-project-tasks-maybe ()
+     "Show tasks related to the current restriction.
+    When restricted to a project, skip project and sub project tasks, habits, NEXT
+     tasks, and loose tasks. When not restricted, skip project and sub-project
+     tasks, habits, and project related tasks."
+     (save-restriction
+       (widen)
+       (let* ((subtree-end (save-excursion (org-end-of-subtree t)))
+              (next-headline (save-excursion (or (outline-next-heading) (point-max))))
+              (limit-to-project (marker-buffer org-agenda-restrict-begin)))
+         (cond
+          ((bh/is-project-p)
+           next-headline)
+          ;;       ((org-is-habit-p)
+          ;;        subtree-end)
+          ((and (not limit-to-project)
+                (bh/is-project-subtree-p))
+           subtree-end)
+          ((and limit-to-project
+                (bh/is-project-subtree-p)
+                (member (org-get-todo-state) (list "NEXT")))
+           subtree-end)
+          (t
+           nil)))))
+
+   (defun bh/skip-project-tasks ()
+     "Show non-project tasks.
+    Skip project and sub-project tasks, habits, and project related tasks."
+     (save-restriction
+       (widen)
+       (let* ((subtree-end (save-excursion (org-end-of-subtree t))))
+         (cond
+          ((bh/is-project-p)
+           subtree-end)
+          ;;       ((org-is-habit-p)
+          ;;        subtree-end)
+          ((bh/is-project-subtree-p)
+           subtree-end)
+          (t
+           nil)))))
+
+   (defun bh/skip-non-project-tasks ()
+     "Show project tasks.
+    Skip project and sub-project tasks, habits, and loose non-project tasks."
+     (save-restriction
+       (widen)
+       (let* ((subtree-end (save-excursion (org-end-of-subtree t)))
+              (next-headline (save-excursion (or (outline-next-heading) (point-max)))))
+         (cond
+          ((bh/is-project-p)
+           next-headline)
+          ;;       ((org-is-habit-p)
+          ;;        subtree-end)
+          ((and (bh/is-project-subtree-p)
+                (member (org-get-todo-state) (list "NEXT")))
+           subtree-end)
+          ((not (bh/is-project-subtree-p))
+           subtree-end)
+          (t
+           nil)))))
+
+   (defun bh/skip-projects-and-habits ()
+     "Skip trees that are projects and tasks that are habits"
+     (save-restriction
+       (widen)
+       (let ((subtree-end (save-excursion (org-end-of-subtree t))))
+         (cond
+          ((bh/is-project-p)
+           subtree-end)
+          ;;       ((org-is-habit-p)
+          ;;        subtree-end)
+          (t
+           nil)))))
+
+   (defun bh/skip-non-subprojects ()
+     "Skip trees that are not projects"
+     (let ((next-headline (save-excursion (outline-next-heading))))
+       (if (bh/is-subproject-p)
+           nil
+         next-headline)))
+
+
+   (defun bh/find-project-task ()
+     "Move point to the parent (project) task if any"
+     (save-restriction
+       (widen)
+       (let ((parent-task (save-excursion (org-back-to-heading 'invisible-ok) (point))))
+         (while (org-up-heading-safe)
+           (when (member (nth 2 (org-heading-components)) org-todo-keywords-1)
+             (setq parent-task (point))))
+         (goto-char parent-task)
+         parent-task)))
+
+   ;;(defun bh/skip-non-archivable-tasks ()
+   ;;  "Skip trees that are not available for archiving"
+   ;;  (save-restriction
+   ;;    (widen)
+   ;;    ;; Consider only tasks with done todo headings as archivable candidates
+   ;;    (let ((next-headline (save-excursion (or (outline-next-heading) (point-max))))
+   ;;          (subtree-end (save-excursion (org-end-of-subtree t))))
+   ;;      (if (member (org-get-todo-state) org-todo-keywords-1)
+   ;;          (if (member (org-get-todo-state) org-done-keywords)
+   ;;              (let* ((daynr (string-to-int (format-time-string "%d" (current-time))))
+   ;;                     (a-month-ago (* 60 60 24 (+ daynr 1)))
+   ;;                     (last-month (format-time-string "%Y-%m-" (time-subtract (current-time) (seconds-to-time a-month-ago))))
+   ;;                     (this-month (format-time-string "%Y-%m-" (current-time)))
+   ;;                     (subtree-is-current (save-excursion
+   ;;                                           (forward-line 1)
+   ;;                                           (and (< (point) subtree-end)
+   ;;                                                (re-search-forward (concat last-month "\\|" this-month) subtree-end t)))))
+   ;;                (if subtree-is-current
+   ;;                    subtree-end ; Has a date in this month or last month, skip it
+   ;;                  nil))  ; available to archive
+   ;;            (or subtree-end (point-max)))
+   ;;        next-headline))))
+
+   #+end_src
+
+   ;;   This is quite an ugly fix for allowing code markup for expressions like
+   ;;   ="this string"=, because the quotation marks causes problems.
+   ;;
+   ;;   #+BEGIN_SRC emacs-lisp
+   ;;   (with-eval-after-load 'org
+   ;;     (require 'org-tempo)
+   ;;     (setcar (nthcdr 2 org-emphasis-regexp-components) " \t\n,")
+   ;;     (custom-set-variables `(org-emphasis-alist ',org-emphasis-alist)))
+   ;;   #+END_SRC
+   ;;
    Enable org-bullets when opening org-files.
 
    #+BEGIN_SRC emacs-lisp
@@ -1135,17 +1470,17 @@
 
 * Mode specific
 
-;;** Compilation
-;;
-;;   I often run ~latexmk -pdf -pvc~ in a compilation buffer, which recompiles
-;;   the latex-file whenever it is changed. This often results in annoyingly
-;;   large compilation buffers; the following snippet limits the buffer size in
-;;   accordance with ~comint-buffer-maximum-size~, which defaults to 1024 lines.
-;;
-;;   #+BEGIN_SRC emacs-lisp
-;;   (add-hook 'compilation-filter-hook 'comint-truncate-buffer)
-;;   #+END_SRC
-;;
+  ;;** Compilation
+  ;;
+  ;;   I often run ~latexmk -pdf -pvc~ in a compilation buffer, which recompiles
+  ;;   the latex-file whenever it is changed. This often results in annoyingly
+  ;;   large compilation buffers; the following snippet limits the buffer size in
+  ;;   accordance with ~comint-buffer-maximum-size~, which defaults to 1024 lines.
+  ;;
+  ;;   #+BEGIN_SRC emacs-lisp
+  ;;   (add-hook 'compilation-filter-hook 'comint-truncate-buffer)
+  ;;   #+END_SRC
+  ;;
 ** Shell
 
    Inspired by [[https://github.com/torenord/.emacs.d][torenord]], I maintain quick access to shell buffers with bindings
@@ -1186,266 +1521,266 @@
    (defadvice vterm (after kill-with-no-query nil activate)
      (set-process-query-on-exit-flag (get-buffer-process ad-return-value) nil))
    #+END_SRC
-;;
-;;   Use zsh:
-;;
-;;   #+BEGIN_SRC emacs-lisp
-;;   (setq vterm-shell "/usr/local/bin/zsh")
-;;   #+END_SRC
-;;
-;;   I'd like the =C-l= to work more like the standard terminal (which works
-;;   like running =clear=), and resolve this by simply removing the
-;;   buffer-content. Mind that this is not how =clear= works, it simply adds a
-;;   bunch of newlines, and puts the prompt at the top of the window, so it
-;;   does not remove anything. In Emacs removing stuff is less of a worry,
-;;   since we can always undo!
-;;
-;;   #+BEGIN_SRC emacs-lisp
-;;   (defun clear-comint ()
-;;     "Runs `comint-truncate-buffer' with the
-;;   `comint-buffer-maximum-size' set to zero."
-;;     (interactive)
-;;     (let ((comint-buffer-maximum-size 0))
-;;       (comint-truncate-buffer)))
-;;   #+END_SRC
-;;
-;;** Lisp
-;;
-;;   I use =Paredit= when editing lisp code, we enable this for all lisp-modes.
-;;
-;;   #+BEGIN_SRC emacs-lisp
-;;   (dolist (mode '(cider-repl-mode
-;;                   clojure-mode
-;;                   ielm-mode
-;;                   racket-mode
-;;                   racket-repl-mode
-;;                   slime-repl-mode
-;;                   lisp-mode
-;;                   emacs-lisp-mode
-;;                   lisp-interaction-mode
-;;                   scheme-mode))
-;;     ;; add paredit-mode to all mode-hooks
-;;     (add-hook (intern (concat (symbol-name mode) "-hook")) 'paredit-mode))
-;;   #+END_SRC
-;;
-;;*** Emacs Lisp
-;;
-;;    In =emacs-lisp-mode= we can enable =eldoc-mode= to display information
-;;    about a function or a variable in the echo area.
-;;
-;;    #+BEGIN_SRC emacs-lisp
-;;    (add-hook 'emacs-lisp-mode-hook 'turn-on-eldoc-mode)
-;;    (add-hook 'lisp-interaction-mode-hook 'turn-on-eldoc-mode)
-;;    #+END_SRC
-;;
-;;*** Common lisp
-;;
-;;    I use [[http://www.common-lisp.net/project/slime/][Slime]] along with =lisp-mode= to edit Common Lisp code. Slime
-;;    provides code evaluation and other great features, a must have for a
-;;    Common Lisp developer. [[http://www.quicklisp.org/beta/][Quicklisp]] is a library manager for Common Lisp,
-;;    and you can install Slime following the instructions from the site along
-;;    with this snippet.
-;;
-;;    #+BEGIN_SRC emacs-lisp
-;;    (defun activate-slime-helper ()
-;;      (when (file-exists-p "~/.quicklisp/slime-helper.el")
-;;        (load (expand-file-name "~/.quicklisp/slime-helper.el"))
-;;        (define-key slime-repl-mode-map (kbd "C-l")
-;;          'slime-repl-clear-buffer))
-;;      (remove-hook 'common-lisp-mode-hook #'activate-slime-helper))
-;;
-;;    (add-hook 'common-lisp-mode-hook #'activate-slime-helper)
-;;    #+END_SRC
-;;
-;;    We can specify what Common Lisp program Slime should use (I use SBCL).
-;;
-;;    #+BEGIN_SRC emacs-lisp
-;;    (setq inferior-lisp-program "sbcl")
-;;    #+END_SRC
-;;
-;;    More sensible =loop= indentation, borrowed from [[https://github.com/simenheg][simenheg]].
-;;
-;;    #+BEGIN_SRC emacs-lisp
-;;    (setq lisp-loop-forms-indentation   6
-;;          lisp-simple-loop-indentation  2
-;;          lisp-loop-keyword-indentation 6)
-;;    #+END_SRC
-;;
-;;*** Clojure
-;;
-;;    Indent neatly when using pattern matching in Clojure.
-;;
-;;    #+begin_src emacs-lisp
-;;    (with-eval-after-load 'clojure-mode
-;;     (define-clojure-indent
-;;       (match 1)))
-;;    #+end_src
-;;
-;;** Python
-;;
-;;   #+BEGIN_SRC emacs-lisp
-;;   (setq python-shell-interpreter "python3")
-;;   (add-hook 'python-mode-hook
-;;             (lambda () (setq forward-sexp-function nil)))
-;;   #+END_SRC
-;;
-;;** Assembler
-;;
-;;   When writing assembler code I use =#= for comments. By defining
-;;   =comment-start= we can add comments using =M-;= like in other programming
-;;   modes. Also in assembler should one be able to compile using =C-c C-c=.
-;;
-;;   #+BEGIN_SRC emacs-lisp
-;;   (defun asm-setup ()
-;;     (setq comment-start "#")
-;;     (local-set-key (kbd "C-c C-c") 'compile))
-;;
-;;   (add-hook 'asm-mode-hook 'asm-setup)
-;;   #+END_SRC
-;;
-;;** LaTeX and org-mode LaTeX export
-;;
-;;   =.tex=-files should be associated with =latex-mode= instead of
-;;   =tex-mode=.
-;;
-;;   #+BEGIN_SRC emacs-lisp
-;;   (add-to-list 'auto-mode-alist '("\\.tex\\'" . latex-mode))
-;;   #+END_SRC
-;;
-;;   Use [[http://mg.readthedocs.io/latexmk.html][latexmk]] for compilation by default.
-;;
-;;   #+BEGIN_SRC emacs-lisp
-;;   (add-hook 'LaTeX-mode-hook
-;;             (lambda ()
-;;               (add-hook 'hack-local-variables-hook
-;;                         (lambda ()
-;;                          (setq-local compile-command
-;;                                      (concat "latexmk -pdf -pvc "
-;;                                              (if (eq TeX-master t)
-;;                                                  (file-name-base (buffer-name))
-;;                                                TeX-master))))
-;;                         t t)))
-;;   #+END_SRC
-;;
-;;   Use ~biblatex~ for bibliography.
-;;
-;;   #+BEGIN_SRC emacs-lisp
-;;   (setq-default bibtex-dialect 'biblatex)
-;;   #+END_SRC
-;;
-;;   I like using the [[https://code.google.com/p/minted/][Minted]] package for source blocks in LaTeX. To make org
-;;   use this we add the following snippet.
-;;
-;;   #+BEGIN_SRC emacs-lisp
-;;   (eval-after-load 'org
-;;     '(add-to-list 'org-latex-packages-alist '("" "minted")))
-;;   (setq org-latex-listings 'minted)
-;;   #+END_SRC
-;;
-;;   Because [[https://code.google.com/p/minted/][Minted]] uses [[http://pygments.org][Pygments]] (an external process), we must add the
-;;   =-shell-escape= option to the =org-latex-pdf-process= commands. The
-;;   =tex-compile-commands= variable controls the default compile command for
-;;   Tex- and LaTeX-mode, we can add the flag with a rather dirty statement
-;;   (if anyone finds a nicer way to do this, please let me know).
-;;
-;;   #+BEGIN_SRC emacs-lisp
-;;   (eval-after-load 'tex-mode
-;;     '(setcar (cdr (cddaar tex-compile-commands)) " -shell-escape "))
-;;   #+END_SRC
-;;
-;;   When exporting from Org to LaTeX, use ~latexmk~ for compilation.
-;;
-;;   #+BEGIN_SRC emacs-lisp
-;;   (eval-after-load 'ox-latex
-;;     '(setq org-latex-pdf-process
-;;            '("latexmk -pdflatex='pdflatex -shell-escape -interaction nonstopmode' -pdf -f %f")))
-;;   #+END_SRC
-;;
-;;   For my thesis, I need to use our university's LaTeX class, this snippet
-;;   makes that class available.
-;;
-;;   #+BEGIN_SRC emacs-lisp
-;;   (eval-after-load "ox-latex"
-;;     '(progn
-;;        (add-to-list 'org-latex-classes
-;;                     '("ifimaster"
-;;                       "\\documentclass{ifimaster}
-;;   [DEFAULT-PACKAGES]
-;;   [PACKAGES]
-;;   [EXTRA]
-;;   \\usepackage{babel,csquotes,ifimasterforside,url,varioref}"
-;;                      ("\\chapter{%s}" . "\\chapter*{%s}")
-;;                      ("\\section{%s}" . "\\section*{%s}")
-;;                      ("\\subsection{%s}" . "\\subsection*{%s}")
-;;                      ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
-;;                      ("\\paragraph{%s}" . "\\paragraph*{%s}")
-;;                      ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
-;;        (add-to-list 'org-latex-classes
-;;                     '("easychair" "\\documentclass{easychair}"
-;;                      ("\\section{%s}" . "\\section*{%s}")
-;;                      ("\\subsection{%s}" . "\\subsection*{%s}")
-;;                      ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
-;;                      ("\\paragraph{%s}" . "\\paragraph*{%s}")
-;;                      ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
-;;       (custom-set-variables '(org-export-allow-bind-keywords t))))
-;;   #+END_SRC
-;;
-;;   Use Emacs for opening the PDF file, when invoking ~C-c C-e l o~.
-;;
-;;   #+BEGIN_SRC emacs-lisp
-;;   (require 'org)
-;;   (add-to-list 'org-file-apps '("\\.pdf\\'" . emacs))
-;;   #+END_SRC
-;;
-;;** Haskell
-;;
-;;   =haskell-doc-mode= is similar to =eldoc=, it displays documentation in
-;;   the echo area. Haskell has several indentation modes - I prefer using
-;;   =haskell-indent=.
-;;
-;;   #+BEGIN_SRC emacs-lisp
-;;   (add-hook 'haskell-mode-hook 'interactive-haskell-mode)
-;;   (add-hook 'haskell-mode-hook 'turn-on-haskell-doc-mode)
-;;   (add-hook 'haskell-mode-hook 'turn-on-haskell-indent)
-;;   #+END_SRC
-;;
-;;   Due to a bug in haskell-mode I have to keep this monstrosity in my config...
-;;   #+BEGIN_SRC emacs-lisp
-;;   (setq haskell-process-args-ghci
-;;         '("-ferror-spans" "-fshow-loaded-modules"))
-;;
-;;   (setq haskell-process-args-cabal-repl
-;;         '("--ghc-options=-ferror-spans -fshow-loaded-modules"))
-;;
-;;   (setq haskell-process-args-stack-ghci
-;;         '("--ghci-options=-ferror-spans -fshow-loaded-modules"
-;;           "--no-build" "--no-load"))
-;;
-;;   (setq haskell-process-args-cabal-new-repl
-;;         '("--ghc-options=-ferror-spans -fshow-loaded-modules"))
-;;   #+END_SRC
-;;
-;;** Coq
-;;
-;;   #+BEGIN_SRC emacs-lisp
-;;   (add-hook 'coq-mode-hook #'company-coq-mode)
-;;   #+END_SRC
-;;
-** Terraform
+   ;;
+   ;;   Use zsh:
+   ;;
+   ;;   #+BEGIN_SRC emacs-lisp
+   ;;   (setq vterm-shell "/usr/local/bin/zsh")
+   ;;   #+END_SRC
+   ;;
+   ;;   I'd like the =C-l= to work more like the standard terminal (which works
+   ;;   like running =clear=), and resolve this by simply removing the
+   ;;   buffer-content. Mind that this is not how =clear= works, it simply adds a
+   ;;   bunch of newlines, and puts the prompt at the top of the window, so it
+   ;;   does not remove anything. In Emacs removing stuff is less of a worry,
+   ;;   since we can always undo!
+   ;;
+   ;;   #+BEGIN_SRC emacs-lisp
+   ;;   (defun clear-comint ()
+   ;;     "Runs `comint-truncate-buffer' with the
+   ;;   `comint-buffer-maximum-size' set to zero."
+   ;;     (interactive)
+   ;;     (let ((comint-buffer-maximum-size 0))
+   ;;       (comint-truncate-buffer)))
+   ;;   #+END_SRC
+   ;;
+   ;;** Lisp
+   ;;
+   ;;   I use =Paredit= when editing lisp code, we enable this for all lisp-modes.
+   ;;
+   ;;   #+BEGIN_SRC emacs-lisp
+   ;;   (dolist (mode '(cider-repl-mode
+   ;;                   clojure-mode
+   ;;                   ielm-mode
+   ;;                   racket-mode
+   ;;                   racket-repl-mode
+   ;;                   slime-repl-mode
+   ;;                   lisp-mode
+   ;;                   emacs-lisp-mode
+   ;;                   lisp-interaction-mode
+   ;;                   scheme-mode))
+   ;;     ;; add paredit-mode to all mode-hooks
+   ;;     (add-hook (intern (concat (symbol-name mode) "-hook")) 'paredit-mode))
+   ;;   #+END_SRC
+   ;;
+   ;;*** Emacs Lisp
+   ;;
+   ;;    In =emacs-lisp-mode= we can enable =eldoc-mode= to display information
+   ;;    about a function or a variable in the echo area.
+   ;;
+   ;;    #+BEGIN_SRC emacs-lisp
+   ;;    (add-hook 'emacs-lisp-mode-hook 'turn-on-eldoc-mode)
+   ;;    (add-hook 'lisp-interaction-mode-hook 'turn-on-eldoc-mode)
+   ;;    #+END_SRC
+   ;;
+   ;;*** Common lisp
+   ;;
+   ;;    I use [[http://www.common-lisp.net/project/slime/][Slime]] along with =lisp-mode= to edit Common Lisp code. Slime
+   ;;    provides code evaluation and other great features, a must have for a
+   ;;    Common Lisp developer. [[http://www.quicklisp.org/beta/][Quicklisp]] is a library manager for Common Lisp,
+   ;;    and you can install Slime following the instructions from the site along
+   ;;    with this snippet.
+   ;;
+   ;;    #+BEGIN_SRC emacs-lisp
+   ;;    (defun activate-slime-helper ()
+   ;;      (when (file-exists-p "~/.quicklisp/slime-helper.el")
+   ;;        (load (expand-file-name "~/.quicklisp/slime-helper.el"))
+   ;;        (define-key slime-repl-mode-map (kbd "C-l")
+   ;;          'slime-repl-clear-buffer))
+   ;;      (remove-hook 'common-lisp-mode-hook #'activate-slime-helper))
+   ;;
+   ;;    (add-hook 'common-lisp-mode-hook #'activate-slime-helper)
+   ;;    #+END_SRC
+   ;;
+   ;;    We can specify what Common Lisp program Slime should use (I use SBCL).
+   ;;
+   ;;    #+BEGIN_SRC emacs-lisp
+   ;;    (setq inferior-lisp-program "sbcl")
+   ;;    #+END_SRC
+   ;;
+   ;;    More sensible =loop= indentation, borrowed from [[https://github.com/simenheg][simenheg]].
+   ;;
+   ;;    #+BEGIN_SRC emacs-lisp
+   ;;    (setq lisp-loop-forms-indentation   6
+   ;;          lisp-simple-loop-indentation  2
+   ;;          lisp-loop-keyword-indentation 6)
+   ;;    #+END_SRC
+   ;;
+   ;;*** Clojure
+   ;;
+   ;;    Indent neatly when using pattern matching in Clojure.
+   ;;
+   ;;    #+begin_src emacs-lisp
+   ;;    (with-eval-after-load 'clojure-mode
+   ;;     (define-clojure-indent
+   ;;       (match 1)))
+   ;;    #+end_src
+   ;;
+   ;;** Python
+   ;;
+   ;;   #+BEGIN_SRC emacs-lisp
+   ;;   (setq python-shell-interpreter "python3")
+   ;;   (add-hook 'python-mode-hook
+   ;;             (lambda () (setq forward-sexp-function nil)))
+   ;;   #+END_SRC
+   ;;
+   ;;** Assembler
+   ;;
+   ;;   When writing assembler code I use =#= for comments. By defining
+   ;;   =comment-start= we can add comments using =M-;= like in other programming
+   ;;   modes. Also in assembler should one be able to compile using =C-c C-c=.
+   ;;
+   ;;   #+BEGIN_SRC emacs-lisp
+   ;;   (defun asm-setup ()
+   ;;     (setq comment-start "#")
+   ;;     (local-set-key (kbd "C-c C-c") 'compile))
+   ;;
+   ;;   (add-hook 'asm-mode-hook 'asm-setup)
+   ;;   #+END_SRC
+   ;;
+   ;;** LaTeX and org-mode LaTeX export
+   ;;
+   ;;   =.tex=-files should be associated with =latex-mode= instead of
+   ;;   =tex-mode=.
+   ;;
+   ;;   #+BEGIN_SRC emacs-lisp
+   ;;   (add-to-list 'auto-mode-alist '("\\.tex\\'" . latex-mode))
+   ;;   #+END_SRC
+   ;;
+   ;;   Use [[http://mg.readthedocs.io/latexmk.html][latexmk]] for compilation by default.
+   ;;
+   ;;   #+BEGIN_SRC emacs-lisp
+   ;;   (add-hook 'LaTeX-mode-hook
+   ;;             (lambda ()
+   ;;               (add-hook 'hack-local-variables-hook
+   ;;                         (lambda ()
+   ;;                          (setq-local compile-command
+   ;;                                      (concat "latexmk -pdf -pvc "
+   ;;                                              (if (eq TeX-master t)
+   ;;                                                  (file-name-base (buffer-name))
+   ;;                                                TeX-master))))
+   ;;                         t t)))
+   ;;   #+END_SRC
+   ;;
+   ;;   Use ~biblatex~ for bibliography.
+   ;;
+   ;;   #+BEGIN_SRC emacs-lisp
+   ;;   (setq-default bibtex-dialect 'biblatex)
+   ;;   #+END_SRC
+   ;;
+   ;;   I like using the [[https://code.google.com/p/minted/][Minted]] package for source blocks in LaTeX. To make org
+   ;;   use this we add the following snippet.
+   ;;
+   ;;   #+BEGIN_SRC emacs-lisp
+   ;;   (eval-after-load 'org
+   ;;     '(add-to-list 'org-latex-packages-alist '("" "minted")))
+   ;;   (setq org-latex-listings 'minted)
+   ;;   #+END_SRC
+   ;;
+   ;;   Because [[https://code.google.com/p/minted/][Minted]] uses [[http://pygments.org][Pygments]] (an external process), we must add the
+   ;;   =-shell-escape= option to the =org-latex-pdf-process= commands. The
+   ;;   =tex-compile-commands= variable controls the default compile command for
+   ;;   Tex- and LaTeX-mode, we can add the flag with a rather dirty statement
+   ;;   (if anyone finds a nicer way to do this, please let me know).
+   ;;
+   ;;   #+BEGIN_SRC emacs-lisp
+   ;;   (eval-after-load 'tex-mode
+   ;;     '(setcar (cdr (cddaar tex-compile-commands)) " -shell-escape "))
+   ;;   #+END_SRC
+   ;;
+   ;;   When exporting from Org to LaTeX, use ~latexmk~ for compilation.
+   ;;
+   ;;   #+BEGIN_SRC emacs-lisp
+   ;;   (eval-after-load 'ox-latex
+   ;;     '(setq org-latex-pdf-process
+   ;;            '("latexmk -pdflatex='pdflatex -shell-escape -interaction nonstopmode' -pdf -f %f")))
+   ;;   #+END_SRC
+   ;;
+   ;;   For my thesis, I need to use our university's LaTeX class, this snippet
+   ;;   makes that class available.
+   ;;
+   ;;   #+BEGIN_SRC emacs-lisp
+   ;;   (eval-after-load "ox-latex"
+   ;;     '(progn
+   ;;        (add-to-list 'org-latex-classes
+   ;;                     '("ifimaster"
+   ;;                       "\\documentclass{ifimaster}
+   ;;   [DEFAULT-PACKAGES]
+   ;;   [PACKAGES]
+   ;;   [EXTRA]
+   ;;   \\usepackage{babel,csquotes,ifimasterforside,url,varioref}"
+   ;;                      ("\\chapter{%s}" . "\\chapter*{%s}")
+   ;;                      ("\\section{%s}" . "\\section*{%s}")
+   ;;                      ("\\subsection{%s}" . "\\subsection*{%s}")
+   ;;                      ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+   ;;                      ("\\paragraph{%s}" . "\\paragraph*{%s}")
+   ;;                      ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
+   ;;        (add-to-list 'org-latex-classes
+   ;;                     '("easychair" "\\documentclass{easychair}"
+   ;;                      ("\\section{%s}" . "\\section*{%s}")
+   ;;                      ("\\subsection{%s}" . "\\subsection*{%s}")
+   ;;                      ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+   ;;                      ("\\paragraph{%s}" . "\\paragraph*{%s}")
+   ;;                      ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
+   ;;       (custom-set-variables '(org-export-allow-bind-keywords t))))
+   ;;   #+END_SRC
+   ;;
+   ;;   Use Emacs for opening the PDF file, when invoking ~C-c C-e l o~.
+   ;;
+   ;;   #+BEGIN_SRC emacs-lisp
+   ;;   (require 'org)
+   ;;   (add-to-list 'org-file-apps '("\\.pdf\\'" . emacs))
+   ;;   #+END_SRC
+   ;;
+   ;;** Haskell
+   ;;
+   ;;   =haskell-doc-mode= is similar to =eldoc=, it displays documentation in
+   ;;   the echo area. Haskell has several indentation modes - I prefer using
+   ;;   =haskell-indent=.
+   ;;
+   ;;   #+BEGIN_SRC emacs-lisp
+   ;;   (add-hook 'haskell-mode-hook 'interactive-haskell-mode)
+   ;;   (add-hook 'haskell-mode-hook 'turn-on-haskell-doc-mode)
+   ;;   (add-hook 'haskell-mode-hook 'turn-on-haskell-indent)
+   ;;   #+END_SRC
+   ;;
+   ;;   Due to a bug in haskell-mode I have to keep this monstrosity in my config...
+   ;;   #+BEGIN_SRC emacs-lisp
+   ;;   (setq haskell-process-args-ghci
+   ;;         '("-ferror-spans" "-fshow-loaded-modules"))
+   ;;
+   ;;   (setq haskell-process-args-cabal-repl
+   ;;         '("--ghc-options=-ferror-spans -fshow-loaded-modules"))
+   ;;
+   ;;   (setq haskell-process-args-stack-ghci
+   ;;         '("--ghci-options=-ferror-spans -fshow-loaded-modules"
+   ;;           "--no-build" "--no-load"))
+   ;;
+   ;;   (setq haskell-process-args-cabal-new-repl
+   ;;         '("--ghc-options=-ferror-spans -fshow-loaded-modules"))
+   ;;   #+END_SRC
+   ;;
+   ;;** Coq
+   ;;
+   ;;   #+BEGIN_SRC emacs-lisp
+   ;;   (add-hook 'coq-mode-hook #'company-coq-mode)
+   ;;   #+END_SRC
+   ;;
+** COMMENT Terraform
 
    #+begin_src emacs-lisp
-    (with-eval-after-load 'eglot
-   (add-to-list 'eglot-server-programs
-               '(terraform-mode . ("terraform-ls" "serve"))))
-    (add-hook 'terraform-mode-hook 'eglot-ensure)
+   (with-eval-after-load 'eglot
+     (add-to-list 'eglot-server-programs
+                  '(terraform-mode . ("terraform-ls" "serve"))))
+   (add-hook 'terraform-mode-hook 'eglot-ensure)
    #+end_src
 
-# ** Markdown
+   # ** Markdown
 
-#   #+begin_src emacs-lisp
-#   (add-to-list 'eglot-server-programs '(markdown-mode . ("marksman")))
-#   (add-hook 'markdown-mode-hook #'eglot-ensure)
-#   #+end_src
+   #   #+begin_src emacs-lisp
+   #   (add-to-list 'eglot-server-programs '(markdown-mode . ("marksman")))
+   #   (add-hook 'markdown-mode-hook #'eglot-ensure)
+   #   #+end_src
 
 * Key bindings
 
@@ -1463,30 +1798,30 @@
 
 ** Bindings for [[https://github.com/abo-abo/define-word][define-word]]
 
-  #+BEGIN_SRC emacs-lisp
-  (define-key custom-bindings-map (kbd "C-c D") 'define-word-at-point)
-  #+END_SRC
+   #+BEGIN_SRC emacs-lisp
+   (define-key custom-bindings-map (kbd "C-c D") 'define-word-at-point)
+   #+END_SRC
 
 ** Bindings for [[https://github.com/magnars/expand-region.el][expand-region]]
 
-  #+BEGIN_SRC emacs-lisp
-  (define-key custom-bindings-map (kbd "C->")  'er/expand-region)
-  (define-key custom-bindings-map (kbd "C-<")  'er/contract-region)
-  #+END_SRC
+   #+BEGIN_SRC emacs-lisp
+   (define-key custom-bindings-map (kbd "C->")  'er/expand-region)
+   (define-key custom-bindings-map (kbd "C-<")  'er/contract-region)
+   #+END_SRC
 
 ** Bindings for [[https://github.com/magnars/multiple-cursors.el][multiple-cursors]]
 
-  #+BEGIN_SRC emacs-lisp
-  (define-key custom-bindings-map (kbd "C-c e")  'mc/edit-lines)
-  (define-key custom-bindings-map (kbd "C-c f")  'mc/mark-all-like-this)
-  (define-key custom-bindings-map (kbd "C-c n")  'mc/mark-next-like-this)
-  #+END_SRC
+   #+BEGIN_SRC emacs-lisp
+   (define-key custom-bindings-map (kbd "C-c e")  'mc/edit-lines)
+   (define-key custom-bindings-map (kbd "C-c f")  'mc/mark-all-like-this)
+   (define-key custom-bindings-map (kbd "C-c n")  'mc/mark-next-like-this)
+   #+END_SRC
 
 ** Bindings for [[https://magit.vc/][Magit]]
 
-  #+BEGIN_SRC emacs-lisp
-  (define-key custom-bindings-map (kbd "C-c m") 'magit-status)
-  #+END_SRC
+   #+BEGIN_SRC emacs-lisp
+   (define-key custom-bindings-map (kbd "C-c m") 'magit-status)
+   #+END_SRC
 
 ** Bindings for [[https://github.com/abo-abo/swiper][Counsel]]
 
@@ -1500,12 +1835,12 @@
 
 ** Bindings for [[http://company-mode.github.io/][company-mode]]
 
-  #+BEGIN_SRC emacs-lisp
-  (define-key company-active-map (kbd "C-d") 'company-show-doc-buffer)
-  (define-key company-active-map (kbd "C-n") 'company-select-next)
-  (define-key company-active-map (kbd "C-p") 'company-select-previous)
-  (define-key company-active-map (kbd "<tab>") 'company-complete)
-  #+END_SRC
+   #+BEGIN_SRC emacs-lisp
+   (define-key company-active-map (kbd "C-d") 'company-show-doc-buffer)
+   (define-key company-active-map (kbd "C-n") 'company-select-next)
+   (define-key company-active-map (kbd "C-p") 'company-select-previous)
+   (define-key company-active-map (kbd "<tab>") 'company-complete)
+   #+END_SRC
 
 ** Bindings for [[https://github.com/bbatsov/projectile][Projectile]]
 
@@ -1513,13 +1848,13 @@
    (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
    #+END_SRC
 
-;;** Bindings for [[https://github.com/clojure-emacs/cider][Cider]]
-;;
-;;   #+BEGIN_SRC emacs-lisp
-;;   (with-eval-after-load 'cider
-;;    (define-key cider-repl-mode-map (kbd "C-l") 'cider-repl-clear-buffer))
-;;   #+END_SRC
-;;
+   ;;** Bindings for [[https://github.com/clojure-emacs/cider][Cider]]
+   ;;
+   ;;   #+BEGIN_SRC emacs-lisp
+   ;;   (with-eval-after-load 'cider
+   ;;    (define-key cider-repl-mode-map (kbd "C-l") 'cider-repl-clear-buffer))
+   ;;   #+END_SRC
+   ;;
 ** Bindings for [[https://github.com/rnkn/olivetti][Olivetti]]
 
    #+BEGIN_SRC emacs-lisp
@@ -1528,70 +1863,70 @@
 
 ** Bindings for built-ins
 
-  #+BEGIN_SRC emacs-lisp
-  (define-key custom-bindings-map (kbd "M-u")         'upcase-dwim)
-  (define-key custom-bindings-map (kbd "M-c")         'capitalize-dwim)
-  (define-key custom-bindings-map (kbd "M-l")         'downcase-dwim)
-  (define-key custom-bindings-map (kbd "M-]")         'other-frame)
-  (define-key custom-bindings-map (kbd "C-j")         'newline-and-indent)
-  (define-key custom-bindings-map (kbd "C-c s")       'ispell-word)
-  (define-key comint-mode-map     (kbd "C-l")         'clear-comint)
-  #+END_SRC
+   #+BEGIN_SRC emacs-lisp
+   (define-key custom-bindings-map (kbd "M-u")         'upcase-dwim)
+   (define-key custom-bindings-map (kbd "M-c")         'capitalize-dwim)
+   (define-key custom-bindings-map (kbd "M-l")         'downcase-dwim)
+   (define-key custom-bindings-map (kbd "M-]")         'other-frame)
+   (define-key custom-bindings-map (kbd "C-j")         'newline-and-indent)
+   (define-key custom-bindings-map (kbd "C-c s")       'ispell-word)
+   (define-key comint-mode-map     (kbd "C-l")         'clear-comint)
+   #+END_SRC
 ** Bindings for functions defined [[sec:defuns][above]].
 
-  #+BEGIN_SRC emacs-lisp
-  ;;  (define-key global-map          (kbd "M-p")     'jump-to-previous-like-this)
-  ;;  (define-key global-map          (kbd "M-n")     'jump-to-next-like-this)
-  ;;  (define-key custom-bindings-map (kbd "M-,")     'jump-to-previous-like-this)
-  ;;  (define-key custom-bindings-map (kbd "M-.")     'jump-to-next-like-this)
-  ;;  (define-key custom-bindings-map (kbd "C-c .")   (cycle-themes))
-  ;;  (define-key custom-bindings-map (kbd "C-x k")   'kill-this-buffer-unless-scratch)
-  ;;  (define-key custom-bindings-map (kbd "C-c C-0") 'global-scale-default)
-  ;;  (define-key custom-bindings-map (kbd "C-c C-=") 'global-scale-up)
-  ;;  (define-key custom-bindings-map (kbd "C-c C-+") 'global-scale-up)
-  ;;  (define-key custom-bindings-map (kbd "C-c C--") 'global-scale-down)
+   #+BEGIN_SRC emacs-lisp
+   ;;  (define-key global-map          (kbd "M-p")     'jump-to-previous-like-this)
+   ;;  (define-key global-map          (kbd "M-n")     'jump-to-next-like-this)
+   ;;  (define-key custom-bindings-map (kbd "M-,")     'jump-to-previous-like-this)
+   ;;  (define-key custom-bindings-map (kbd "M-.")     'jump-to-next-like-this)
+   ;;  (define-key custom-bindings-map (kbd "C-c .")   (cycle-themes))
+   ;;  (define-key custom-bindings-map (kbd "C-x k")   'kill-this-buffer-unless-scratch)
+   ;;  (define-key custom-bindings-map (kbd "C-c C-0") 'global-scale-default)
+   ;;  (define-key custom-bindings-map (kbd "C-c C-=") 'global-scale-up)
+   ;;  (define-key custom-bindings-map (kbd "C-c C-+") 'global-scale-up)
+   ;;  (define-key custom-bindings-map (kbd "C-c C--") 'global-scale-down)
 
-  ;;  (define-key custom-bindings-map (kbd "C-c j")   'cycle-spacing-delete-newlines)
-  ;;  (define-key custom-bindings-map (kbd "C-c d")   'duplicate-thing)
-    (define-key custom-bindings-map (kbd "<C-tab>") 'tidy)
-  ;;  (define-key custom-bindings-map (kbd "C-z")     'toggle-vterm)
-  ;;  (dolist (n (number-sequence 1 9))
-  ;;    (global-set-key (kbd (concat "M-" (int-to-string n)))
-  ;;                    (lambda () (interactive) (switch-vterm n))))
-  ;;  (define-key custom-bindings-map (kbd "C-c C-q")
-  ;;    '(lambda ()
-  ;;       (interactive)
-  ;;       (focus-mode 1)
-  ;;       (focus-read-only-mode 1)))
-  ;;  (with-eval-after-load 'org
-  ;;    (define-key org-mode-map (kbd "C-'") 'org-sync-pdf))
-  #+END_SRC
+   ;;  (define-key custom-bindings-map (kbd "C-c j")   'cycle-spacing-delete-newlines)
+   ;;  (define-key custom-bindings-map (kbd "C-c d")   'duplicate-thing)
+   (define-key custom-bindings-map (kbd "<C-tab>") 'tidy)
+   ;;  (define-key custom-bindings-map (kbd "C-z")     'toggle-vterm)
+   ;;  (dolist (n (number-sequence 1 9))
+   ;;    (global-set-key (kbd (concat "M-" (int-to-string n)))
+   ;;                    (lambda () (interactive) (switch-vterm n))))
+   ;;  (define-key custom-bindings-map (kbd "C-c C-q")
+   ;;    '(lambda ()
+   ;;       (interactive)
+   ;;       (focus-mode 1)
+   ;;       (focus-read-only-mode 1)))
+   ;;  (with-eval-after-load 'org
+   ;;    (define-key org-mode-map (kbd "C-'") 'org-sync-pdf))
+   #+END_SRC
 
-  Lastly we need to activate the map by creating and activating the
-  =minor-mode=.
+   Lastly we need to activate the map by creating and activating the
+   =minor-mode=.
 
-  #+BEGIN_SRC emacs-lisp
-    (define-minor-mode custom-bindings-mode
-      "A mode that activates custom-bindings."
-      :init-value nil
-      :keymap custom-bindings-map)
-  #+END_SRC
+   #+BEGIN_SRC emacs-lisp
+   (define-minor-mode custom-bindings-mode
+     "A mode that activates custom-bindings."
+     :init-value nil
+     :keymap custom-bindings-map)
+   #+END_SRC
 
-;;* License
-;;
-;;  My Emacs configurations written in Org mode.
-;;
-;;  Copyright (c) 2020 - 2021 Tony Wolski
-;;
-;;  This program is free software: you can redistribute it and/or modify
-;;  it under the terms of the GNU General Public License as published by
-;;  the Free Software Foundation, either version 3 of the License, or
-;;  (at your option) any later version.
-;;
-;;  This program is distributed in the hope that it will be useful,
-;;  but WITHOUT ANY WARRANTY; without even the implied warranty of
-;;  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-;;  GNU General Public License for more details.
-;;
-;;  You should have received a copy of the GNU General Public License
-;;  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+   ;;* License
+   ;;
+   ;;  My Emacs configurations written in Org mode.
+   ;;
+   ;;  Copyright (c) 2020 - 2021 Tony Wolski
+   ;;
+   ;;  This program is free software: you can redistribute it and/or modify
+   ;;  it under the terms of the GNU General Public License as published by
+   ;;  the Free Software Foundation, either version 3 of the License, or
+   ;;  (at your option) any later version.
+   ;;
+   ;;  This program is distributed in the hope that it will be useful,
+   ;;  but WITHOUT ANY WARRANTY; without even the implied warranty of
+   ;;  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   ;;  GNU General Public License for more details.
+   ;;
+   ;;  You should have received a copy of the GNU General Public License
+   ;;  along with this program.  If not, see <http://www.gnu.org/licenses/>.
