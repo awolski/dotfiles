@@ -407,7 +407,7 @@
    #+begin_src emacs-lisp
    (require 'mu4e)
 
-   (require 'org-mu4e)
+   (require 'mu4e-org)
    (require 'smtpmail)
 
    (setq send-mail-function 'smtpmail-send-it
@@ -478,8 +478,8 @@
                                         "maildir:/yvant/INBOX")
                                         " OR "))
 
-   (add-to-list 'mu4e-bookmarks
-                '(inbox-folders "Inbox" ?i))
+;;   (add-to-list 'mu4e-bookmarks
+;;                '(inbox-folders "Inbox" ?i))
 
    ;; Prevent mu4e from permanently deleting trashed items
    ;; This snippet was taken from the following article:
@@ -936,8 +936,7 @@
          org-catch-invisible-edits 'smart
          org-hierarchical-todo-statistics nil
          org-startup-folded t
-         org-agenda-window-setup 'current-window
-         org-adapt-indentation f)
+         org-agenda-window-setup 'current-window)
    #+end_src
 
    Refiling...
@@ -969,7 +968,7 @@
 
    #+begin_src emacs-lisp
    (setq org-todo-keywords
-         (quote ((sequence "TODO(t)" "NEXT(n)" "SOMEDAY(s)" "ACTIVE(a)" "|" "DONE(d)")
+         (quote ((sequence "TODO(t)" "NEXT(n)" "SOMEDAY(s)" "|" "DONE(d!/!)")
                  (sequence "WAITING(w@/!)" "HOLD(h@/!)" "|" "CANCELLED(c@/!)" "PHONE" "MEETING"))))
 
    (setq org-todo-keyword-faces
@@ -983,6 +982,47 @@
                  ("CANCELLED" :foreground "#6b705c" :weight bold)
                  ("MEETING" :foreground "#6b705c" :weight bold)
                  ("PHONE" :foreground "#6b705c" :weight bold))))
+   #+end_src
+
+   Global column view.
+
+   #+begin_src emacs-lisp
+   ; Set default column view headings: Task Effort Clock_Summary
+   (setq org-columns-default-format "%80ITEM(Task) %10Effort(Effort){:} %10CLOCKSUM")
+
+   ; global Effort estimate values
+   ; global STYLE property values for completion
+   (setq org-global-properties (quote (("Effort_ALL" . "0:15 0:30 0:45 1:00 2:00 3:00 4:00 5:00 6:00 0:00")
+                                       ("STYLE_ALL" . "habit"))))
+   #+end_src
+
+   Quick access to Org tags.
+
+   #+begin_src emacs-lisp
+   ; Tags with fast selection keys
+   (setq org-tag-alist (quote ((:startgroup)
+                               ("@errand" . ?e)
+                               ("@office" . ?o)
+                               ("@home" . ?H)
+                               (:endgroup)
+                               ("WAITING" . ?w)
+                               ("HOLD" . ?h)
+                               ("PERSONAL" . ?p)
+                               ("EIRA" . ?E)
+                               ("BODHI" . ?B)
+                               ("WORK" . ?W)
+                               ("ORG" . ?O)
+                               ("AWOLSKI" . ?N)
+                               ("CRYPT" . ?C)
+                               ("NOTE" . ?n)
+                               ("CANCELLED" . ?c)
+                               ("FLAGGED" . ??))))
+
+   ; ALLOW SETTING SINGLE tags without the menu
+   (setq org-fast-tag-selection-single-key (quote expert))
+
+   ; For tag searches ignore tasks with scheduled and deadline dates
+   (setq org-agenda-tags-todo-honor-ignore-options t)
    #+end_src
 
    Configure custom agenda views.
@@ -1073,11 +1113,11 @@
            ("j" "Journal" entry (file+olp+datetree "~/org/journal.org")
             "* %?\n  %U\n" :clock-in t :clock-resume t :tree-type week)
            ("d" "Templates for my divorce")
-           ("dj" "Divorce Journal" entry (file+olp+datetree "~/org/divorce.org" "Journal")
+           ("dj" "Divorce Journal" entry (file+olp+datetree "~/org/em.org" "Journal")
             "* %?\n  %U\n" :tree-type week)
-           ("de" "Childcare Emma" table-line (file+olp "~/org/divorce.org" "Childcare" "Emma")
+           ("de" "Childcare Emma" table-line (file+olp "~/org/em.org" "Childcare" "Emma")
             "|%^T|%^T|||%^{prompt|Both|Bodhi|Eira}||" :table-line-pos "II-1" :kill-buffer t :jump-to-captured t)
-           ("dt" "Childcare Tony" table-line (file+olp "~/org/divorce.org" "Childcare" "Tony")
+           ("dt" "Childcare Tony" table-line (file+olp "~/org/em.org" "Childcare" "Tony")
             "|%^T|%^T|||%^{prompt|Both|Bodhi|Eira}||" :table-line-pos "II-1" :kill-buffer t :jump-to-captured t)
            ("g" "Forge Topic" entry (file "~/org/refile.org")
             "* TODO %:description\n  %?\n  %a\n  %u\n" :clock-in t :clock-resume t)
