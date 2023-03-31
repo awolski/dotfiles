@@ -1105,7 +1105,7 @@
    #+begin_src emacs-lisp
    (setq org-capture-templates
          '(("t" "Task" entry (file "~/org/refile.org")
-            "* TODO %?\n  %u\n  %a\n" :clock-in t :clock-resume t)
+            "* TODO %?\n%u\n %a\n" :clock-in t :clock-resume t)
            ("r" "Respond" entry (file "~/org/refile.org")
             "* NEXT Respond to %:from on %:subject\nSCHEDULED: %t\n%U\n%a\n" :clock-in t :clock-resume t :immediate-finish t)
            ("e" "Respond to Emma" entry (file "~/org/em.org")
