@@ -83,3 +83,6 @@ alias jabra_off='bluetoothctl disconnect 50:C2:ED:EA:89:3C'
 
 # Keyboard
 alias kb="setxkbmap gb -option 'ctrl:nocaps'"
+
+# Wireguard
+alias wgs="sudo systemctl restart wg-quick@gb12.service"
