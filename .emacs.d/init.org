@@ -937,6 +937,7 @@
          org-hierarchical-todo-statistics nil
          org-startup-folded t
          org-agenda-window-setup 'current-window)
+
    #+end_src
 
    Refiling...
@@ -1052,6 +1053,18 @@
                          (org-agenda-skip-function 'bh/skip-non-stuck-projects)
                          (org-agenda-sorting-strategy
                           '(category-keep))))
+             (tags-todo "-CANCELLED/!NEXT"
+                        ((org-agenda-overriding-header (concat "Next Tasks"
+                                                               (if bh/hide-scheduled-and-waiting-next-tasks
+                                                                   ""
+                                                                 " (including WAITING and SCHEDULED tasks)")))
+                         (org-agenda-skip-function 'bh/skip-projects-and-habits-and-single-tasks)
+                         (org-tags-match-list-sublevels t)
+                         (org-agenda-todo-ignore-scheduled bh/hide-scheduled-and-waiting-next-tasks)
+                         (org-agenda-todo-ignore-deadlines bh/hide-scheduled-and-waiting-next-tasks)
+                         (org-agenda-todo-ignore-with-date bh/hide-scheduled-and-waiting-next-tasks)
+                         (org-agenda-sorting-strategy
+                          '(todo-state-down effort-up category-keep))))
              (tags-todo "-HOLD-CANCELLED/!"
                         ((org-agenda-overriding-header "Projects")
                          (org-agenda-skip-function 'bh/skip-non-projects)
@@ -1116,7 +1129,7 @@
             "* %?\n%U\n" :clock-in t :clock-resume t :tree-type week)
            ("d" "Templates for my divorce")
            ("dj" "Divorce Journal" entry (file+olp+datetree "~/org/em.org" "Journal")
-            "* %?\n  %U\n" :tree-type week)
+            "* %?\n%U\n" :tree-type week)
            ("de" "Childcare Emma" table-line (file+olp "~/org/em.org" "Childcare" "Emma")
             "|%^T|%^T|||%^{prompt|Both|Bodhi|Eira}||" :table-line-pos "II-1" :kill-buffer t :jump-to-captured t)
            ("dt" "Childcare Tony" table-line (file+olp "~/org/em.org" "Childcare" "Tony")
