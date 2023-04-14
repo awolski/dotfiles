@@ -86,3 +86,6 @@ alias kb="setxkbmap gb -option 'ctrl:nocaps'"
 
 # Wireguard
 alias wgs="sudo systemctl restart wg-quick@gb12.service"
+
+# Emacs
+alias recover_emacs="pkill -USR2 emacs"
