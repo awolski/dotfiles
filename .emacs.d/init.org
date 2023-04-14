@@ -937,7 +937,12 @@
          org-hierarchical-todo-statistics nil
          org-startup-folded t
          org-agenda-window-setup 'current-window)
+   #+end_src
 
+   Enable org-habit module.
+
+   #+begin_src emacs-lisp
+   (add-to-list 'org-modules 'org-habit)
    #+end_src
 
    Refiling...
@@ -1042,7 +1047,10 @@
            ("h" "Habits" tags-todo "STYLE=\"habit\""
             ((org-agenda-overriding-header "Habits")
              (org-agenda-sorting-strategy
-              '(todo-state-down effort-up category-keep))))
+              '(todo-states-down effort-up category-keep))))
+           ("b" "Bookmarks" tags "BOOKMARK"
+            ((org-agenda-overriding-header "Bookmarks")
+             (org-tags-match-list-sublevels t)))
            (" " "Agenda"
             ((agenda "" ((org-agenda-span 1)))
              (tags "REFILE"
@@ -1121,33 +1129,22 @@
             "* TODO %?\n%u\n %a\n" :clock-in t :clock-resume t)
            ("r" "Respond" entry (file "~/org/refile.org")
             "* NEXT Respond to %:from on %:subject\nSCHEDULED: %t\n%U\n%a\n" :clock-in t :clock-resume t :immediate-finish t)
-           ("e" "Respond to Emma" entry (file "~/org/em.org")
-            "* TODO Respond to %:from on %:subject\nSCHEDULED: <%(org-read-date nil nil \"+1d\")>\n%U\n%a\n" :clock-in t :clock-resume t :immediate-finish t)
+           ("b" "Bookmark" entry (file+headline  "~/org/notes.org" "Bookmarks")
+            "* %?\n:PROPERTIES:\n:CREATED: %U\n:END:\n\n" :empty-lines 1)
            ("n" "Note" entry (file  "~/org/refile.org")
             "* %? :NOTE:\n%U\n %a\n" :clock-in t :clock-resume t)
            ("j" "Journal" entry (file+olp+datetree "~/org/journal.org")
             "* %?\n%U\n" :clock-in t :clock-resume t :tree-type week)
-           ("d" "Templates for my divorce")
-           ("dj" "Divorce Journal" entry (file+olp+datetree "~/org/em.org" "Journal")
-            "* %?\n%U\n" :tree-type week)
-           ("de" "Childcare Emma" table-line (file+olp "~/org/em.org" "Childcare" "Emma")
-            "|%^T|%^T|||%^{prompt|Both|Bodhi|Eira}||" :table-line-pos "II-1" :kill-buffer t :jump-to-captured t)
-           ("dt" "Childcare Tony" table-line (file+olp "~/org/em.org" "Childcare" "Tony")
-            "|%^T|%^T|||%^{prompt|Both|Bodhi|Eira}||" :table-line-pos "II-1" :kill-buffer t :jump-to-captured t)
            ("g" "Forge Topic" entry (file "~/org/refile.org")
             "* TODO %:description\n  %?\n  %a\n  %u\n" :clock-in t :clock-resume t)
            ("#" "used by gnus-icalendar-org" entry (file+olp+datetree "~/org/calendar.org")
              "%i %?\n" :time-prompt t :tree-type week)
            ("m" "Meeting" entry (file+olp+datetree "~/org/calendar.org")
-            "* MEETING with %? :MEETING:\n  %U" :clock-in t :clock-resume t)))
+            "* MEETING with %? :MEETING:\n  %U" :clock-in t :clock-resume t)
+           ("h" "Habit" entry (file "~/org/refile.org")
+             "* NEXT %?\n%U\n%a\nSCHEDULED: %(format-time-string \"%<<%Y-%m-%d %a .+1d/3d>>\")\n:PROPERTIES:\n:STYLE: habit\n:REPEAT_TO_STATE: NEXT\n:END:\n")))
 
-   ;; (setq org-capture-templates
-   ;;               ("w" "org-protocol" entry (file "~/git/org/refile.org")
-   ;;                "* TODO Review %c\n%U\n" :immediate-finish t)
-   ;;               ("p" "Phone call" entry (file "~/git/org/refile.org")
    ;;                "* PHONE %? :PHONE:\n%U" :clock-in t :clock-resume t)
-   ;;               ("h" "Habit" entry (file "~/git/org/refile.org")
-   ;;                "* NEXT %?\n%U\n%a\nSCHEDULED: %(format-time-string \"%<<%Y-%m-%d %a .+1d/3d>>\")\n:PROPERTIES:\n:STYLE: habit\n:REPEAT_TO_STATE: NEXT\n:END:\n"))))
    #+end_src
 
    Keybindings straight to capture templates.
