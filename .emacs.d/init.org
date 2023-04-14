@@ -936,6 +936,7 @@
          org-catch-invisible-edits 'smart
          org-hierarchical-todo-statistics nil
          org-startup-folded t
+         org-startup-indented t
          org-agenda-window-setup 'current-window)
    #+end_src
 
@@ -1126,17 +1127,17 @@
    #+begin_src emacs-lisp
    (setq org-capture-templates
          '(("t" "Task" entry (file "~/org/refile.org")
-            "* TODO %?\n%u\n %a\n" :clock-in t :clock-resume t)
+            "* TODO %?\n%u\n%a\n" :clock-in t :clock-resume t)
            ("r" "Respond" entry (file "~/org/refile.org")
             "* NEXT Respond to %:from on %:subject\nSCHEDULED: %t\n%U\n%a\n" :clock-in t :clock-resume t :immediate-finish t)
            ("b" "Bookmark" entry (file+headline  "~/org/notes.org" "Bookmarks")
             "* %?\n:PROPERTIES:\n:CREATED: %U\n:END:\n\n" :empty-lines 1)
            ("n" "Note" entry (file  "~/org/refile.org")
-            "* %? :NOTE:\n%U\n %a\n" :clock-in t :clock-resume t)
+            "* %? :NOTE:\n%U\n%a\n" :clock-in t :clock-resume t)
            ("j" "Journal" entry (file+olp+datetree "~/org/journal.org")
             "* %?\n%U\n" :clock-in t :clock-resume t :tree-type week)
            ("g" "Forge Topic" entry (file "~/org/refile.org")
-            "* TODO %:description\n  %?\n  %a\n  %u\n" :clock-in t :clock-resume t)
+            "* TODO %:description\n%?\n%a\n  %u\n" :clock-in t :clock-resume t)
            ("#" "used by gnus-icalendar-org" entry (file+olp+datetree "~/org/calendar.org")
              "%i %?\n" :time-prompt t :tree-type week)
            ("m" "Meeting" entry (file+olp+datetree "~/org/calendar.org")
