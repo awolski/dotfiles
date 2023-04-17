@@ -8,240 +8,308 @@
 
 * About
 
-  This is a copy of [[https://github.com/larstvei/dot-emacs]] that I'm adapting for
-  my own use.
+This is a copy of [[https://github.com/larstvei/dot-emacs]] that I'm adapting for
+my own use.
 
-  This is an Emacs configuration file written in [[http://orgmode.org][Org mode]]. It is an attempt
-  to keep my =~/.emacs.d= tidy, but still be able to keep it all in one
-  file. I aim to briefly explain all my configurations as I go along!
+This is an Emacs configuration file written in [[http://orgmode.org][Org mode]]. It is an attempt to
+keep my =~/.emacs.d= tidy, but still be able to keep it all in one file. I aim
+to briefly explain all my configurations as I go along!
 
-  I would not recommend using this configuration /as-is/, because it
-  probably contains a lot you don't really need. I do, however, hope people
-  find some golden nuggets that they can smuggle into their own configs.
+I would not recommend using this configuration /as-is/, because it probably
+contains a lot you don't really need. I do, however, hope people find some
+golden nuggets that they can smuggle into their own configs.
 
-  If you really do want to try this config out, this is how I'd go about it:
+If you really do want to try this config out, this is how I'd go about it:
 
-  Clone the repo.
-  #+BEGIN_SRC sh :tangle no
-  git clone https://github.com/larstvei/dot-emacs
-  #+END_SRC
+Clone the repo.
+#+BEGIN_SRC sh :tangle no
+git clone https://github.com/larstvei/dot-emacs
+#+END_SRC
 
-  Backup your old =~/.emacs.d= (if necessary).
-  #+BEGIN_SRC sh :tangle no
-  mv ~/.emacs.d ~/.emacs.d-bak
-  #+END_SRC
+Backup your old =~/.emacs.d= (if necessary).
+#+BEGIN_SRC sh :tangle no
+mv ~/.emacs.d ~/.emacs.d-bak
+#+END_SRC
 
-  Backup your old =~/.emacs=-file (if necessary).
-  #+BEGIN_SRC sh :tangle no
-  mv ~/.emacs ~/.emacs-bak
-  #+END_SRC
+Backup your old =~/.emacs=-file (if necessary).
+#+BEGIN_SRC sh :tangle no
+mv ~/.emacs ~/.emacs-bak
+#+END_SRC
 
-  And finally
-  #+BEGIN_SRC sh :tangle no
-  mv dot-emacs ~/.emacs.d
-  #+END_SRC
+And finally
+#+BEGIN_SRC sh :tangle no
+mv dot-emacs ~/.emacs.d
+#+END_SRC
 
-  On first run it should install a bunch of packages (this might take a
-  while), and you might have to restart your Emacs the first time. If you
-  experience bugs, please let me know!
+On first run it should install a bunch of packages (this might take a while),
+and you might have to restart your Emacs the first time. If you experience
+bugs, please let me know!
 
 * Configurations
 ** Meta
 
-   All changes to the configuration should be done in =init.org=, *not* in
-   =init.el=. Any changes in the =init.el= will be overwritten by saving
-   =init.org=. The =init.el= in this repo should not be tracked by git, and
-   is replaced the first time Emacs is started (assuming it has been renamed
-   to =~/.emacs.d=).
+All changes to the configuration should be done in =init.org=, *not* in
+=init.el=. Any changes in the =init.el= will be overwritten by saving
+=init.org=. The =init.el= in this repo should not be tracked by git, and is
+replaced the first time Emacs is started (assuming it has been renamed to
+=~/.emacs.d=).
 
-   Emacs can't load =.org=-files directly, but =org-mode= provides functions
-   to extract the code blocks and write them to a file. There are multiple
-   ways of handling this; like suggested by [[http://emacs.stackexchange.com/questions/3143/can-i-use-org-mode-to-structure-my-emacs-or-other-el-configuration-file][this StackOverflow post]], one
-   could just use =org-babel-load-file=, but I had problems with
-   byte-compilation. Previously I tracked both the =org.=- and =el.=-files,
-   but the git commits got a little messy. So here is a new approach.
+Emacs can't load =.org=-files directly, but =org-mode= provides functions to
+extract the code blocks and write them to a file. There are multiple ways of
+handling this; like suggested by [[http://emacs.stackexchange.com/questions/3143/can-i-use-org-mode-to-structure-my-emacs-or-other-el-configuration-file][this StackOverflow post]], one could just use
+=org-babel-load-file=, but I had problems with byte-compilation. Previously I
+tracked both the =org.=- and =el.=-files, but the git commits got a little
+messy. So here is a new approach.
 
-   When this configuration is loaded for the first time, the ~init.el~ is
-   the file that is loaded. It looks like this:
+When this configuration is loaded for the first time, the ~init.el~ is the file
+that is loaded. It looks like this:
 
-   #+BEGIN_SRC emacs-lisp :tangle no
-   ;; This file replaces itself with the actual configuration at first run.
+#+BEGIN_SRC emacs-lisp :tangle no
+;; This file replaces itself with the actual configuration at first run.
 
-   ;; We can't tangle without org!
-   (require 'org)
-   ;; Open the configuration
-   (find-file (concat user-emacs-directory "init.org"))
-   ;; tangle it
-   (org-babel-tangle)
-   ;; load it
-   (load-file (concat user-emacs-directory "init.el"))
-   ;; finally byte-compile it
-   (byte-compile-file (concat user-emacs-directory "init.el"))
-   #+END_SRC
+;; We can't tangle without org!
+(require 'org)
+;; Open the configuration
+(find-file (concat user-emacs-directory "init.org"))
+;; tangle it
+(org-babel-tangle)
+;; load it
+(load-file (concat user-emacs-directory "init.el"))
+;; finally byte-compile it
+(byte-compile-file (concat user-emacs-directory "init.el"))
+#+END_SRC
 
-   It tangles the org-file, so that this file is overwritten with the actual
-   configuration.
+It tangles the org-file, so that this file is overwritten with the actual
+configuration.
 
-   There is no reason to track the =init.el= that is generated; by running
-   the following command =git= will not bother tracking it:
+There is no reason to track the =init.el= that is generated; by running
+the following command =git= will not bother tracking it:
 
-   #+BEGIN_SRC sh :tangle no
-   git update-index --assume-unchanged init.el
-   #+END_SRC
+#+BEGIN_SRC sh :tangle no
+git update-index --assume-unchanged init.el
+#+END_SRC
 
-   If one wishes to make changes to the repo-version of =init.el= start
-   tracking again with:
+If one wishes to make changes to the repo-version of =init.el= start
+tracking again with:
 
-   #+BEGIN_SRC sh :tangle no
-   git update-index --no-assume-unchanged init.el
-   #+END_SRC
+#+BEGIN_SRC sh :tangle no
+git update-index --no-assume-unchanged init.el
+#+END_SRC
 
-   I want lexical scoping for the init-file, which can be specified in the
-   header. The first line of the configuration is as follows:
+I want lexical scoping for the init-file, which can be specified in the
+header. The first line of the configuration is as follows:
 
-   #+BEGIN_SRC emacs-lisp
-   ;;; -*- lexical-binding: t -*-
-   #+END_SRC
+#+BEGIN_SRC emacs-lisp
+;;; -*- lexical-binding: t -*-
+#+END_SRC
 
-   The =init.el= should (after the first run) mirror the source blocks in
-   the =init.org=. We can use =C-c C-v t= to run =org-babel-tangle=, which
-   extracts the code blocks from the current file into a source-specific
-   file (in this case a =.el=-file).
+The =init.el= should (after the first run) mirror the source blocks in
+the =init.org=. We can use =C-c C-v t= to run =org-babel-tangle=, which
+extracts the code blocks from the current file into a source-specific
+file (in this case a =.el=-file).
 
-   To avoid doing this each time a change is made we can add a function to
-   the =after-save-hook= ensuring to always tangle and byte-compile the
-   =org=-document after changes.
+To avoid doing this each time a change is made we can add a function to
+the =after-save-hook= ensuring to always tangle and byte-compile the
+=org=-document after changes.
 
-   #+BEGIN_SRC emacs-lisp
-   (defun tangle-init ()
-     "If the current buffer is 'init.org' the code-blocks are
+#+BEGIN_SRC emacs-lisp
+(defun tangle-init ()
+  "If the current buffer is 'init.org' the code-blocks are
    tangled, and the tangled file is compiled."
-     (when (equal (buffer-file-name)
-                  (expand-file-name (concat user-emacs-directory "init.org")))
-       ;; Avoid running hooks when tangling.
-       (let ((prog-mode-hook nil))
-         (org-babel-tangle)
-         (byte-compile-file (concat user-emacs-directory "init.el")))))
+  (when (equal (buffer-file-name)
+               (expand-file-name (concat user-emacs-directory "init.org")))
+    ;; Avoid running hooks when tangling.
+    (let ((prog-mode-hook nil))
+      (org-babel-tangle)
+      (byte-compile-file (concat user-emacs-directory "init.el")))))
 
-   (add-hook 'after-save-hook 'tangle-init)
-   #+END_SRC
+(add-hook 'after-save-hook 'tangle-init)
+#+END_SRC
 
-   I'd like to keep a few settings private, so we load a =private.el= if it
-   exists after the init-file has loaded.
+I'd like to keep a few settings private, so we load a =private.el= if it
+exists after the init-file has loaded.
 
-   #+BEGIN_SRC emacs-lisp
-   (add-hook
-    'after-init-hook
-    (lambda ()
-      (let ((private-file (concat user-emacs-directory "private.el")))
-        (when (file-exists-p private-file)
-          (load-file private-file))
-        (when custom-file
-          (load-file custom-file))
-        (server-start))))
-   #+END_SRC
+#+BEGIN_SRC emacs-lisp
+(add-hook
+ 'after-init-hook
+ (lambda ()
+   (let ((private-file (concat user-emacs-directory "private.el")))
+     (when (file-exists-p private-file)
+       (load-file private-file))
+     (when custom-file
+       (load-file custom-file))
+     (server-start))))
+#+END_SRC
 
-   A common optimization is to temporarily disable garbage collection during
-   initialization. Here, we set the ~gc-cons-threshold~ to a ridiculously large
-   number, and restore the default value after initialization.
+A common optimization is to temporarily disable garbage collection during
+initialization. Here, we set the ~gc-cons-threshold~ to a ridiculously large
+number, and restore the default value after initialization.
 
-   #+BEGIN_SRC emacs-lisp
-   (let ((old-gc-treshold gc-cons-threshold))
-     (setq gc-cons-threshold most-positive-fixnum)
-     (add-hook 'after-init-hook
-               (lambda () (setq gc-cons-threshold old-gc-treshold))))
-   #+END_SRC
+#+BEGIN_SRC emacs-lisp
+(let ((old-gc-treshold gc-cons-threshold))
+  (setq gc-cons-threshold most-positive-fixnum)
+  (add-hook 'after-init-hook
+            (lambda () (setq gc-cons-threshold old-gc-treshold))))
+#+END_SRC
 
 ** Packages
 
-   Managing extensions for Emacs is simplified using =package= which is
-   built in to Emacs 24 and newer. To load downloaded packages we need to
-   initialize =package=. =cl= is a library that contains many functions from
-   Conmmon Lisp, and comes in handy quite often, so we want to make sure it's
-   loaded, along with =package=, which is obviously needed.
+Let's use [[https://github.com/radian-software/straight.el][straight.el]]: next-generation, purely functional package manager for
+the Emacs hacker, to manage our packages. First we need to initialise it.
 
-   #+BEGIN_SRC emacs-lisp
-   (require 'package)
-   (package-initialize)
-   #+END_SRC
+#+begin_src emacs-lisp
+(defvar bootstrap-version)
+(let ((bootstrap-file
+       (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
+      (bootstrap-version 6))
+  (unless (file-exists-p bootstrap-file)
+    (with-current-buffer
+        (url-retrieve-synchronously
+         "https://raw.githubusercontent.com/radian-software/straight.el/develop/install.el"
+         'silent 'inhibit-cookies)
+      (goto-char (point-max))
+      (eval-print-last-sexp)))
+  (load bootstrap-file nil 'nomessage))
+#+end_src
 
-   Packages can be fetched from different mirrors, [[http://melpa.milkbox.net/#/][melpa]] is the largest
-   archive and is well maintained.
+#+begin_src emacs-lisp
+(straight-use-package 'company)              ; Modular text completion framework
+(straight-use-package 'counsel)              ; Various completion functions using Ivy
+(straight-use-package 'counsel-jq)           ; Traverse complex JSON and YAML structures with live feedback
+(straight-use-package 'counsel-projectile)   ; Ivy integration for Projectile
+(straight-use-package 'define-word)          ; display the definition of word at point
+(straight-use-package 'diff-hl)              ; Highlight uncommitted changes using VC
+(straight-use-package 'doom-themes)          ; An opinionated pack of modern color-themes
+(straight-use-package 'eglot)                ; Emacs Polyglot; LSP client that stays out of your way
+(straight-use-package 'emms)                 ; Emacs multi-Media System, a media player
+(straight-use-package 'focus)                ; Dim color of text in surrounding sections
+(straight-use-package 'forge)                ; Work with Git Forges, like GitHub, in Magit
+(straight-use-package 'format-all)           ; Auto-format code in many languages
+(straight-use-package 'golden-ratio)         ; Automatic resizing windows to golden ratio
+(straight-use-package 'js2-mode)             ; Improved JavaScript editing mode
+(straight-use-package 'ledger-mode)          ; Major mode for editing ledger files
+(straight-use-package 'magit)                ; control Git from Emacs
+(straight-use-package 'markdown-mode)        ; Emacs Major mode for Markdown-formatted files
+(straight-use-package 'multiple-cursors)     ; Multiple cursors for Emacs
+(straight-use-package 'multi-vterm)          ; Manage multiple vterms in Emacs
+(straight-use-package 'ob-http)              ; Make http request within org-mode babel
+(straight-use-package 'olivetti)             ; Minor mode for a nice writing environment
+(straight-use-package 'org)                  ; Outline-based notes management and organizer
+(straight-use-package 'org-bullets)          ; Show bullets in org-mode as UTF-8 characters
+(straight-use-package 'org-ql)               ; Org query language, includes search commands and saved views
+(straight-use-package 'orgit)                ; Link to Magit buffers from Org documents
+(straight-use-package 'orgit-forge)          ; Org links to Forge Issue buffers
+(straight-use-package 'paredit)              ; minor mode for editing parentheses
+(straight-use-package 'pass)                 ; Password management with pass
+(straight-use-package 'password-store)       ; Use password-store for auth-source
+(straight-use-package 'pdf-tools)            ; Emacs support library for PDF files
+(straight-use-package 'pinentry)             ; Allows pinentry prompt via minibuffer
+(straight-use-package 'powerthesaurus)       ; Powerthesaurus integration for Emacs
+(straight-use-package 'projectile)           ; Manage and navigate projects in Emacs easily
+(straight-use-package 'restclient)           ; HTTP REST client tool for Emacs
+(straight-use-package 'slime)                ; Superior Lisp Interaction Mode for Emacs
+(straight-use-package 'smex)                 ; M-x interface with Ido-style fuzzy matching
+(straight-use-package 'terraform-mode)       ; Major mode for editing Terraform files
+(straight-use-package 'try)                  ; Try out Emacs packages
+(straight-use-package 'use-package)          ; Use-package declaration for simplifying your .emacs
+(straight-use-package 'vterm)                ; A terminal via libvterm
+(straight-use-package 'web-mode)             ; Major mode for editing HTML, CSS, JavaScript
+(straight-use-package 'which-key)            ; Display available keybindings in popup
 
-   #+BEGIN_SRC emacs-lisp
-   (setq package-archives
-         '(("gnu" . "https://elpa.gnu.org/packages/")
-           ("MELPA" . "https://melpa.org/packages/"))
-         package-archive-priorities
-         '(("MELPA" . 5)
-           ("gnu" . 0)))
-   #+END_SRC
+(use-package ox-hugo
+  :straight (ox-hugo :type git :host github :repo "kaushalmodi/ox-hugo"
+  :after ox))
+#+end_src
 
-   The configuration assumes that the packages listed below are
-   installed. To ensure we install missing packages if they are missing.
 
-   #+BEGIN_SRC emacs-lisp
-   (let* ((package--builtins nil)
-          (packages
-           '(auto-compile         ; automatically compile Emacs libraries
-             ;;cider                ; Clojure Interactive Development Environment
-             ;;clj-refactor         ; Commands for refactoring Clojure code
-             company              ; Modular text completion framework
-             ;;company-coq          ; A collection of extensions PG's Coq mode
-             counsel              ; Various completion functions using Ivy
-             counsel-jq           ; Traverse complex JSON and YAML structures with live feedback
-             counsel-projectile   ; Ivy integration for Projectile
-             define-word          ; display the definition of word at point
-             diff-hl              ; Highlight uncommitted changes using VC
-             doom-themes          ; An opinionated pack of modern color-themes
-             eglot                ; Emacs Polyglot; LSP client that stays out of your way
-             emms                 ; Emacs multi-Media System, a media player
-             ;;expand-region        ; Increase selected region by semantic units
-             focus                ; Dim color of text in surrounding sections
-             ;;flycheck             ; Modern on-the-fly syntax checking
-             ;;flycheck-ledger      ; Syntax checking for ledger
-             forge                ; Work with Git Forges, like GitHub, in Magit
-             format-all           ; Auto-format code in many languages
-             golden-ratio         ; Automatic resizing windows to golden ratio
-             ;;jedi                 ; Python auto-completion for Emacs
-             js2-mode             ; Improved JavaScript editing mode
-             ledger-mode          ; Major mode for editing ledger files
-             magit                ; control Git from Emacs
-             markdown-mode        ; Emacs Major mode for Markdown-formatted files
-             multiple-cursors     ; Multiple cursors for Emacs
-             multi-vterm          ; Manage multiple vterms in Emacs
-             ob-http              ; Make http request within org-mode babel
-             olivetti             ; Minor mode for a nice writing environment
-             org                  ; Outline-based notes management and organizer
-             org-bullets          ; Show bullets in org-mode as UTF-8 characters
-             org-ql               ; Org query language, includes search commands and saved views
-             orgit                ; Link to Magit buffers from Org documents
-             orgit-forge          ; Org links to Forge Issue buffers
-             ;;org-roam             ; Roam Research replica with Org-mode
-             ;;org-roam-server      ; Org Roam Database Visualizer
-             paredit              ; minor mode for editing parentheses
-             pass                 ; Password management with pass
-             password-store       ; Use password-store for auth-source
-             pdf-tools            ; Emacs support library for PDF files
-             pinentry             ; Allows pinentry prompt via minibuffer
-             powerthesaurus       ; Powerthesaurus integration for Emacs
-             projectile           ; Manage and navigate projects in Emacs easily
-             restclient           ; HTTP REST client tool for Emacs
-             slime                ; Superior Lisp Interaction Mode for Emacs
-             smex                 ; M-x interface with Ido-style fuzzy matching
-             terraform-mode       ; Major mode for editing Terraform files
-             try                  ; Try out Emacs packages
-             vterm                ; A terminal via libvterm
-             web-mode             ; Major mode for editing HTML, CSS, JavaScript
-             which-key            ; Display available keybindings in popup
-             )))
-     (let ((packages (seq-remove 'package-installed-p packages)))
-       (print packages)
-       (when packages
-         ;; Install uninstalled packages
-         (package-refresh-contents)
-         (mapc 'package-install packages))))
-   #+END_SRC
+;;   Managing extensions for Emacs is simplified using =package= which is
+;;   built in to Emacs 24 and newer. To load downloaded packages we need to
+;;   initialize =package=. =cl= is a library that contains many functions from
+;;   Conmmon Lisp, and comes in handy quite often, so we want to make sure it's
+;;   loaded, along with =package=, which is obviously needed.
+;;
+;;   #+BEGIN_SRC emacs-lisp
+;;   (require 'package)
+;;   (package-initialize)
+;;   #+END_SRC
+;;
+;;   Packages can be fetched from different mirrors, [[http://melpa.milkbox.net/#/][melpa]] is the largest
+;;   archive and is well maintained.
+;;
+;;   #+BEGIN_SRC emacs-lisp
+;;   (setq package-archives
+;;         '(("gnu" . "https://elpa.gnu.org/packages/")
+;;           ("MELPA" . "https://melpa.org/packages/"))
+;;         package-archive-priorities
+;;         '(("MELPA" . 5)
+;;           ("gnu" . 0)))
+;;   #+END_SRC
+;;
+;;   The configuration assumes that the packages listed below are
+;;   installed. To ensure we install missing packages if they are missing.
+;;
+;;   #+BEGIN_SRC emacs-lisp
+;;   (let* ((package--builtins nil)
+;;          (packages
+;;           '(auto-compile         ; automatically compile Emacs libraries
+;;             ;;cider                ; Clojure Interactive Development Environment
+;;             ;;clj-refactor         ; Commands for refactoring Clojure code
+;;             company              ; Modular text completion framework
+;;             ;;company-coq          ; A collection of extensions PG's Coq mode
+;;             counsel              ; Various completion functions using Ivy
+;;             counsel-jq           ; Traverse complex JSON and YAML structures with live feedback
+;;             counsel-projectile   ; Ivy integration for Projectile
+;;             define-word          ; display the definition of word at point
+;;             diff-hl              ; Highlight uncommitted changes using VC
+;;             doom-themes          ; An opinionated pack of modern color-themes
+;;             eglot                ; Emacs Polyglot; LSP client that stays out of your way
+;;             emms                 ; Emacs multi-Media System, a media player
+;;             ;;expand-region        ; Increase selected region by semantic units
+;;             focus                ; Dim color of text in surrounding sections
+;;             ;;flycheck             ; Modern on-the-fly syntax checking
+;;             ;;flycheck-ledger      ; Syntax checking for ledger
+;;             forge                ; Work with Git Forges, like GitHub, in Magit
+;;             format-all           ; Auto-format code in many languages
+;;             golden-ratio         ; Automatic resizing windows to golden ratio
+;;             ;;jedi                 ; Python auto-completion for Emacs
+;;             js2-mode             ; Improved JavaScript editing mode
+;;             ledger-mode          ; Major mode for editing ledger files
+;;             magit                ; control Git from Emacs
+;;             markdown-mode        ; Emacs Major mode for Markdown-formatted files
+;;             multiple-cursors     ; Multiple cursors for Emacs
+;;             multi-vterm          ; Manage multiple vterms in Emacs
+;;             ob-http              ; Make http request within org-mode babel
+;;             olivetti             ; Minor mode for a nice writing environment
+;;             org                  ; Outline-based notes management and organizer
+;;             org-bullets          ; Show bullets in org-mode as UTF-8 characters
+;;             org-ql               ; Org query language, includes search commands and saved views
+;;             orgit                ; Link to Magit buffers from Org documents
+;;             orgit-forge          ; Org links to Forge Issue buffers
+;;             ;;org-roam             ; Roam Research replica with Org-mode
+;;             ;;org-roam-server      ; Org Roam Database Visualizer
+;;             paredit              ; minor mode for editing parentheses
+;;             pass                 ; Password management with pass
+;;             password-store       ; Use password-store for auth-source
+;;             pdf-tools            ; Emacs support library for PDF files
+;;             pinentry             ; Allows pinentry prompt via minibuffer
+;;             powerthesaurus       ; Powerthesaurus integration for Emacs
+;;             projectile           ; Manage and navigate projects in Emacs easily
+;;             restclient           ; HTTP REST client tool for Emacs
+;;             slime                ; Superior Lisp Interaction Mode for Emacs
+;;             smex                 ; M-x interface with Ido-style fuzzy matching
+;;             terraform-mode       ; Major mode for editing Terraform files
+;;             try                  ; Try out Emacs packages
+;;             vterm                ; A terminal via libvterm
+;;             web-mode             ; Major mode for editing HTML, CSS, JavaScript
+;;             which-key            ; Display available keybindings in popup
+;;             )))
+;;     (let ((packages (seq-remove 'package-installed-p packages)))
+;;       (print packages)
+;;       (when packages
+;;         ;; Install uninstalled packages
+;;         (package-refresh-contents)
+;;         (mapc 'package-install packages))))
+;;   #+END_SRC
 
 ** Sane defaults
 
@@ -933,7 +1001,7 @@
    (setq org-directory "~/org"
          org-agenda-files (list org-directory)
          org-default-notes-file (concat org-directory "/refile.org")
-         org-catch-invisible-edits 'smart
+         org-fold-catch-invisible-edits 'smart
          org-hierarchical-todo-statistics nil
          org-startup-folded t
          org-startup-indented t
@@ -970,6 +1038,25 @@
 
    (advice-add 'gnus-icalendar:org-event-save :around #'my-catch-event-time)
    #+end_src
+
+   Use Org Crypt.
+
+   #+begin_src emacs-lisp
+   (require 'org-crypt)
+   (org-crypt-use-before-save-magic)
+   (setq org-tags-exclude-from-inheritance '("crypt"))
+
+   (setq org-crypt-key "0x72CA03529FF0C81C")
+   ;; GPG key to use for encryption.
+   ;; nil means  use symmetric encryption unconditionally.
+   ;; "" means use symmetric encryption unless heading sets CRYPTKEY property.
+
+   (setq auto-save-default nil)
+   ;; Auto-saving does not cooperate with org-crypt.el: so you need to
+   ;; turn it off if you plan to use org-crypt.el quite often.  Otherwise,
+   ;; you'll get an (annoying) message each time you start Org
+   #+end_src
+
 
    Keywords for todo states.
 
@@ -1020,9 +1107,9 @@
                                ("WORK" . ?W)
                                ("ORG" . ?O)
                                ("AWOLSKI" . ?N)
-                               ("CRYPT" . ?C)
+                               ("crypt" . ?c)
                                ("NOTE" . ?n)
-                               ("CANCELLED" . ?c)
+                               ("CANCELLED" . ?C)
                                ("FLAGGED" . ??))))
 
    ; ALLOW SETTING SINGLE tags without the menu
@@ -1143,7 +1230,7 @@
            ("m" "Meeting" entry (file+olp+datetree "~/org/calendar.org")
             "* MEETING with %? :MEETING:\n  %U" :clock-in t :clock-resume t)
            ("h" "Habit" entry (file "~/org/refile.org")
-             "* NEXT %?\n%U\n%a\nSCHEDULED: %(format-time-string \"%<<%Y-%m-%d %a .+1d/3d>>\")\n:PROPERTIES:\n:STYLE: habit\n:REPEAT_TO_STATE: NEXT\n:END:\n")))
+             "* TODO %?\nSCHEDULED: %(format-time-string \"%<<%Y-%m-%d %a .+1d/3d>>\")\n:PROPERTIES:\n:STYLE: habit\n:REPEAT_TO_STATE: TODO\n:END:\n%U\n%a\n")))
 
    ;;                "* PHONE %? :PHONE:\n%U" :clock-in t :clock-resume t)
    #+end_src
