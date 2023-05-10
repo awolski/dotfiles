@@ -11,3 +11,6 @@ packer=$(which packer)
 if [ -n "$packer" ]; then
   complete -C '"$packer"' packer
 fi
+
+# Use direnv
+eval "$(direnv hook bash)"
