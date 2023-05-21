@@ -157,20 +157,65 @@ number, and restore the default value after initialization.
 Let's use [[https://github.com/radian-software/straight.el][straight.el]]: next-generation, purely functional package manager for
 the Emacs hacker, to manage our packages. First we need to initialise it.
 
-#+begin_src emacs-lisp
-(defvar bootstrap-version)
-(let ((bootstrap-file
-       (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
-      (bootstrap-version 6))
-  (unless (file-exists-p bootstrap-file)
-    (with-current-buffer
-        (url-retrieve-synchronously
-         "https://raw.githubusercontent.com/radian-software/straight.el/develop/install.el"
-         'silent 'inhibit-cookies)
-      (goto-char (point-max))
-      (eval-print-last-sexp)))
-  (load bootstrap-file nil 'nomessage))
-#+end_src
+;;#+begin_src emacs-lisp
+;;(defvar bootstrap-version)
+;;(let ((bootstrap-file
+;;       (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
+;;      (bootstrap-version 6))
+;;  (unless (file-exists-p bootstrap-file)
+;;    (with-current-buffer
+;;        (url-retrieve-synchronously
+;;         "https://raw.githubusercontent.com/radian-software/straight.el/develop/install.el"
+;;         'silent 'inhibit-cookies)
+;;      (goto-char (point-max))
+;;      (eval-print-last-sexp)))
+;;  (load bootstrap-file nil 'nomessage))
+;;
+;; Disable package.el in favor of straight.el
+;;(setq package-enable-at-startup nil)
+
+;; Install use-package
+;;(straight-use-package 'use-package)
+
+;; Configure use-package to use straight.el by default
+;;(use-package straight
+;;  :custom
+;;  (straight-use-package-by-default t))
+;;#+end_src
+
+Let's test use-package and straight by installing and configuring ledger.
+
+;;#+begin_src emacs-lisp
+;;(use-package ledger-mode)
+;;#+end_src
+
+;;#+begin_src emacs-lisp
+;;(use-package elfeed
+;;  :straight t
+;;  :ensure t)
+;;#+end_src
+
+;;#+begin_src emacs-lisp
+;;;; data is stored in ~/.elfeed
+;;(setq elfeed-feeds
+;;        '(
+;;          ;; programming
+;;          ("https://jacobian.org/feed/" test)
+;;          ("https://news.ycombinator.com/rss" hacker)
+;;         ))
+;;
+;;(setq-default elfeed-search-filter "@2-days-ago +unread")
+;;(setq-default elfeed-search-title-max-width 100)
+;;(setq-default elfeed-search-title-min-width 100)
+;;#+end_src
+
+;;#+begin_src emacs-lisp
+;;(use-package org)
+;;#+end_src
+;;
+;;#+begin_src emacs-lisp
+;;(use-package org-contrib)
+;;#+end_src
 
 #+begin_src emacs-lisp
 (straight-use-package 'company)              ; Modular text completion framework
@@ -187,7 +232,7 @@ the Emacs hacker, to manage our packages. First we need to initialise it.
 (straight-use-package 'format-all)           ; Auto-format code in many languages
 (straight-use-package 'golden-ratio)         ; Automatic resizing windows to golden ratio
 (straight-use-package 'js2-mode)             ; Improved JavaScript editing mode
-(straight-use-package 'ledger-mode)          ; Major mode for editing ledger files
+;;(straight-use-package 'ledger-mode)          ; Major mode for editing ledger files
 (straight-use-package 'magit)                ; control Git from Emacs
 (straight-use-package 'markdown-mode)        ; Emacs Major mode for Markdown-formatted files
 (straight-use-package 'multiple-cursors)     ; Multiple cursors for Emacs
@@ -209,16 +254,14 @@ the Emacs hacker, to manage our packages. First we need to initialise it.
 (straight-use-package 'restclient)           ; HTTP REST client tool for Emacs
 (straight-use-package 'slime)                ; Superior Lisp Interaction Mode for Emacs
 (straight-use-package 'smex)                 ; M-x interface with Ido-style fuzzy matching
+(straight-use-package 'sqlite3)              ; sqlite3 database engine
 (straight-use-package 'terraform-mode)       ; Major mode for editing Terraform files
 (straight-use-package 'try)                  ; Try out Emacs packages
 (straight-use-package 'use-package)          ; Use-package declaration for simplifying your .emacs
 (straight-use-package 'vterm)                ; A terminal via libvterm
 (straight-use-package 'web-mode)             ; Major mode for editing HTML, CSS, JavaScript
 (straight-use-package 'which-key)            ; Display available keybindings in popup
-
-(use-package ox-hugo
-  :straight (ox-hugo :type git :host github :repo "kaushalmodi/ox-hugo"
-  :after ox))
+(straight-use-package 'yaml-mode)            ; Major mode for editing YAML
 #+end_src
 
 
@@ -687,7 +730,7 @@ the Emacs hacker, to manage our packages. First we need to initialise it.
 
 ** Magit
 
-   Magit is awesome. Let's use [[https://github.com/magit/forge][Forge]] too.
+Magit is awesome. Let's use [[https://github.com/magit/forge][Forge]] too.
 
    #+begin_src emacs-lisp
    (with-eval-after-load 'magit
@@ -696,16 +739,15 @@ the Emacs hacker, to manage our packages. First we need to initialise it.
 
 ** EMMS
 
-   It's quite convenient to be able to control media from within Emacs. [[https://www.emacswiki.org/emacs/EMMS][EMMS]]
-   coupled with [[https://itsfoss.com/mpv-video-player/][mpv]] is a great lightweight choice.
+It's quite convenient to be able to control media from within Emacs. [[https://www.emacswiki.org/emacs/EMMS][EMMS]]
+coupled with [[https://itsfoss.com/mpv-video-player/][mpv]] is a great lightweight choice.
 
-   #+begin_src emacs-lisp
-   (require 'emms-setup)
-   (emms-all)
-
-   (setq emms-player-list '(emms-player-mpv))
-   (setq emms-source-file-default-directory "~/media")
-   #+end_src
+#+begin_src emacs-lisp
+(require 'emms-setup)
+(emms-all)
+(setq emms-player-list '(emms-player-mpv))
+(setq emms-source-file-default-directory "~/media")
+#+end_src
 
 ** PDF Tools
 
@@ -984,6 +1026,7 @@ the Emacs hacker, to manage our packages. First we need to initialise it.
    (org-babel-do-load-languages
     'org-babel-load-languages
     '((shell . t)
+      (ledger . t)
       (http . t)))
    #+end_src
 
@@ -1063,7 +1106,7 @@ the Emacs hacker, to manage our packages. First we need to initialise it.
    #+begin_src emacs-lisp
    (setq org-todo-keywords
          (quote ((sequence "TODO(t)" "NEXT(n)" "SOMEDAY(s)" "|" "DONE(d!/!)")
-                 (sequence "WAITING(w@/!)" "HOLD(h@/!)" "|" "CANCELLED(c@/!)" "PHONE" "MEETING"))))
+                 (sequence "MEETING" "WAITING(w@/!)" "HOLD(h@/!)" "|" "CANCELLED(c@/!)" "PHONE"))))
 
    (setq org-todo-keyword-faces
          (quote (("TODO" :foreground "#e76f51" :weight bold)
@@ -1154,7 +1197,7 @@ the Emacs hacker, to manage our packages. First we need to initialise it.
                                                                (if bh/hide-scheduled-and-waiting-next-tasks
                                                                    ""
                                                                  " (including WAITING and SCHEDULED tasks)")))
-                         (org-agenda-skip-function 'bh/skip-projects-and-habits-and-single-tasks)
+                         (org-agenda-skip-function 'bh/skip-projects-and-habits)
                          (org-tags-match-list-sublevels t)
                          (org-agenda-todo-ignore-scheduled bh/hide-scheduled-and-waiting-next-tasks)
                          (org-agenda-todo-ignore-deadlines bh/hide-scheduled-and-waiting-next-tasks)
@@ -1198,10 +1241,6 @@ the Emacs hacker, to manage our packages. First we need to initialise it.
                          (org-tags-match-list-sublevels nil)
                          (org-agenda-todo-ignore-scheduled bh/hide-scheduled-and-waiting-next-tasks)
                          (org-agenda-todo-ignore-deadlines bh/hide-scheduled-and-waiting-next-tasks)))
-             (tags "-REFILE/"
-                   ((org-agenda-overriding-header "Tasks to Archive")
-                    (org-agenda-skip-function 'bh/skip-non-archivable-tasks)
-                    (org-tags-match-list-sublevels nil)))
              ))))
    #+end_src
 
@@ -1216,19 +1255,21 @@ the Emacs hacker, to manage our packages. First we need to initialise it.
          '(("t" "Task" entry (file "~/org/refile.org")
             "* TODO %?\n%u\n%a\n" :clock-in t :clock-resume t)
            ("r" "Respond" entry (file "~/org/refile.org")
-            "* NEXT Respond to %:from on %:subject\nSCHEDULED: %t\n%U\n%a\n" :clock-in t :clock-resume t :immediate-finish t)
-           ("b" "Bookmark" entry (file+headline  "~/org/notes.org" "Bookmarks")
-            "* %?\n:PROPERTIES:\n:CREATED: %U\n:END:\n\n" :empty-lines 1)
+            "* NEXT Respond to %:from on %:subject :EMAIL:\nSCHEDULED: %t\n%U\n%a\n" :clock-in t :clock-resume t :immediate-finish t)
+           ("b" "Bookmark" entry (file "~/org/refile.org")
+            "* %? %(org-set-tags \"BOOKMARK\") \n:PROPERTIES:\n:CREATED: %U\n:END:\n\n" :empty-lines 1)
            ("n" "Note" entry (file  "~/org/refile.org")
             "* %? :NOTE:\n%U\n%a\n" :clock-in t :clock-resume t)
            ("j" "Journal" entry (file+olp+datetree "~/org/journal.org")
             "* %?\n%U\n" :clock-in t :clock-resume t :tree-type week)
+           ("e" "Emma" entry (file+olp+datetree "~/org/emma.org" "Journal")
+            "* %?\n%U\n" :clock-in t :clock-resume t :tree-type week)
            ("g" "Forge Topic" entry (file "~/org/refile.org")
-            "* TODO %:description\n%?\n%a\n  %u\n" :clock-in t :clock-resume t)
+            "* TODO %:description\n%?\n%a\n%u\n" :clock-in t :clock-resume t)
            ("#" "used by gnus-icalendar-org" entry (file+olp+datetree "~/org/calendar.org")
              "%i %?\n" :time-prompt t :tree-type week)
-           ("m" "Meeting" entry (file+olp+datetree "~/org/calendar.org")
-            "* MEETING with %? :MEETING:\n  %U" :clock-in t :clock-resume t)
+           ("m" "Meeting" entry (file "~/org/refile.org")
+            "* MEETING with %? :MEETING:\n%U" :clock-in t :clock-resume t)
            ("h" "Habit" entry (file "~/org/refile.org")
              "* TODO %?\nSCHEDULED: %(format-time-string \"%<<%Y-%m-%d %a .+1d/3d>>\")\n:PROPERTIES:\n:STYLE: habit\n:REPEAT_TO_STATE: TODO\n:END:\n%U\n%a\n")))
 
