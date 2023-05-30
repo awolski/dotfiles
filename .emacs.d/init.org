@@ -329,7 +329,8 @@ Let's test use-package and straight by installing and configuring ledger.
              olivetti             ; Minor mode for a nice writing environment
              org                  ; Outline-based notes management and organizer
              org-bullets          ; Show bullets in org-mode as UTF-8 characters
-             org-contrib          ;
+             org-contrib          ; Org-mode contributed packages
+             org-journal          ; Simple org-mode based journaling mode
              org-ql               ; Org query language, includes search commands and saved views
              orgit                ; Link to Magit buffers from Org documents
              orgit-forge          ; Org links to Forge Issue buffers
