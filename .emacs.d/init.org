@@ -217,142 +217,149 @@ Let's test use-package and straight by installing and configuring ledger.
 ;;(use-package org-contrib)
 ;;#+end_src
 
-#+begin_src emacs-lisp
-(straight-use-package 'company)              ; Modular text completion framework
-(straight-use-package 'counsel)              ; Various completion functions using Ivy
-(straight-use-package 'counsel-jq)           ; Traverse complex JSON and YAML structures with live feedback
-(straight-use-package 'counsel-projectile)   ; Ivy integration for Projectile
-(straight-use-package 'define-word)          ; display the definition of word at point
-(straight-use-package 'diff-hl)              ; Highlight uncommitted changes using VC
-(straight-use-package 'doom-themes)          ; An opinionated pack of modern color-themes
-(straight-use-package 'eglot)                ; Emacs Polyglot; LSP client that stays out of your way
-(straight-use-package 'emms)                 ; Emacs multi-Media System, a media player
-(straight-use-package 'focus)                ; Dim color of text in surrounding sections
-(straight-use-package 'forge)                ; Work with Git Forges, like GitHub, in Magit
-(straight-use-package 'format-all)           ; Auto-format code in many languages
-(straight-use-package 'golden-ratio)         ; Automatic resizing windows to golden ratio
-(straight-use-package 'js2-mode)             ; Improved JavaScript editing mode
+;;#+begin_src emacs-lisp
+;;(straight-use-package 'company)              ; Modular text completion framework
+;;(straight-use-package 'counsel)              ; Various completion functions using Ivy
+;;(straight-use-package 'counsel-jq)           ; Traverse complex JSON and YAML structures with live feedback
+;;(straight-use-package 'counsel-projectile)   ; Ivy integration for Projectile
+;;(straight-use-package 'define-word)          ; display the definition of word at point
+;;(straight-use-package 'diff-hl)              ; Highlight uncommitted changes using VC
+;;(straight-use-package 'doom-themes)          ; An opinionated pack of modern color-themes
+;;(straight-use-package 'eglot)                ; Emacs Polyglot; LSP client that stays out of your way
+;;(straight-use-package 'emms)                 ; Emacs multi-Media System, a media player
+;;(straight-use-package 'focus)                ; Dim color of text in surrounding sections
+;;(straight-use-package 'forge)                ; Work with Git Forges, like GitHub, in Magit
+;;(straight-use-package 'format-all)           ; Auto-format code in many languages
+;;(straight-use-package 'golden-ratio)         ; Automatic resizing windows to golden ratio
+;;(straight-use-package 'js2-mode)             ; Improved JavaScript editing mode
 ;;(straight-use-package 'ledger-mode)          ; Major mode for editing ledger files
-(straight-use-package 'magit)                ; control Git from Emacs
-(straight-use-package 'markdown-mode)        ; Emacs Major mode for Markdown-formatted files
-(straight-use-package 'multiple-cursors)     ; Multiple cursors for Emacs
-(straight-use-package 'multi-vterm)          ; Manage multiple vterms in Emacs
-(straight-use-package 'ob-http)              ; Make http request within org-mode babel
-(straight-use-package 'olivetti)             ; Minor mode for a nice writing environment
-(straight-use-package 'org)                  ; Outline-based notes management and organizer
-(straight-use-package 'org-bullets)          ; Show bullets in org-mode as UTF-8 characters
-(straight-use-package 'org-ql)               ; Org query language, includes search commands and saved views
-(straight-use-package 'orgit)                ; Link to Magit buffers from Org documents
-(straight-use-package 'orgit-forge)          ; Org links to Forge Issue buffers
-(straight-use-package 'paredit)              ; minor mode for editing parentheses
-(straight-use-package 'pass)                 ; Password management with pass
-(straight-use-package 'password-store)       ; Use password-store for auth-source
-(straight-use-package 'pdf-tools)            ; Emacs support library for PDF files
-(straight-use-package 'pinentry)             ; Allows pinentry prompt via minibuffer
-(straight-use-package 'powerthesaurus)       ; Powerthesaurus integration for Emacs
-(straight-use-package 'projectile)           ; Manage and navigate projects in Emacs easily
-(straight-use-package 'restclient)           ; HTTP REST client tool for Emacs
-(straight-use-package 'slime)                ; Superior Lisp Interaction Mode for Emacs
-(straight-use-package 'smex)                 ; M-x interface with Ido-style fuzzy matching
-(straight-use-package 'sqlite3)              ; sqlite3 database engine
-(straight-use-package 'terraform-mode)       ; Major mode for editing Terraform files
-(straight-use-package 'try)                  ; Try out Emacs packages
-(straight-use-package 'use-package)          ; Use-package declaration for simplifying your .emacs
-(straight-use-package 'vterm)                ; A terminal via libvterm
-(straight-use-package 'web-mode)             ; Major mode for editing HTML, CSS, JavaScript
-(straight-use-package 'which-key)            ; Display available keybindings in popup
-(straight-use-package 'yaml-mode)            ; Major mode for editing YAML
-#+end_src
+;;(straight-use-package 'magit)                ; control Git from Emacs
+;;(straight-use-package 'markdown-mode)        ; Emacs Major mode for Markdown-formatted files
+;;(straight-use-package 'multiple-cursors)     ; Multiple cursors for Emacs
+;;(straight-use-package 'multi-vterm)          ; Manage multiple vterms in Emacs
+;;(straight-use-package 'ob-http)              ; Make http request within org-mode babel
+;;(straight-use-package 'olivetti)             ; Minor mode for a nice writing environment
+;;(straight-use-package 'org)                  ; Outline-based notes management and organizer
+;;(straight-use-package 'org-bullets)          ; Show bullets in org-mode as UTF-8 characters
+;;(straight-use-package 'org-ql)               ; Org query language, includes search commands and saved views
+;;(straight-use-package 'orgit)                ; Link to Magit buffers from Org documents
+;;(straight-use-package 'orgit-forge)          ; Org links to Forge Issue buffers
+;;(straight-use-package 'paredit)              ; minor mode for editing parentheses
+;;(straight-use-package 'pass)                 ; Password management with pass
+;;(straight-use-package 'password-store)       ; Use password-store for auth-source
+;;(straight-use-package 'pdf-tools)            ; Emacs support library for PDF files
+;;(straight-use-package 'pinentry)             ; Allows pinentry prompt via minibuffer
+;;(straight-use-package 'powerthesaurus)       ; Powerthesaurus integration for Emacs
+;;(straight-use-package 'projectile)           ; Manage and navigate projects in Emacs easily
+;;(straight-use-package 'restclient)           ; HTTP REST client tool for Emacs
+;;(straight-use-package 'slime)                ; Superior Lisp Interaction Mode for Emacs
+;;(straight-use-package 'smex)                 ; M-x interface with Ido-style fuzzy matching
+;;(straight-use-package 'sqlite3)              ; sqlite3 database engine
+;;(straight-use-package 'terraform-mode)       ; Major mode for editing Terraform files
+;;(straight-use-package 'try)                  ; Try out Emacs packages
+;;(straight-use-package 'use-package)          ; Use-package declaration for simplifying your .emacs
+;;(straight-use-package 'vterm)                ; A terminal via libvterm
+;;(straight-use-package 'web-mode)             ; Major mode for editing HTML, CSS, JavaScript
+;;(straight-use-package 'which-key)            ; Display available keybindings in popup
+;;(straight-use-package 'yaml-mode)            ; Major mode for editing YAML
+;;#+end_src
 
 
-;;   Managing extensions for Emacs is simplified using =package= which is
-;;   built in to Emacs 24 and newer. To load downloaded packages we need to
-;;   initialize =package=. =cl= is a library that contains many functions from
-;;   Conmmon Lisp, and comes in handy quite often, so we want to make sure it's
-;;   loaded, along with =package=, which is obviously needed.
-;;
-;;   #+BEGIN_SRC emacs-lisp
-;;   (require 'package)
-;;   (package-initialize)
-;;   #+END_SRC
-;;
-;;   Packages can be fetched from different mirrors, [[http://melpa.milkbox.net/#/][melpa]] is the largest
-;;   archive and is well maintained.
-;;
-;;   #+BEGIN_SRC emacs-lisp
-;;   (setq package-archives
-;;         '(("gnu" . "https://elpa.gnu.org/packages/")
-;;           ("MELPA" . "https://melpa.org/packages/"))
-;;         package-archive-priorities
-;;         '(("MELPA" . 5)
-;;           ("gnu" . 0)))
-;;   #+END_SRC
-;;
-;;   The configuration assumes that the packages listed below are
-;;   installed. To ensure we install missing packages if they are missing.
-;;
-;;   #+BEGIN_SRC emacs-lisp
-;;   (let* ((package--builtins nil)
-;;          (packages
-;;           '(auto-compile         ; automatically compile Emacs libraries
-;;             ;;cider                ; Clojure Interactive Development Environment
-;;             ;;clj-refactor         ; Commands for refactoring Clojure code
-;;             company              ; Modular text completion framework
-;;             ;;company-coq          ; A collection of extensions PG's Coq mode
-;;             counsel              ; Various completion functions using Ivy
-;;             counsel-jq           ; Traverse complex JSON and YAML structures with live feedback
-;;             counsel-projectile   ; Ivy integration for Projectile
-;;             define-word          ; display the definition of word at point
-;;             diff-hl              ; Highlight uncommitted changes using VC
-;;             doom-themes          ; An opinionated pack of modern color-themes
-;;             eglot                ; Emacs Polyglot; LSP client that stays out of your way
-;;             emms                 ; Emacs multi-Media System, a media player
-;;             ;;expand-region        ; Increase selected region by semantic units
-;;             focus                ; Dim color of text in surrounding sections
-;;             ;;flycheck             ; Modern on-the-fly syntax checking
-;;             ;;flycheck-ledger      ; Syntax checking for ledger
-;;             forge                ; Work with Git Forges, like GitHub, in Magit
-;;             format-all           ; Auto-format code in many languages
-;;             golden-ratio         ; Automatic resizing windows to golden ratio
-;;             ;;jedi                 ; Python auto-completion for Emacs
-;;             js2-mode             ; Improved JavaScript editing mode
-;;             ledger-mode          ; Major mode for editing ledger files
-;;             magit                ; control Git from Emacs
-;;             markdown-mode        ; Emacs Major mode for Markdown-formatted files
-;;             multiple-cursors     ; Multiple cursors for Emacs
-;;             multi-vterm          ; Manage multiple vterms in Emacs
-;;             ob-http              ; Make http request within org-mode babel
-;;             olivetti             ; Minor mode for a nice writing environment
-;;             org                  ; Outline-based notes management and organizer
-;;             org-bullets          ; Show bullets in org-mode as UTF-8 characters
-;;             org-ql               ; Org query language, includes search commands and saved views
-;;             orgit                ; Link to Magit buffers from Org documents
-;;             orgit-forge          ; Org links to Forge Issue buffers
-;;             ;;org-roam             ; Roam Research replica with Org-mode
-;;             ;;org-roam-server      ; Org Roam Database Visualizer
-;;             paredit              ; minor mode for editing parentheses
-;;             pass                 ; Password management with pass
-;;             password-store       ; Use password-store for auth-source
-;;             pdf-tools            ; Emacs support library for PDF files
-;;             pinentry             ; Allows pinentry prompt via minibuffer
-;;             powerthesaurus       ; Powerthesaurus integration for Emacs
-;;             projectile           ; Manage and navigate projects in Emacs easily
-;;             restclient           ; HTTP REST client tool for Emacs
-;;             slime                ; Superior Lisp Interaction Mode for Emacs
-;;             smex                 ; M-x interface with Ido-style fuzzy matching
-;;             terraform-mode       ; Major mode for editing Terraform files
-;;             try                  ; Try out Emacs packages
-;;             vterm                ; A terminal via libvterm
-;;             web-mode             ; Major mode for editing HTML, CSS, JavaScript
-;;             which-key            ; Display available keybindings in popup
-;;             )))
-;;     (let ((packages (seq-remove 'package-installed-p packages)))
-;;       (print packages)
-;;       (when packages
-;;         ;; Install uninstalled packages
-;;         (package-refresh-contents)
-;;         (mapc 'package-install packages))))
-;;   #+END_SRC
+   Managing extensions for Emacs is simplified using =package= which is
+   built in to Emacs 24 and newer. To load downloaded packages we need to
+   initialize =package=. =cl= is a library that contains many functions from
+   Conmmon Lisp, and comes in handy quite often, so we want to make sure it's
+   loaded, along with =package=, which is obviously needed.
+
+   #+BEGIN_SRC emacs-lisp
+   (require 'package)
+   (package-initialize)
+   #+END_SRC
+
+   Packages can be fetched from different mirrors, [[http://melpa.milkbox.net/#/][melpa]] is the largest
+   archive and is well maintained.
+
+   #+BEGIN_SRC emacs-lisp
+   (setq package-archives
+      '(("melp" . "https://melpa.org/packages/")
+        ("org" . "https://orgmode/elpa/")
+        ("elpa" . "https://elpa.gnu.org/packages/")
+        ("org-contrib" . "https://elpa.nongnu.org/nongnu/"))
+      package-archive-priorities
+      '(("melpa" . 5)
+        ("org" . 4)
+        ("org-contrib" . 2)
+        ("elpa" . 0)))
+   #+END_SRC
+
+   The configuration assumes that the packages listed below are
+   installed. To ensure we install missing packages if they are missing.
+
+   #+BEGIN_SRC emacs-lisp
+   (let* ((package--builtins nil)
+          (packages
+           '(auto-compile         ; automatically compile Emacs libraries
+             ;;cider                ; Clojure Interactive Development Environment
+             ;;clj-refactor         ; Commands for refactoring Clojure code
+             company              ; Modular text completion framework
+             ;;company-coq          ; A collection of extensions PG's Coq mode
+             counsel              ; Various completion functions using Ivy
+             counsel-jq           ; Traverse complex JSON and YAML structures with live feedback
+             counsel-projectile   ; Ivy integration for Projectile
+             define-word          ; display the definition of word at point
+             diff-hl              ; Highlight uncommitted changes using VC
+             doom-themes          ; An opinionated pack of modern color-themes
+             eglot                ; Emacs Polyglot; LSP client that stays out of your way
+             emms                 ; Emacs multi-Media System, a media player
+             ;;expand-region        ; Increase selected region by semantic units
+             focus                ; Dim color of text in surrounding sections
+             ;;flycheck             ; Modern on-the-fly syntax checking
+             ;;flycheck-ledger      ; Syntax checking for ledger
+             forge                ; Work with Git Forges, like GitHub, in Magit
+             format-all           ; Auto-format code in many languages
+             golden-ratio         ; Automatic resizing windows to golden ratio
+             ;;jedi                 ; Python auto-completion for Emacs
+             js2-mode             ; Improved JavaScript editing mode
+             ;;ledger-mode          ; Major mode for editing ledger files
+             magit                ; control Git from Emacs
+             markdown-mode        ; Emacs Major mode for Markdown-formatted files
+             multiple-cursors     ; Multiple cursors for Emacs
+             multi-vterm          ; Manage multiple vterms in Emacs
+             ob-http              ; Make http request within org-mode babel
+             olivetti             ; Minor mode for a nice writing environment
+             org                  ; Outline-based notes management and organizer
+             org-bullets          ; Show bullets in org-mode as UTF-8 characters
+             org-contrib          ;
+             org-ql               ; Org query language, includes search commands and saved views
+             orgit                ; Link to Magit buffers from Org documents
+             orgit-forge          ; Org links to Forge Issue buffers
+             ;;org-roam             ; Roam Research replica with Org-mode
+             ;;org-roam-server      ; Org Roam Database Visualizer
+             ox-hugo              ; A carefully crafted Org exporter back-end for Hugo
+             paredit              ; minor mode for editing parentheses
+             pass                 ; Password management with pass
+             password-store       ; Use password-store for auth-source
+             pdf-tools            ; Emacs support library for PDF files
+             pinentry             ; Allows pinentry prompt via minibuffer
+             powerthesaurus       ; Powerthesaurus integration for Emacs
+             projectile           ; Manage and navigate projects in Emacs easily
+             restclient           ; HTTP REST client tool for Emacs
+             slime                ; Superior Lisp Interaction Mode for Emacs
+             smex                 ; M-x interface with Ido-style fuzzy matching
+             terraform-mode       ; Major mode for editing Terraform files
+             sqlite3              ; sqlite3 database engine
+             try                  ; Try out Emacs packages
+             vterm                ; A terminal via libvterm
+             web-mode             ; Major mode for editing HTML, CSS, JavaScript
+             which-key            ; Display available keybindings in popup
+             )))
+     (let ((packages (seq-remove 'package-installed-p packages)))
+       (print packages)
+       (when packages
+         ;; Install uninstalled packages
+         (package-refresh-contents)
+         (mapc 'package-install packages))))
+   #+END_SRC
 
 ** Sane defaults
 
@@ -715,6 +722,15 @@ Let's test use-package and straight by installing and configuring ledger.
      (remove-hook 'olivetti-mode-on-hook 'visual-line-mode))
    #+END_SRC
 
+[[https://ox-hugo.scripter.co/][ox-hugo]] is an Org exporter backend that exports Org to [[https://gohugo.io/][Hugo]]-compatible Markdown
+(Blackfriday). With it we can write format). With it we can keep all our posts
+in a single org file.
+
+#+BEGIN_SRC emacs-lisp
+(with-eval-after-load 'ox
+  (require 'ox-hugo))
+#+END_SRC
+
 ** Ivy
 
    Let's try [[http://oremacs.com/swiper/][Ivy]] in favor of helm.
@@ -737,10 +753,11 @@ Magit is awesome. Let's use [[https://github.com/magit/forge][Forge]] too.
      (require 'forge))
    #+end_src
 
-** EMMS
+** COMMENT  EMMS
 
 It's quite convenient to be able to control media from within Emacs. [[https://www.emacswiki.org/emacs/EMMS][EMMS]]
-coupled with [[https://itsfoss.com/mpv-video-player/][mpv]] is a great lightweight choice.
+coupled with
+[[https://itsfoss.com/mpv-video-player/][mpv]] is a great lightweight choice.
 
 #+begin_src emacs-lisp
 (require 'emms-setup)
@@ -841,12 +858,12 @@ coupled with [[https://itsfoss.com/mpv-video-player/][mpv]] is a great lightweig
 
 ** Ledger
 
-   I use [[https://www.ledger-cli.org/][Ledger]] to keep track of my financial life. The default alignment for
-   post amounts is too narrow.
+I use [[https://www.ledger-cli.org/][Ledger]] to keep track of my financial life. The default alignment for post
+amounts is too narrow.
 
-   #+BEGIN_SRC emacs-lisp
-   (setq ledger-post-amount-alignment-column 60)
-   #+END_SRC
+#+BEGIN_SRC emacs-lisp
+;;(setq ledger-post-amount-alignment-column 60)
+#+END_SRC
 
 ** COMMENT Org Roam
 
@@ -1025,9 +1042,9 @@ coupled with [[https://itsfoss.com/mpv-video-player/][mpv]] is a great lightweig
    #+begin_src emacs-lisp
    (org-babel-do-load-languages
     'org-babel-load-languages
-    '((shell . t)
+    '((http . t)
       (ledger . t)
-      (http . t)))
+      (shell . t)))
    #+end_src
 
    Use the key bindings suggested in Org mode's [[https://orgmode.org/manual/Activation.html][activation]] document.
@@ -1048,6 +1065,7 @@ coupled with [[https://itsfoss.com/mpv-video-player/][mpv]] is a great lightweig
          org-hierarchical-todo-statistics nil
          org-startup-folded t
          org-startup-indented t
+         org-duration-format 'h:mm
          org-agenda-window-setup 'current-window)
    #+end_src
 
@@ -1129,7 +1147,7 @@ coupled with [[https://itsfoss.com/mpv-video-player/][mpv]] is a great lightweig
 
    ; global Effort estimate values
    ; global STYLE property values for completion
-   (setq org-global-properties (quote (("Effort_ALL" . "0:15 0:30 0:45 1:00 2:00 3:00 4:00 5:00 6:00 0:00")
+   (setq org-global-properties (quote (("Effort_ALL" . "0:05 0:15 0:30 0:45 1:00 2:00 3:00 4:00 5:00 6:00 0:00")
                                        ("STYLE_ALL" . "habit"))))
    #+end_src
 
@@ -1231,7 +1249,7 @@ coupled with [[https://itsfoss.com/mpv-video-player/][mpv]] is a great lightweig
                          (org-agenda-todo-ignore-deadlines bh/hide-scheduled-and-waiting-next-tasks)
                          (org-agenda-todo-ignore-with-date bh/hide-scheduled-and-waiting-next-tasks)
                          (org-agenda-sorting-strategy
-                          '(category-keep))))
+                          '(priority-down))))
              (tags-todo "-CANCELLED+WAITING|HOLD/!"
                         ((org-agenda-overriding-header (concat "Waiting and Postponed Tasks"
                                                                (if bh/hide-scheduled-and-waiting-next-tasks
@@ -1271,7 +1289,7 @@ coupled with [[https://itsfoss.com/mpv-video-player/][mpv]] is a great lightweig
            ("m" "Meeting" entry (file "~/org/refile.org")
             "* MEETING with %? :MEETING:\n%U" :clock-in t :clock-resume t)
            ("h" "Habit" entry (file "~/org/refile.org")
-             "* TODO %?\nSCHEDULED: %(format-time-string \"%<<%Y-%m-%d %a .+1d/3d>>\")\n:PROPERTIES:\n:STYLE: habit\n:REPEAT_TO_STATE: TODO\n:END:\n%U\n%a\n")))
+             "* TODO %? :habit: \nSCHEDULED: %(format-time-string \"%<<%Y-%m-%d %a .+1d/3d>>\")\n:PROPERTIES:\n:STYLE: habit\n:REPEAT_TO_STATE: TODO\n:END:\n%U\n%a\n")))
 
    ;;                "* PHONE %? :PHONE:\n%U" :clock-in t :clock-resume t)
    #+end_src
