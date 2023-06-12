@@ -322,6 +322,7 @@ Let's test use-package and straight by installing and configuring ledger.
              js2-mode             ; Improved JavaScript editing mode
              ;;ledger-mode          ; Major mode for editing ledger files
              magit                ; control Git from Emacs
+             magit-todos          ; Show TODOs (and FIXMEs, etc) in Magit status buffer
              markdown-mode        ; Emacs Major mode for Markdown-formatted files
              multiple-cursors     ; Multiple cursors for Emacs
              multi-vterm          ; Manage multiple vterms in Emacs
@@ -1067,6 +1068,8 @@ amounts is too narrow.
          org-startup-folded t
          org-startup-indented t
          org-duration-format 'h:mm
+         org-log-done t
+         org-log-into-drawer "LOGBOOK"
          org-agenda-window-setup 'current-window)
    #+end_src
 
@@ -1124,20 +1127,27 @@ amounts is too narrow.
 
    #+begin_src emacs-lisp
    (setq org-todo-keywords
-         (quote ((sequence "TODO(t)" "NEXT(n)" "SOMEDAY(s)" "|" "DONE(d!/!)")
-                 (sequence "MEETING" "WAITING(w@/!)" "HOLD(h@/!)" "|" "CANCELLED(c@/!)" "PHONE"))))
+         (quote ((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d!/!)")
+                 (sequence "WAITING(w@/!)" "HOLD(h@/!)" "|" "CANCELLED(c@/!)" "PHONE" "MEETING"))))
 
    (setq org-todo-keyword-faces
          (quote (("TODO" :foreground "#e76f51" :weight bold)
                  ("NEXT" :foreground "#289d8f" :weight bold)
-                 ("SOMEDAY" :foreground "#ddbea9" :weight bold)
-                 ("ACTIVE" :foreground "#94d2bd" :weight bold)
                  ("DONE" :foreground "#6b705c" :weight bold)
                  ("WAITING" :foreground "#f4a261" :weight bold)
                  ("HOLD" :foreground "#e9c46a" :weight bold)
                  ("CANCELLED" :foreground "#6b705c" :weight bold)
                  ("MEETING" :foreground "#6b705c" :weight bold)
                  ("PHONE" :foreground "#6b705c" :weight bold))))
+
+   (setq org-todo-state-tags-triggers
+         (quote (("CANCELLED" ("CANCELLED" . t))
+                 ("WAITING" ("WAITING" . t))
+                 ("HOLD" ("WAITING") ("HOLD" . t))
+                 (done ("WAITING") ("HOLD"))
+                 ("TODO" ("WAITING") ("CANCELLED") ("HOLD"))
+                 ("NEXT" ("WAITING") ("CANCELLED") ("HOLD"))
+                 ("DONE" ("WAITING") ("CANCELLED") ("HOLD")))))
    #+end_src
 
    Global column view.
