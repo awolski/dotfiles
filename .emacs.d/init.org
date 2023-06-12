@@ -1039,7 +1039,7 @@ amounts is too narrow.
    ;;
 ** Org Mode
 
-   Activate Org Babel languages.
+Activate Org Babel languages.
 
    #+begin_src emacs-lisp
    (org-babel-do-load-languages
@@ -1049,7 +1049,7 @@ amounts is too narrow.
       (shell . t)))
    #+end_src
 
-   Use the key bindings suggested in Org mode's [[https://orgmode.org/manual/Activation.html][activation]] document.
+Use the key bindings suggested in Org mode's [[https://orgmode.org/manual/Activation.html][activation]] document.
 
    #+begin_src emacs-lisp
    (global-set-key (kbd "C-c l") #'org-store-link)
@@ -1057,7 +1057,7 @@ amounts is too narrow.
    (global-set-key (kbd "C-c c") #'org-capture)
    #+end_src
 
-   Use sane defaults.
+Use sane defaults.
 
    #+begin_src emacs-lisp
    (setq org-directory "~/org"
@@ -1122,8 +1122,7 @@ amounts is too narrow.
    ;; you'll get an (annoying) message each time you start Org
    #+end_src
 
-
-   Keywords for todo states.
+Keywords for todo states.
 
    #+begin_src emacs-lisp
    (setq org-todo-keywords
@@ -1150,7 +1149,7 @@ amounts is too narrow.
                  ("DONE" ("WAITING") ("CANCELLED") ("HOLD")))))
    #+end_src
 
-   Global column view.
+Global column view.
 
    #+begin_src emacs-lisp
    ; Set default column view headings: Task Effort Clock_Summary
@@ -1162,7 +1161,7 @@ amounts is too narrow.
                                        ("STYLE_ALL" . "habit"))))
    #+end_src
 
-   Quick access to Org tags.
+Quick access to Org tags.
 
    #+begin_src emacs-lisp
    ; Tags with fast selection keys
@@ -1191,7 +1190,7 @@ amounts is too narrow.
    (setq org-agenda-tags-todo-honor-ignore-options t)
    #+end_src
 
-   Configure custom agenda views.
+Configure custom agenda views.
 
    #+begin_src emacs-lisp
    ;; Do not dim blocked tasks
@@ -1277,7 +1276,7 @@ amounts is too narrow.
    (setq org-use-fast-todo-selection t)
    #+end_src
 
-   Capture templates for notes, todo etc.
+Capture templates for notes, todo etc.
 
    #+begin_src emacs-lisp
    (setq org-capture-templates
@@ -1305,15 +1304,15 @@ amounts is too narrow.
    ;;                "* PHONE %? :PHONE:\n%U" :clock-in t :clock-resume t)
    #+end_src
 
-   Keybindings straight to capture templates.
+Keybindings straight to capture templates.
 
    #+begin_src emacs-lisp
    ;;(define-key global-map (kbd "C-c r")
    ;;  (lambda () (interactive) (org-capture nil "r")))
    #+end_src
 
-   When editing org-files with source-blocks, we want the source blocks to
-   be themed as they would in their native mode.
+When editing org-files with source-blocks, we want the source blocks to be
+themed as they would in their native mode.
 
    #+BEGIN_SRC emacs-lisp
    (setq org-src-fontify-natively t
@@ -1322,7 +1321,15 @@ amounts is too narrow.
          org-edit-src-content-indentation 0)
    #+END_SRC
 
-   Org helper functions.
+Let's test out [[https://github.com/bastibe/org-journal][org-journal]] for journaling.
+
+#+BEGIN_SRC emacs-lisp
+(setq org-journal-dir "~/org/journal/"
+      org-journal-date-format "%Y-%B-%d %A")
+#+END_SRC
+
+
+Org helper functions.
 
    #+begin_src emacs-lisp
    (defun bh/is-project-p ()
