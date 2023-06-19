@@ -354,6 +354,7 @@ Let's test use-package and straight by installing and configuring ledger.
              vterm                ; A terminal via libvterm
              web-mode             ; Major mode for editing HTML, CSS, JavaScript
              which-key            ; Display available keybindings in popup
+             yasnippet            ; A template system for Emacs
              )))
      (let ((packages (seq-remove 'package-installed-p packages)))
        (print packages)
@@ -1059,19 +1060,19 @@ Use the key bindings suggested in Org mode's [[https://orgmode.org/manual/Activa
 
 Use sane defaults.
 
-   #+begin_src emacs-lisp
-   (setq org-directory "~/org"
-         org-agenda-files (list org-directory)
-         org-default-notes-file (concat org-directory "/refile.org")
-         org-fold-catch-invisible-edits 'smart
-         org-hierarchical-todo-statistics nil
-         org-startup-folded t
-         org-startup-indented t
-         org-duration-format 'h:mm
-         org-log-done t
-         org-log-into-drawer "LOGBOOK"
-         org-agenda-window-setup 'current-window)
-   #+end_src
+#+begin_src emacs-lisp
+(setq org-directory "~/org"
+      org-agenda-files (list org-directory)
+      org-default-notes-file (concat org-directory "/refile.org")
+      org-fold-catch-invisible-edits 'smart
+      org-hierarchical-todo-statistics nil
+      org-startup-folded t
+      org-startup-indented t
+      org-duration-format 'h:mm
+      org-log-done t
+      org-log-into-drawer "LOGBOOK"
+      org-agenda-window-setup 'current-window)
+#+end_src
 
    Enable org-habit module.
 
@@ -1298,10 +1299,10 @@ Capture templates for notes, todo etc.
              "%i %?\n" :time-prompt t :tree-type week)
            ("m" "Meeting" entry (file "~/org/refile.org")
             "* MEETING with %? :MEETING:\n%U" :clock-in t :clock-resume t)
+           ("p" "Phone call" entry (file "~/org/refile.org")
+             "* PHONE %? :PHONE:\n%U" :clock-in t :clock-resume t)
            ("h" "Habit" entry (file "~/org/refile.org")
              "* TODO %? :habit: \nSCHEDULED: %(format-time-string \"%<<%Y-%m-%d %a .+1d/3d>>\")\n:PROPERTIES:\n:STYLE: habit\n:REPEAT_TO_STATE: TODO\n:END:\n%U\n%a\n")))
-
-   ;;                "* PHONE %? :PHONE:\n%U" :clock-in t :clock-resume t)
    #+end_src
 
 Keybindings straight to capture templates.
@@ -1326,6 +1327,8 @@ Let's test out [[https://github.com/bastibe/org-journal][org-journal]] for journ
 #+BEGIN_SRC emacs-lisp
 (setq org-journal-dir "~/org/journal/"
       org-journal-date-format "%Y-%B-%d %A")
+
+(setq tramp-verbose 6)
 #+END_SRC
 
 
