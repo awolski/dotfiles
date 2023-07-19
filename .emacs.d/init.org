@@ -282,14 +282,12 @@ Let's test use-package and straight by installing and configuring ledger.
    #+BEGIN_SRC emacs-lisp
    (setq package-archives
       '(("melpa" . "https://melpa.org/packages/")
-        ("org" . "https://orgmode.org/elpa/")
         ("gnu" . "https://elpa.gnu.org/packages/")
         ("nongnu" . "https://elpa.nongnu.org/nongnu/"))
       package-archive-priorities
       '(("melpa" . 5)
-        ("org" . 4)
-        ("nongnu" . 3)
-        ("gnu" . 2)))
+        ("nongnu" . 4)
+        ("gnu" . 3)))
    #+END_SRC
 
    The configuration assumes that the packages listed below are
@@ -351,9 +349,11 @@ Let's test use-package and straight by installing and configuring ledger.
              terraform-mode       ; Major mode for editing Terraform files
              sqlite3              ; sqlite3 database engine
              try                  ; Try out Emacs packages
+             visual-fill-column   ; Wrap visual-line-mode buffers at fill-column
              vterm                ; A terminal via libvterm
              web-mode             ; Major mode for editing HTML, CSS, JavaScript
              which-key            ; Display available keybindings in popup
+             yaml-pro             ; Edit YAML in Emacs like a pro
              yasnippet            ; A template system for Emacs
              )))
      (let ((packages (seq-remove 'package-installed-p packages)))
@@ -1291,18 +1291,18 @@ Capture templates for notes, todo etc.
             "* %? :NOTE:\n%U\n%a\n" :clock-in t :clock-resume t)
            ("j" "Journal" entry (file+olp+datetree "~/org/journal.org")
             "* %?\n%U\n" :clock-in t :clock-resume t :tree-type week)
-           ("x" "X" entry (file+olp+datetree "~/org/emma.org" "Chronology")
+           ("x" "X" entry (file+olp+datetree "~/org/e.org" "Chronology")
             "* %?\n%U\n" :clock-in t :clock-resume t)
            ("g" "Forge Topic" entry (file "~/org/refile.org")
             "* TODO %:description\n%?\n%a\n%u\n" :clock-in t :clock-resume t)
-           ("#" "used by gnus-icalendar-org" entry (file+olp+datetree "~/org/calendar.org")
-             "%i %?\n" :time-prompt t :tree-type week)
+           ("#" "used by gnus-icalendar-org" entry (file "~/org/refile.org")
+             "%i %?\n" :time-prompt :clock-in t :clock-resume t)
            ("m" "Meeting" entry (file "~/org/refile.org")
-            "* MEETING with %? :MEETING:\n%U" :clock-in t :clock-resume t)
+            "* MEETING Meeting with %? :MEETING:\n%U" :clock-in t :clock-resume t)
            ("p" "Phone call" entry (file "~/org/refile.org")
-             "* PHONE %? :PHONE:\n%U" :clock-in t :clock-resume t)
-           ("e" "Exercise" item (file "~/org/todo.org" "Exercise")
-             "%? :EXERCISE:\n%U" :clock-in t :clock-resume t)
+             "* PHONE Call with %? :PHONE:\n%U" :clock-in t :clock-resume t)
+           ("e" "Exercise" item (file+headline "~/org/todo.org" "TODO Exercise")
+             "%^u: %?")
            ("h" "Habit" entry (file "~/org/refile.org")
              "* TODO %? :habit: \nSCHEDULED: %(format-time-string \"%<<%Y-%m-%d %a .+1d/3d>>\")\n:PROPERTIES:\n:STYLE: habit\n:REPEAT_TO_STATE: TODO\n:END:\n%U\n%a\n")))
    #+end_src
