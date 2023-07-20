@@ -1279,33 +1279,37 @@ Configure custom agenda views.
 
 Capture templates for notes, todo etc.
 
-   #+begin_src emacs-lisp
-   (setq org-capture-templates
-         '(("t" "Task" entry (file "~/org/refile.org")
-            "* TODO %?\n%u\n%a\n" :clock-in t :clock-resume t)
-           ("r" "Respond" entry (file "~/org/refile.org")
-            "* NEXT Respond to %:from on %:subject :EMAIL:\nSCHEDULED: %t\n%U\n%a\n" :clock-in t :clock-resume t :immediate-finish t)
-           ("b" "Bookmark" entry (file "~/org/refile.org")
-            "* %? %(org-set-tags \"BOOKMARK\") \n:PROPERTIES:\n:CREATED: %U\n:END:\n\n" :empty-lines 1)
-           ("n" "Note" entry (file  "~/org/refile.org")
-            "* %? :NOTE:\n%U\n%a\n" :clock-in t :clock-resume t)
-           ("j" "Journal" entry (file+olp+datetree "~/org/journal.org")
-            "* %?\n%U\n" :clock-in t :clock-resume t :tree-type week)
-           ("x" "X" entry (file+olp+datetree "~/org/e.org" "Chronology")
-            "* %?\n%U\n" :clock-in t :clock-resume t)
-           ("g" "Forge Topic" entry (file "~/org/refile.org")
-            "* TODO %:description\n%?\n%a\n%u\n" :clock-in t :clock-resume t)
-           ("#" "used by gnus-icalendar-org" entry (file "~/org/refile.org")
-             "%i %?\n" :time-prompt :clock-in t :clock-resume t)
-           ("m" "Meeting" entry (file "~/org/refile.org")
-            "* MEETING Meeting with %? :MEETING:\n%U" :clock-in t :clock-resume t)
-           ("p" "Phone call" entry (file "~/org/refile.org")
-             "* PHONE Call with %? :PHONE:\n%U" :clock-in t :clock-resume t)
-           ("e" "Exercise" item (file+headline "~/org/todo.org" "TODO Exercise")
-             "%^u: %?")
-           ("h" "Habit" entry (file "~/org/refile.org")
-             "* TODO %? :habit: \nSCHEDULED: %(format-time-string \"%<<%Y-%m-%d %a .+1d/3d>>\")\n:PROPERTIES:\n:STYLE: habit\n:REPEAT_TO_STATE: TODO\n:END:\n%U\n%a\n")))
-   #+end_src
+#+begin_src emacs-lisp
+(setq org-capture-templates
+      '(("t" "Task" entry (file "~/org/refile.org")
+         "* TODO %?\n%u\n%a\n" :clock-in t :clock-resume t)
+        ("c" "Call" entry (file "~/org/refile.org")
+         "* TODO Call %? :@mobile:\n%u\n" :clock-in t :clock-resume t)
+        ("m" "Message" entry (file "~/org/refile.org")
+         "* TODO Message %? :@mobile:\n%u\n" :clock-in t :clock-resume t)
+        ("r" "Respond" entry (file "~/org/refile.org")
+         "* NEXT Respond to %:from on %:subject :EMAIL:\nSCHEDULED: %t\n%U\n%a\n" :clock-in t :clock-resume t :immediate-finish t)
+        ("b" "Bookmark" entry (file "~/org/refile.org")
+         "* %? %(org-set-tags \"BOOKMARK\") \n:PROPERTIES:\n:CREATED: %U\n:END:\n\n" :empty-lines 1)
+        ("n" "Note" entry (file  "~/org/refile.org")
+         "* %? :NOTE:\n%U\n%a\n" :clock-in t :clock-resume t)
+        ("j" "Journal" entry (file+olp+datetree "~/org/journal.org")
+         "* %?\n%U\n" :clock-in t :clock-resume t :tree-type week)
+        ("x" "X" entry (file+olp+datetree "~/org/e.org" "Chronology")
+         "* %?\n%U\n" :clock-in t :clock-resume t)
+        ("g" "Forge Topic" entry (file "~/org/refile.org")
+         "* TODO %:description\n%?\n%a\n%u\n" :clock-in t :clock-resume t)
+        ("#" "used by gnus-icalendar-org" entry (file "~/org/refile.org")
+          "%i %?\n" :time-prompt :clock-in t :clock-resume t)
+        ("i" "Meeting" entry (file "~/org/refile.org")
+         "* MEETING Meeting with %? :MEETING:\n%U" :clock-in t :clock-resume t)
+        ("p" "Phone call" entry (file "~/org/refile.org")
+          "* PHONE Call with %? :PHONE:\n%U" :clock-in t :clock-resume t)
+        ("e" "Exercise" item (file+headline "~/org/todo.org" "TODO Exercise")
+          "%^u: %?")
+        ("h" "Habit" entry (file "~/org/refile.org")
+          "* TODO %? :habit: \nSCHEDULED: %(format-time-string \"%<<%Y-%m-%d %a .+1d/3d>>\")\n:PROPERTIES:\n:STYLE: habit\n:REPEAT_TO_STATE: TODO\n:END:\n%U\n%a\n")))
+#+end_src
 
 Keybindings straight to capture templates.
 
