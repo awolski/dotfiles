@@ -157,7 +157,7 @@ number, and restore the default value after initialization.
 Let's use [[https://github.com/radian-software/straight.el][straight.el]]: next-generation, purely functional package manager for
 the Emacs hacker, to manage our packages. First we need to initialise it.
 
-;;#+begin_src emacs-lisp
+#+begin_src emacs-lisp
 ;;(defvar bootstrap-version)
 ;;(let ((bootstrap-file
 ;;       (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
@@ -183,7 +183,7 @@ the Emacs hacker, to manage our packages. First we need to initialise it.
 ;;  (straight-use-package-by-default t))
 ;;#+end_src
 
-Let's test use-package and straight by installing and configuring ledger.
+;Let's test use-package and straight by installing and configuring ledger.
 
 ;;#+begin_src emacs-lisp
 ;;(use-package ledger-mode)
@@ -262,8 +262,7 @@ Let's test use-package and straight by installing and configuring ledger.
 ;;(straight-use-package 'web-mode)             ; Major mode for editing HTML, CSS, JavaScript
 ;;(straight-use-package 'which-key)            ; Display available keybindings in popup
 ;;(straight-use-package 'yaml-mode)            ; Major mode for editing YAML
-;;#+end_src
-
+#+end_src
 
 Managing extensions for Emacs is simplified using =package= which is
 built in to Emacs 24 and newer. To load downloaded packages we need to
@@ -324,6 +323,7 @@ installed. To ensure we install missing packages if they are missing.
           markdown-mode        ; Emacs Major mode for Markdown-formatted files
           multiple-cursors     ; Multiple cursors for Emacs
           multi-vterm          ; Manage multiple vterms in Emacs
+          nix-mode             ; Major mode for editing Nix expressions
           ob-http              ; Make http request within org-mode babel
           olivetti             ; Minor mode for a nice writing environment
           org                  ; Outline-based notes management and organizer
@@ -995,8 +995,8 @@ function.
 given, the duplicated region will be commented out."
   (interactive "P")
   (save-excursion
-    (let ((start (if (region-active-p) (region-beginning) (point-at-bol)))
-          (end   (if (region-active-p) (region-end) (point-at-eol)))
+    (let ((start (if (region-active-p) (region-beginning) (line-beginning-position)))
+          (end   (if (region-active-p) (region-end) (line-end-position)))
           (fill-column most-positive-fixnum))
       (goto-char end)
       (unless (region-active-p)
@@ -1297,7 +1297,7 @@ Capture templates for notes, todo etc.
         ("m" "Message" entry (file "~/org/refile.org")
          "* TODO Message %? :@mobile:\n%u\n" :clock-in t :clock-resume t)
         ("r" "Respond" entry (file "~/org/refile.org")
-         "* NEXT Respond to %:from on %:subject :EMAIL:\nSCHEDULED: %t\n%U\n%a\n" :clock-in t :clock-resume t :immediate-finish t)
+         "* NEXT Respond to %:from on %:subject :EMAIL:\n%U\n%a\n" :clock-in t :clock-resume t :immediate-finish t)
         ("b" "Bookmark" entry (file "~/org/refile.org")
          "* %? %(org-set-tags \"BOOKMARK\") \n:PROPERTIES:\n:CREATED: %U\n:END:\n\n" :empty-lines 1)
         ("n" "Note" entry (file  "~/org/refile.org")
@@ -1707,6 +1707,14 @@ buffer, including the minibuffer and mode line.
        (define-key map (kbd "C-0") 'global-scale-default) map))))
 #+END_SRC
 
+** Nix
+
+I'm learning to use Nix so let's make it easier to edit Nix expressions:
+
+#+begin_src emacs-lisp
+(add-to-list 'auto-mode-alist '("\\.nix\\'" . nix-mode))
+#+end_src
+
 * Mode specific
 
 ;;** Compilation
@@ -2083,9 +2091,11 @@ defined.
 
 ** Bindings for [[https://github.com/bbatsov/projectile][Projectile]]
 
-+BEGIN_SRC emacs-lisp
-define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
-+END_SRC
+#+BEGIN_SRC emacs-lisp
+(projectile-mode +1)
+(define-key projectile-mode-map (kbd "s-p") 'projectile-command-map)
+(define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
+#+END_SRC
 
 ;;** Bindings for [[https://github.com/clojure-emacs/cider][Cider]]
 ;;
