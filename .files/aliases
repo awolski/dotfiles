@@ -82,6 +82,9 @@ alias yubinit='gpg-connect-agent "scd serialno" "learn --force" /bye'
 alias jabra_on='bluetoothctl connect 50:C2:ED:EA:89:3C'
 alias jabra_off='bluetoothctl disconnect 50:C2:ED:EA:89:3C'
 
+# Keybase file system
+alias kbfs="systemctl --user start kbfs"
+
 # Keyboard
 alias kb="setxkbmap gb -option 'ctrl:nocaps'"
 
