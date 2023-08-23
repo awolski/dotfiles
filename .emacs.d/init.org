@@ -501,7 +501,8 @@ default.
            counsel-projectile-mode      ; Manage and navigate projects
            recentf-mode                 ; Recently opened files
            show-paren-mode              ; Highlight matching parentheses
-           which-key-mode))             ; Available keybindings in popup
+           which-key-mode               ; Available keybindings in popup
+           yas-global-mode))            ; Enable yasnippet everywhere
   (funcall mode 1))
 
 (when (version< emacs-version "24.4")
