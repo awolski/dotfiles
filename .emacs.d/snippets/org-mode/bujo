@@ -4,7 +4,18 @@
 # --
 Bullet Journal
 
-Gratitude
-- $0
+I'm grateful for...
+- ${1:grateful_01}
+- ${2:grateful_02}
+- ${3:grateful_03}
+
+I'm excited for...
+- ${4:excited_01}
+- ${5:excited_02}
+- ${6:excited_03}
 
 Exercise
+- ${7:exercise}
+
+Journal
+- $0
