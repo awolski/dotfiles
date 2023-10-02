@@ -114,7 +114,7 @@ the =after-save-hook= ensuring to always tangle and byte-compile the
 
 #+BEGIN_SRC emacs-lisp
 (defun tangle-init ()
-  "If the current buffer is 'init.org' the code-blocks are
+  "If the current buffer is \'init.org\' the code-blocks are
    tangled, and the tangled file is compiled."
   (when (equal (buffer-file-name)
                (expand-file-name (concat user-emacs-directory "init.org")))
@@ -307,6 +307,7 @@ installed. To ensure we install missing packages if they are missing.
           diff-hl              ; Highlight uncommitted changes using VC
           doom-themes          ; An opinionated pack of modern color-themes
           eglot                ; Emacs Polyglot; LSP client that stays out of your way
+          elfeed               ; An Emacs web feeds client
           emms                 ; Emacs multi-Media System, a media player
           ;;expand-region        ; Increase selected region by semantic units
           focus                ; Dim color of text in surrounding sections
@@ -314,10 +315,11 @@ installed. To ensure we install missing packages if they are missing.
           ;;flycheck-ledger      ; Syntax checking for ledger
           forge                ; Work with Git Forges, like GitHub, in Magit
           format-all           ; Auto-format code in many languages
+          go-mode              ; Go development in Emacs
           golden-ratio         ; Automatic resizing windows to golden ratio
           ;;jedi                 ; Python auto-completion for Emacs
           js2-mode             ; Improved JavaScript editing mode
-          ;;ledger-mode          ; Major mode for editing ledger files
+          ledger-mode          ; Major mode for editing ledger files
           magit                ; control Git from Emacs
           magit-todos          ; Show TODOs (and FIXMEs, etc) in Magit status buffer
           markdown-mode        ; Emacs Major mode for Markdown-formatted files
@@ -563,41 +565,18 @@ I'm testing out mu4e to manage my mail.
                 (mu4e-drafts-folder     . "/awolski/Drafts")
                 (mu4e-sent-folder       . "/awolski/Sent")
                 (mu4e-refile-folder     . "/awolski/Archive")
-                (mu4e-trash-folder      . "/awolski/Trash")))
-
-       ;; yvant.io account
-       (make-mu4e-context
-        :name "yvant"
-        :match-func
-        (lambda (msg)
-          (when msg
-            (string-prefix-p "/yvant" (mu4e-message-field msg :maildir))))
-        :vars '((user-mail-address      . "tony@yvant.coop")
-                (user-full-name         . "Tony Wolski")
-                (mu4e-compose-signature . "Tony\n\n\https://yvant.coop")
-                (smtpmail-smtp-user     . "tony@yvant.coop")
-                (smtpmail-smtp-server   . "smtp.fastmail.com")
-                (smtpmail-smtp-service  . 587)
-                (smtpmail-stream-type   . starttls)
-                (mu4e-drafts-folder     . "/yvant/Drafts")
-                (mu4e-sent-folder       . "/yvant/Sent")
-                (mu4e-refile-folder     . "/yvant/Archive")
-                (mu4e-trash-folder      . "/yvant/Trash")))))
+                (mu4e-trash-folder      . "/awolski/Trash")))))
 
 (setq mu4e-maildir-shortcuts
       '(("/awolski/Inbox"   . ?i)
         ("/awolski/Archive" . ?a)
-        ("/awolski/Trash"   . ?t)
-        ("/yvant/Inbox"     . ?j)
-        ("/yvant/Archive"   . ?k)
-        ("/yvant/Trash"     . ?l)))
+        ("/awolski/Trash"   . ?t)))
 
 ;; Empty the initial bookmark list
 (setq mu4e-bookmarks '())
 
 ;; All inboxes
-(defvar inbox-folders (string-join '("maildir:/awolski/INBOX"
-                                     "maildir:/yvant/INBOX")
+(defvar inbox-folders (string-join '("maildir:/awolski/INBOX")
                                    " OR "))
 
 ;;   (add-to-list 'mu4e-bookmarks
@@ -646,7 +625,7 @@ View and reply to iCalendar events.
 Change the color-theme to =doom-solarized-dark=.
 
 #+BEGIN_SRC emacs-lisp
-(load-theme 'doom-solarized-dark t)
+(load-theme 'doom-oceanic-next t)
 #+END_SRC
 
 =doom-one-light= is my preferred light theme, but =doom-one= makes a very nice
@@ -655,7 +634,7 @@ dark theme. I want to be able to cycle between these.
 #+BEGIN_SRC emacs-lisp
 (defun cycle-themes ()
   "Returns a function that lets you cycle your themes."
-  (let ((themes '#1=(doom-solarized-light doom-solarized-dark . #1#)))
+  (let ((themes '#1=(doom-solarized-light doom-solarized-dark doom-oceanic-next . #1#)))
     (lambda ()
       (interactive)
       ;; Rotates the thme cycle and changes the current theme.
@@ -750,11 +729,14 @@ Let's try [[http://oremacs.com/swiper/][Ivy]] in favor of helm.
 
 ** Magit
 
-Magit is awesome. Let's use [[https://github.com/magit/forge][Forge]] too.
+[[https://magit.vc/][Magit]] is awesome. Let's use [[https://github.com/magit/forge][Forge]] too.
 
 #+begin_src emacs-lisp
 (with-eval-after-load 'magit
-  (require 'forge))
+    (require 'forge))
+
+(setq magit-repository-directories
+      `(("~/w" . 2)))
 #+end_src
 
 ** COMMENT  EMMS
@@ -866,7 +848,7 @@ I use [[https://www.ledger-cli.org/][Ledger]] to keep track of my financial life
 amounts is too narrow.
 
 #+BEGIN_SRC emacs-lisp
-;;(setq ledger-post-amount-alignment-column 60)
+(setq ledger-post-amount-alignment-column 60)
 #+END_SRC
 
 ** COMMENT Org Roam
@@ -1294,6 +1276,8 @@ Capture templates for notes, todo etc.
 (setq org-capture-templates
       '(("t" "Task" entry (file "~/org/refile.org")
          "* TODO %?\n%u\n%a\n" :clock-in t :clock-resume t)
+        ("x" "Task" entry (file "~/org/refile.org")
+         "* TODO %:subject :EMAIL:\n%U\n%a\n" :clock-in t :clock-resume t :immediate-finish t)
         ("c" "Call" entry (file "~/org/refile.org")
          "* TODO Call %? :@mobile:\n%u\n" :clock-in t :clock-resume t)
         ("m" "Message" entry (file "~/org/refile.org")
@@ -1306,7 +1290,7 @@ Capture templates for notes, todo etc.
          "* %? :NOTE:\n%U\n%a\n" :clock-in t :clock-resume t)
         ("j" "Journal" entry (file+olp+datetree "~/org/journal.org")
          "* %?\n%U\n" :clock-in t :clock-resume t :tree-type week)
-        ("x" "X" entry (file+olp+datetree "~/org/e.org" "Chronology")
+        ("e" "E" entry (file+olp+datetree "~/org/e.org" "Chronology")
          "* %?\n%U\n" :clock-in t :clock-resume t)
         ("g" "Forge Topic" entry (file "~/org/refile.org")
          "* TODO %:description\n%?\n%a\n%u\n" :clock-in t :clock-resume t)
@@ -1316,8 +1300,6 @@ Capture templates for notes, todo etc.
          "* MEETING Meeting with %? :MEETING:\n%U" :clock-in t :clock-resume t)
         ("p" "Phone call" entry (file "~/org/refile.org")
          "* PHONE Call with %? :PHONE:\n%U" :clock-in t :clock-resume t)
-        ("e" "Exercise" item (file+headline "~/org/todo.org" "TODO Exercise")
-         "%^u: %?")
         ("h" "Habit" entry (file "~/org/refile.org")
          "* TODO %? :habit: \nSCHEDULED: %(format-time-string \"%<<%Y-%m-%d %a .+1d/3d>>\")\n:PROPERTIES:\n:STYLE: habit\n:REPEAT_TO_STATE: TODO\n:END:\n%U\n%a\n")))
 #+end_src
@@ -1770,6 +1752,19 @@ it.
 (defadvice vterm (after kill-with-no-query nil activate)
   (set-process-query-on-exit-flag (get-buffer-process ad-return-value) nil))
 #+END_SRC
+
+** Go
+
+#+begin_src emacs-lisp
+(add-hook 'go-mode-hook 'eglot-ensure)
+
+;; Optional: install eglot-format-buffer as a save hook.
+;; The depth of -10 places this before eglot's willSave notification,
+;; so that that notification reports the actual contents that will be saved.
+(defun eglot-format-buffer-on-save ()
+  (add-hook 'before-save-hook #'eglot-format-buffer -10 t))
+(add-hook 'go-mode-hook #'eglot-format-buffer-on-save)
+#+end_src
 ;;
 ;;   Use zsh:
 ;;
