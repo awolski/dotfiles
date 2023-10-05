@@ -1291,7 +1291,9 @@ Capture templates for notes, todo etc.
         ("j" "Journal" entry (file+olp+datetree "~/org/journal.org")
          "* %?\n%U\n" :clock-in t :clock-resume t :tree-type week)
         ("e" "E" entry (file+olp+datetree "~/org/e.org" "Chronology")
-         "* %?\n%U\n" :clock-in t :clock-resume t)
+         "* %?\n%U\n" :clock-in t :clock-resume t :tree-type month)
+;        ("f" "F" entry (file+olp+datetree "~/org/e.org" "Chronology")
+;         "* %?\n#+begin_quote\n%[%f]\n%x\n#+end_quote%U\n" :clock-in t :clock-resume t :tree-type month)
         ("g" "Forge Topic" entry (file "~/org/refile.org")
          "* TODO %:description\n%?\n%a\n%u\n" :clock-in t :clock-resume t)
         ("#" "used by gnus-icalendar-org" entry (file "~/org/refile.org")
@@ -2010,13 +2012,18 @@ it.
 ;;   (add-hook 'coq-mode-hook #'company-coq-mode)
 ;;   #+END_SRC
 ;;
-** COMMENT Terraform
+
+** Terraform
 
 #+begin_src emacs-lisp
 (with-eval-after-load 'eglot
   (add-to-list 'eglot-server-programs
-               '(terraform-mode . ("terraform-ls" "serve"))))
+               '(terraform-mode . ("terraform-ls" "serve")))
+  (custom-set-variables '(terraform-format-on-save t)))
 (add-hook 'terraform-mode-hook 'eglot-ensure)
+(add-hook 'terraform-mode-hook #'outline-minor-mode)
+
+
 #+end_src
 
 # ** Markdown
