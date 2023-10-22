@@ -480,10 +480,12 @@ these.
 
 #+BEGIN_SRC emacs-lisp
 (dolist (mode
-         '(menu-bar-mode                ; No menu bar, more room for text
-           tool-bar-mode                ; No toolbars, more room for text
-           scroll-bar-mode              ; No scroll bars either
-           blink-cursor-mode))          ; The blinking cursor gets old
+         '(menu-bar-mode                     ; No menu bar, more room for text
+           tool-bar-mode                     ; No toolbars, more room for text
+           scroll-bar-mode                   ; No scroll bars either
+           blink-cursor-mode                 ; The blinking cursor gets old
+           global-display-line-numbers-mode  ; Display line numbers
+           ))
   (funcall mode 0))
 #+END_SRC
 
@@ -1184,6 +1186,23 @@ Quick access to Org tags.
 (setq org-agenda-tags-todo-honor-ignore-options t)
 #+end_src
 
+Let's test out [[https://github.com/alphapapa/org-super-agenda][org-super-agenda]].
+
+#+begin_src emacs-lisp
+(org-super-agenda-mode)
+(setq org-super-agenda-groups
+      '((:name "Next Items"
+               :time-grid t
+               :tag ("NEXT" "outbox"))
+        (:name "Important"
+               :priority "A")
+        (:name "Quick Picks"
+               :effort< "0:15")
+        (:priority<= "B"
+                     :scheduled future
+                     :order 1)))
+#+end_src
+
 Configure custom agenda views.
 
 #+begin_src emacs-lisp
@@ -1193,77 +1212,200 @@ Configure custom agenda views.
 ;; Compact the block agenda view
 (setq org-agenda-compact-blocks t)
 
+
 (setq org-agenda-custom-commands
-      '(("N" "Notes" tags "NOTE"
-         ((org-agenda-overriding-header "Notes")
-          (org-tags-match-list-sublevels t)))
-        ("h" "Habits" tags-todo "STYLE=\"habit\""
-         ((org-agenda-overriding-header "Habits")
-          (org-agenda-sorting-strategy
-           '(todo-states-down effort-up category-keep))))
-        ("b" "Bookmarks" tags "BOOKMARK"
-         ((org-agenda-overriding-header "Bookmarks")
-          (org-tags-match-list-sublevels t)))
-        (" " "Agenda"
-         ((agenda "" ((org-agenda-span 1)))
-          (tags "REFILE"
-                ((org-agenda-overriding-header "Tasks to Refile")
-                 (org-tags-match-list-sublevels nil)))
-          (tags-todo "-CANCELLED/!"
-                     ((org-agenda-overriding-header "Stuck Projects")
-                      (org-agenda-skip-function 'bh/skip-non-stuck-projects)
-                      (org-agenda-sorting-strategy
-                       '(category-keep))))
-          (tags-todo "-CANCELLED/!NEXT"
-                     ((org-agenda-overriding-header (concat "Next Tasks"
-                                                            (if bh/hide-scheduled-and-waiting-next-tasks
-                                                                ""
-                                                              " (including WAITING and SCHEDULED tasks)")))
-                      (org-agenda-skip-function 'bh/skip-projects-and-habits)
-                      (org-tags-match-list-sublevels t)
-                      (org-agenda-todo-ignore-scheduled bh/hide-scheduled-and-waiting-next-tasks)
-                      (org-agenda-todo-ignore-deadlines bh/hide-scheduled-and-waiting-next-tasks)
-                      (org-agenda-todo-ignore-with-date bh/hide-scheduled-and-waiting-next-tasks)
-                      (org-agenda-sorting-strategy
-                       '(todo-state-down effort-up category-keep))))
-          (tags-todo "-HOLD-CANCELLED/!"
-                     ((org-agenda-overriding-header "Projects")
-                      (org-agenda-skip-function 'bh/skip-non-projects)
-                      (org-tags-match-list-sublevels 'indented)
-                      (org-agenda-sorting-strategy
-                       '(category-keep))))
-          (tags-todo "-REFILE-CANCELLED-WAITING-HOLD/!"
-                     ((org-agenda-overriding-header (concat "Project Subtasks"
-                                                            (if bh/hide-scheduled-and-waiting-next-tasks
-                                                                ""
-                                                              " (including WAITING and SCHEDULED tasks)")))
-                      (org-agenda-skip-function 'bh/skip-non-project-tasks)
-                      (org-agenda-todo-ignore-scheduled bh/hide-scheduled-and-waiting-next-tasks)
-                      (org-agenda-todo-ignore-deadlines bh/hide-scheduled-and-waiting-next-tasks)
-                      (org-agenda-todo-ignore-with-date bh/hide-scheduled-and-waiting-next-tasks)
-                      (org-agenda-sorting-strategy
-                       '(category-keep))))
-          (tags-todo "-REFILE-CANCELLED-WAITING-HOLD/!"
-                     ((org-agenda-overriding-header (concat "Standalone Tasks"
-                                                            (if bh/hide-scheduled-and-waiting-next-tasks
-                                                                ""
-                                                              " (including WAITING and SCHEDULED tasks)")))
-                      (org-agenda-skip-function 'bh/skip-project-tasks)
-                      (org-agenda-todo-ignore-scheduled bh/hide-scheduled-and-waiting-next-tasks)
-                      (org-agenda-todo-ignore-deadlines bh/hide-scheduled-and-waiting-next-tasks)
-                      (org-agenda-todo-ignore-with-date bh/hide-scheduled-and-waiting-next-tasks)
-                      (org-agenda-sorting-strategy
-                       '(priority-down))))
-          (tags-todo "-CANCELLED+WAITING-HOLD/!"
-                     ((org-agenda-overriding-header (concat "Waiting and Postponed Tasks"
-                                                            (if bh/hide-scheduled-and-waiting-next-tasks
-                                                                ""
-                                                              " (including WAITING and SCHEDULED tasks)")))
-                      (org-agenda-skip-function 'bh/skip-non-tasks)
-                      (org-tags-match-list-sublevels nil)
-                      (org-agenda-todo-ignore-scheduled bh/hide-scheduled-and-waiting-next-tasks)
-                      (org-agenda-todo-ignore-deadlines bh/hide-scheduled-and-waiting-next-tasks)))
-          ))))
+      '(("x" "Personal"
+         ((agenda "" ((org-agenda-span 'day)
+                      (org-super-agenda-groups
+                       '((:name "Today" :time-grid t
+                                :date today
+                                :todo "TODAY"
+                                :scheduled today
+                                :habit t
+                                :order 1)
+                         (:discard (:anything))))))
+
+          (alltodo "" ((org-agenda-overriding-header "")
+                       (org-super-agenda-groups
+                        '((:discard (:scheduled t
+                                     :tag "WORK"
+                                     :todo ("HOLD" "WAITING")))
+                          (:name "Tasks to refile"
+                                 :tag "REFILE"
+                                 :order 1)
+                          (:name "Due Today"
+                                 :deadline today
+                                 :order 2)
+                          (:name "Overdue"
+                                 :deadline past
+                                 :order 3)
+                          (:name "Next to do"
+                                 :todo "NEXT"
+                                 :order 4)
+                          (:name "Important"
+                                 :tag "Important"
+                                 :priority "A"
+                                 :order 5)
+                          (:name "Due Soon"
+                                 :scheduled future
+                                 :deadline future
+                                 :order 6)
+                          (:name "Quick Picks"
+                                 :effort< "0:15"
+                                 :order 7)
+                          (:name "Projects"
+                                 :children t
+                                 :order 8)
+                          ))))))
+        ("p" "PeerJ"
+         ((agenda "" ((org-agenda-span 'day)
+                      (org-super-agenda-groups
+                       '((:name "Today" :time-grid t
+                                :date today
+                                :todo "TODAY"
+                                :scheduled today
+                                :order 1)
+                         (:discard (:anything))))))
+          (alltodo "" ((org-agenda-overriding-header "")
+                       (org-super-agenda-groups
+                        '((:name "Next to do"
+                                 :todo "NEXT"
+                                 :order 1)
+                          (:name "Projects"
+                                 :and (:children t :tag "peerj" :not (:tag "HOLD"))
+                                 :order 2)
+                          (:name "Tasks to refile"
+                                 :tag "REFILE"
+                                 :order 4)
+                          (:discard (:todo "HOLD"
+                                     :not (:tag ("peerj"))))
+                          ))))))
+        ("z" "Super zaen view"
+         ((agenda "" ((org-agenda-span 'day)
+                      (org-super-agenda-groups
+                       '((:name "Today"
+                                :time-grid t
+                                :date today
+                                :todo "TODAY"
+                                :scheduled today
+                                :order 1)))))
+          (alltodo "" ((org-agenda-overriding-header "")
+                       (org-super-agenda-groups
+                        '((:name "Next to do"
+                                 :todo "NEXT"
+                                 :order 1)
+                          (:name "Important"
+                                 :tag "Important"
+                                 :priority "A"
+                                 :order 6)
+                          (:name "Due Today"
+                                 :deadline today
+                                 :order 2)
+                          (:name "Due Soon"
+                                 :deadline future
+                                 :order 8)
+                          (:name "Overdue"
+                                 :deadline past
+                                 :order 7)
+                          (:name "Assignments"
+                                 :tag "Assignment"
+                                 :order 10)
+                          (:name "Issues"
+                                 :tag "Issue"
+                                 :order 12)
+                          (:name "Projects"
+                                 :tag "Project"
+                                 :order 14)
+                          (:name "Emacs"
+                                 :tag "Emacs"
+                                 :order 13)
+                          (:name "Research"
+                                 :tag "Research"
+                                 :order 15)
+                          (:name "To read"
+                                 :tag "Read"
+                                 :order 30)
+                          (:name "Waiting"
+                                 :todo "WAITING"
+                                 :order 20)
+                          (:name "trivial"
+                                 :priority<= "C"
+                                 :tag ("Trivial" "Unimportant")
+                                 :todo ("SOMEDAY" )
+                                 :order 90)
+                          (:discard (:tag ("Chore" "Routine" "Daily")))))))))))
+
+;;(setq org-agenda-custom-commands
+;;      '(("N" "Notes" tags "NOTE"
+;;         ((org-agenda-overriding-header "Notes")
+;;          (org-tags-match-list-sublevels t)))
+;;        ("h" "Habits" tags-todo "STYLE=\"habit\""
+;;         ((org-agenda-overriding-header "Habits")
+;;          (org-agenda-sorting-strategy
+;;           '(todo-states-down effort-up category-keep))))
+;;        ("b" "Bookmarks" tags "BOOKMARK"
+;;         ((org-agenda-overriding-header "Bookmarks")
+;;          (org-tags-match-list-sublevels t)))
+;;        (" " "Agenda"
+;;         ((agenda "" ((org-agenda-span 1)))
+;;          (tags "REFILE"
+;;                ((org-agenda-overriding-header "Tasks to Refile")
+;;                 (org-tags-match-list-sublevels nil)))
+;;          (tags-todo "-CANCELLED/!"
+;;                     ((org-agenda-overriding-header "Stuck Projects")
+;;                      (org-agenda-skip-function 'bh/skip-non-stuck-projects)
+;;                      (org-agenda-sorting-strategy
+;;                       '(category-keep))))
+;;          (tags-todo "-CANCELLED/!NEXT"
+;;                     ((org-agenda-overriding-header (concat "Next Tasks"
+;;                                                            (if bh/hide-scheduled-and-waiting-next-tasks
+;;                                                                ""
+;;                                                              " (including WAITING and SCHEDULED tasks)")))
+;;                      (org-agenda-skip-function 'bh/skip-projects-and-habits)
+;;                      (org-tags-match-list-sublevels t)
+;;                      (org-agenda-todo-ignore-scheduled bh/hide-scheduled-and-waiting-next-tasks)
+;;                      (org-agenda-todo-ignore-deadlines bh/hide-scheduled-and-waiting-next-tasks)
+;;                      (org-agenda-todo-ignore-with-date bh/hide-scheduled-and-waiting-next-tasks)
+;;                      (org-agenda-sorting-strategy
+;;                       '(todo-state-down effort-up category-keep))))
+;;          (tags-todo "-HOLD-CANCELLED/!"
+;;                     ((org-agenda-overriding-header "Projects")
+;;                      (org-agenda-skip-function 'bh/skip-non-projects)
+;;                      (org-tags-match-list-sublevels 'indented)
+;;                      (org-agenda-sorting-strategy
+;;                       '(category-keep))))
+;;          (tags-todo "-REFILE-CANCELLED-WAITING-HOLD/!"
+;;                     ((org-agenda-overriding-header (concat "Project Subtasks"
+;;                                                            (if bh/hide-scheduled-and-waiting-next-tasks
+;;                                                                ""
+;;                                                              " (including WAITING and SCHEDULED tasks)")))
+;;                      (org-agenda-skip-function 'bh/skip-non-project-tasks)
+;;                      (org-agenda-todo-ignore-scheduled bh/hide-scheduled-and-waiting-next-tasks)
+;;                      (org-agenda-todo-ignore-deadlines bh/hide-scheduled-and-waiting-next-tasks)
+;;                      (org-agenda-todo-ignore-with-date bh/hide-scheduled-and-waiting-next-tasks)
+;;                      (org-agenda-sorting-strategy
+;;                       '(category-keep))))
+;;          (tags-todo "-REFILE-CANCELLED-WAITING-HOLD/!"
+;;                     ((org-agenda-overriding-header (concat "Standalone Tasks"
+;;                                                            (if bh/hide-scheduled-and-waiting-next-tasks
+;;                                                                ""
+;;                                                              " (including WAITING and SCHEDULED tasks)")))
+;;                      (org-agenda-skip-function 'bh/skip-project-tasks)
+;;                      (org-agenda-todo-ignore-scheduled bh/hide-scheduled-and-waiting-next-tasks)
+;;                      (org-agenda-todo-ignore-deadlines bh/hide-scheduled-and-waiting-next-tasks)
+;;                      (org-agenda-todo-ignore-with-date bh/hide-scheduled-and-waiting-next-tasks)
+;;                      (org-agenda-sorting-strategy
+;;                       '(priority-down))))
+;;          (tags-todo "-CANCELLED+WAITING-HOLD/!"
+;;                     ((org-agenda-overriding-header (concat "Waiting and Postponed Tasks"
+;;                                                            (if bh/hide-scheduled-and-waiting-next-tasks
+;;                                                                ""
+;;                                                              " (including WAITING and SCHEDULED tasks)")))
+;;                      (org-agenda-skip-function 'bh/skip-non-tasks)
+;;                      (org-tags-match-list-sublevels nil)
+;;                      (org-agenda-todo-ignore-scheduled bh/hide-scheduled-and-waiting-next-tasks)
+;;                      (org-agenda-todo-ignore-deadlines bh/hide-scheduled-and-waiting-next-tasks)))
+;;          ))))
 #+end_src
 
 #+begin_src emacs-lisp
@@ -1290,10 +1432,6 @@ Capture templates for notes, todo etc.
          "* %? :NOTE:\n%U\n%a\n" :clock-in t :clock-resume t)
         ("j" "Journal" entry (file+olp+datetree "~/org/journal.org")
          "* %?\n%U\n" :clock-in t :clock-resume t :tree-type week)
-        ("e" "E" entry (file+olp+datetree "~/org/e.org" "Chronology")
-         "* %?\n%U\n" :clock-in t :clock-resume t :tree-type month)
-;        ("f" "F" entry (file+olp+datetree "~/org/e.org" "Chronology")
-;         "* %?\n#+begin_quote\n%[%f]\n%x\n#+end_quote%U\n" :clock-in t :clock-resume t :tree-type month)
         ("g" "Forge Topic" entry (file "~/org/refile.org")
          "* TODO %:description\n%?\n%a\n%u\n" :clock-in t :clock-resume t)
         ("#" "used by gnus-icalendar-org" entry (file "~/org/refile.org")
@@ -1303,12 +1441,19 @@ Capture templates for notes, todo etc.
         ("p" "Phone call" entry (file "~/org/refile.org")
          "* PHONE Call with %? :PHONE:\n%U" :clock-in t :clock-resume t)
         ("h" "Habit" entry (file "~/org/refile.org")
-         "* TODO %? :habit: \nSCHEDULED: %(format-time-string \"%<<%Y-%m-%d %a .+1d/3d>>\")\n:PROPERTIES:\n:STYLE: habit\n:REPEAT_TO_STATE: TODO\n:END:\n%U\n%a\n")))
+         "* TODO %? :habit: \nSCHEDULED: %(format-time-string \"%<<%Y-%m-%d %a .+1d/3d>>\")\n:PROPERTIES:\n:STYLE: habit\n:REPEAT_TO_STATE: TODO\n:END:\n%U\n%a\n")
+        ("e" "E Files")
+        ("ee" "Email" entry (file+olp+datetree "~/org/e.org" "Chronology")
+         "* %:subject\n\n#+begin_quote\n%i\n#+end_quote\n%a\n" :time-prompt t)
+        ("em" "Message" entry (file+olp+datetree "~/org/e.org" "Chronology")
+         "* Message from %^{prompt|Emma|Tony} at %<%H:%M>\n#+begin_quote\n%?\n#+end_quote\n" :time-prompt t)
+        ("eo" "Other" entry (file+olp+datetree "~/org/e.org" "Chronology")
+         "* %^{prompt|Emma|Eira|Bodhi} %? ~%<%H:%M>  \n" :time-prompt t)))
 #+end_src
 
 Keybindings straight to capture templates.
 
-#+begin_src emacs-lisp
+,#+begin_src emacs-lisp
 ;;(define-key global-map (kbd "C-c r")
 ;;  (lambda () (interactive) (org-capture nil "r")))
 #+end_src
