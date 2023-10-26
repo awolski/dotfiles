@@ -112,9 +112,9 @@ To avoid doing this each time a change is made we can add a function to
 the =after-save-hook= ensuring to always tangle and byte-compile the
 =org=-document after changes.
 
-#+BEGIN_SRC emacs-lisp
+v#+BEGIN_SRC emacs-lisp
 (defun tangle-init ()
-  "If the current buffer is \'init.org\' the code-blocks are
+  "If the current buffer is \\='init.org\\=' the code-blocks are
    tangled, and the tangled file is compiled."
   (when (equal (buffer-file-name)
                (expand-file-name (concat user-emacs-directory "init.org")))
@@ -1222,8 +1222,7 @@ Configure custom agenda views.
                                 :todo "TODAY"
                                 :scheduled today
                                 :habit t
-                                :order 1)
-                         (:discard (:anything))))))
+                                :order 1)))))
 
           (alltodo "" ((org-agenda-overriding-header "")
                        (org-super-agenda-groups
@@ -1243,19 +1242,23 @@ Configure custom agenda views.
                                  :todo "NEXT"
                                  :order 4)
                           (:name "Important"
-                                 :tag "Important"
                                  :priority "A"
                                  :order 5)
-                          (:name "Due Soon"
-                                 :scheduled future
-                                 :deadline future
-                                 :order 6)
                           (:name "Quick Picks"
                                  :effort< "0:15"
+                                 :order 6)
+                          (:name "Stuck Projects"
+                                 :and (:todo ("WAITING" "HOLD") :not (:children "NEXT"))
                                  :order 7)
                           (:name "Projects"
                                  :children t
                                  :order 8)
+                          (:name "Project Tasks"
+                                 :auto-parent t
+                                 :order 9)
+                          (:name "Waiting"
+                                 :todo "WAITING"
+                                 :order 10)
                           ))))))
         ("p" "PeerJ"
          ((agenda "" ((org-agenda-span 'day)
@@ -1265,75 +1268,26 @@ Configure custom agenda views.
                                 :todo "TODAY"
                                 :scheduled today
                                 :order 1)
-                         (:discard (:anything))))))
+                         (:discard (:not (:tag "PEERJ")))))))
           (alltodo "" ((org-agenda-overriding-header "")
                        (org-super-agenda-groups
-                        '((:name "Next to do"
+                        '((:discard (:not (:tag ("PEERJ" "REFILE"))))
+                          (:name "Next to do"
                                  :todo "NEXT"
                                  :order 1)
-                          (:name "Projects"
-                                 :and (:children t :tag "peerj" :not (:tag "HOLD"))
-                                 :order 2)
                           (:name "Tasks to refile"
                                  :tag "REFILE"
-                                 :order 4)
-                          (:discard (:todo "HOLD"
-                                     :not (:tag ("peerj"))))
-                          ))))))
-        ("z" "Super zaen view"
-         ((agenda "" ((org-agenda-span 'day)
-                      (org-super-agenda-groups
-                       '((:name "Today"
-                                :time-grid t
-                                :date today
-                                :todo "TODAY"
-                                :scheduled today
-                                :order 1)))))
-          (alltodo "" ((org-agenda-overriding-header "")
-                       (org-super-agenda-groups
-                        '((:name "Next to do"
-                                 :todo "NEXT"
-                                 :order 1)
-                          (:name "Important"
-                                 :tag "Important"
-                                 :priority "A"
-                                 :order 6)
-                          (:name "Due Today"
-                                 :deadline today
                                  :order 2)
-                          (:name "Due Soon"
-                                 :deadline future
-                                 :order 8)
-                          (:name "Overdue"
-                                 :deadline past
-                                 :order 7)
-                          (:name "Assignments"
-                                 :tag "Assignment"
-                                 :order 10)
-                          (:name "Issues"
-                                 :tag "Issue"
-                                 :order 12)
-                          (:name "Projects"
-                                 :tag "Project"
-                                 :order 14)
-                          (:name "Emacs"
-                                 :tag "Emacs"
-                                 :order 13)
-                          (:name "Research"
-                                 :tag "Research"
-                                 :order 15)
-                          (:name "To read"
-                                 :tag "Read"
-                                 :order 30)
-                          (:name "Waiting"
-                                 :todo "WAITING"
-                                 :order 20)
-                          (:name "trivial"
-                                 :priority<= "C"
-                                 :tag ("Trivial" "Unimportant")
-                                 :todo ("SOMEDAY" )
-                                 :order 90)
-                          (:discard (:tag ("Chore" "Routine" "Daily")))))))))))
+                          (:name "Active Projects"
+                                 :and (:todo "TODO" :children todo)
+                                 :order 3)
+                          (:name "Stuck Projects"
+                                 :and (:todo ("WAITING" "HOLD") :children todo)
+                                 :order 4)
+                          (:name "Project Tasks"
+                                 :auto-parent t
+                                 :order 5)
+                          ))))))))
 
 ;;(setq org-agenda-custom-commands
 ;;      '(("N" "Notes" tags "NOTE"
@@ -1418,7 +1372,7 @@ Capture templates for notes, todo etc.
 (setq org-capture-templates
       '(("t" "Task" entry (file "~/org/refile.org")
          "* TODO %?\n%u\n%a\n" :clock-in t :clock-resume t)
-        ("x" "Task" entry (file "~/org/refile.org")
+        ("x" "Email Task" entry (file "~/org/refile.org")
          "* TODO %:subject :EMAIL:\n%U\n%a\n" :clock-in t :clock-resume t :immediate-finish t)
         ("c" "Call" entry (file "~/org/refile.org")
          "* TODO Call %? :@mobile:\n%u\n" :clock-in t :clock-resume t)
@@ -1432,16 +1386,18 @@ Capture templates for notes, todo etc.
          "* %? :NOTE:\n%U\n%a\n" :clock-in t :clock-resume t)
         ("j" "Journal" entry (file+olp+datetree "~/org/journal.org")
          "* %?\n%U\n" :clock-in t :clock-resume t :tree-type week)
+        ("k" "Time block" entry (file+olp+datetree "~/org/timeblock.org")
+         "* %?\n%T\n" :time-prompt t)
         ("g" "Forge Topic" entry (file "~/org/refile.org")
          "* TODO %:description\n%?\n%a\n%u\n" :clock-in t :clock-resume t)
-        ("#" "used by gnus-icalendar-org" entry (file "~/org/refile.org")
-         "%i %?\n" :time-prompt :clock-in t :clock-resume t)
         ("i" "Meeting" entry (file "~/org/refile.org")
          "* MEETING Meeting with %? :MEETING:\n%U" :clock-in t :clock-resume t)
         ("p" "Phone call" entry (file "~/org/refile.org")
          "* PHONE Call with %? :PHONE:\n%U" :clock-in t :clock-resume t)
         ("h" "Habit" entry (file "~/org/refile.org")
          "* TODO %? :habit: \nSCHEDULED: %(format-time-string \"%<<%Y-%m-%d %a .+1d/3d>>\")\n:PROPERTIES:\n:STYLE: habit\n:REPEAT_TO_STATE: TODO\n:END:\n%U\n%a\n")
+        ("#" "used by gnus-icalendar-org" entry (file "~/org/refile.org")
+         "%i %?\n" :time-prompt :clock-in t :clock-resume t)
         ("e" "E Files")
         ("ee" "Email" entry (file+olp+datetree "~/org/e.org" "Chronology")
          "* %:subject\n\n#+begin_quote\n%i\n#+end_quote\n%a\n" :time-prompt t)
