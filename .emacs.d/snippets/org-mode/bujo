@@ -5,17 +5,13 @@
 Bullet Journal
 
 I'm grateful for...
-- ${1:grateful_01}
-- ${2:grateful_02}
-- ${3:grateful_03}
+- ${1:}
 
 I'm excited for...
-- ${4:excited_01}
-- ${5:excited_02}
-- ${6:excited_03}
+- ${2:}
 
 Exercise
-- ${7:exercise}
+- ${3:}
 
 Journal
 - $0

@@ -112,7 +112,7 @@ To avoid doing this each time a change is made we can add a function to
 the =after-save-hook= ensuring to always tangle and byte-compile the
 =org=-document after changes.
 
-v#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp
 (defun tangle-init ()
   "If the current buffer is \\='init.org\\=' the code-blocks are
    tangled, and the tangled file is compiled."
@@ -296,10 +296,7 @@ installed. To ensure we install missing packages if they are missing.
 (let* ((package--builtins nil)
        (packages
         '(auto-compile         ; automatically compile Emacs libraries
-          ;;cider                ; Clojure Interactive Development Environment
-          ;;clj-refactor         ; Commands for refactoring Clojure code
           company              ; Modular text completion framework
-          ;;company-coq          ; A collection of extensions PG's Coq mode
           counsel              ; Various completion functions using Ivy
           counsel-jq           ; Traverse complex JSON and YAML structures with live feedback
           counsel-projectile   ; Ivy integration for Projectile
@@ -317,7 +314,6 @@ installed. To ensure we install missing packages if they are missing.
           format-all           ; Auto-format code in many languages
           go-mode              ; Go development in Emacs
           golden-ratio         ; Automatic resizing windows to golden ratio
-          ;;jedi                 ; Python auto-completion for Emacs
           js2-mode             ; Improved JavaScript editing mode
           ledger-mode          ; Major mode for editing ledger files
           magit                ; control Git from Emacs
@@ -356,6 +352,7 @@ installed. To ensure we install missing packages if they are missing.
           web-mode             ; Major mode for editing HTML, CSS, JavaScript
           which-key            ; Display available keybindings in popup
           yaml-pro             ; Edit YAML in Emacs like a pro
+          yankpad              ; Paste snippets from an org-mode file
           yasnippet            ; A template system for Emacs
           )))
   (let ((packages (seq-remove 'package-installed-p packages)))
@@ -850,8 +847,18 @@ I use [[https://www.ledger-cli.org/][Ledger]] to keep track of my financial life
 amounts is too narrow.
 
 #+BEGIN_SRC emacs-lisp
-(setq ledger-post-amount-alignment-column 60)
+(setq ledger-post-amount-alignment-column 60
+      ledger-reports '(("bal" "ledger [[ledger-mode-flags]] -f %(ledger-file) bal")
+                       ("reg" "%(binary) -f %(ledger-file) reg")
+                       ("payee" "%(binary) -f %(ledger-file) reg @%(payee)")
+                       ("account" "%(binary) -f %(ledger-file) reg %(account)")
+                       ("reg" "%(binary) -f %(ledger-file) --unbudgeted --monthly reg ^Expenses")))
 #+END_SRC
+
+#+begin_src emacs-lisp
+'(ledger-reports
+   )
+#+end_src
 
 ** COMMENT Org Roam
 
@@ -1228,7 +1235,7 @@ Configure custom agenda views.
                        (org-super-agenda-groups
                         '((:discard (:scheduled t
                                      :tag "WORK"
-                                     :todo ("HOLD" "WAITING")))
+                                     :todo "HOLD"))
                           (:name "Tasks to refile"
                                  :tag "REFILE"
                                  :order 1)
@@ -1253,11 +1260,11 @@ Configure custom agenda views.
                           (:name "Projects"
                                  :children t
                                  :order 8)
-                          (:name "Project Tasks"
-                                 :auto-parent t
-                                 :order 9)
                           (:name "Waiting"
                                  :todo "WAITING"
+                                 :order 9)
+                          (:name "Project Tasks"
+                                 :auto-parent t
                                  :order 10)
                           ))))))
         ("p" "PeerJ"
@@ -1387,7 +1394,7 @@ Capture templates for notes, todo etc.
         ("j" "Journal" entry (file+olp+datetree "~/org/journal.org")
          "* %?\n%U\n" :clock-in t :clock-resume t :tree-type week)
         ("k" "Time block" entry (file+olp+datetree "~/org/timeblock.org")
-         "* %?\n%T\n" :time-prompt t)
+         "* %^{Time block}\n%^T\n" :immediate-finish t)
         ("g" "Forge Topic" entry (file "~/org/refile.org")
          "* TODO %:description\n%?\n%a\n%u\n" :clock-in t :clock-resume t)
         ("i" "Meeting" entry (file "~/org/refile.org")
@@ -1402,6 +1409,8 @@ Capture templates for notes, todo etc.
         ("ee" "Email" entry (file+olp+datetree "~/org/e.org" "Chronology")
          "* %:subject\n\n#+begin_quote\n%i\n#+end_quote\n%a\n" :time-prompt t)
         ("em" "Message" entry (file+olp+datetree "~/org/e.org" "Chronology")
+         "* Message from %^{prompt|Emma|Tony} at %<%H:%M>\n#+begin_quote\n%?\n#+end_quote\n" :time-prompt t)
+        ("ew" "OFW Message" entry (file+olp+datetree "~/org/e.org" "Chronology")
          "* Message from %^{prompt|Emma|Tony} at %<%H:%M>\n#+begin_quote\n%?\n#+end_quote\n" :time-prompt t)
         ("eo" "Other" entry (file+olp+datetree "~/org/e.org" "Chronology")
          "* %^{prompt|Emma|Eira|Bodhi} %? ~%<%H:%M>  \n" :time-prompt t)))
