@@ -310,6 +310,7 @@ installed. To ensure we install missing packages if they are missing.
           focus                ; Dim color of text in surrounding sections
           ;;flycheck             ; Modern on-the-fly syntax checking
           ;;flycheck-ledger      ; Syntax checking for ledger
+          flymake-shellcheck   ; A ShellCheck-powered backend for Flymake
           forge                ; Work with Git Forges, like GitHub, in Magit
           format-all           ; Auto-format code in many languages
           go-mode              ; Go development in Emacs
@@ -751,6 +752,29 @@ coupled with
 (setq emms-source-file-default-directory "~/media")
 #+end_src
 
+** Elfeed
+
+I use [[https://github.com/skeeto/elfeed][Elfeed]] to stay informed.
+
+#+begin_src emacs-lisp
+;; data is stored in ~/.elfeed
+(setq elfeed-feeds
+        '(
+          ;; aws
+          ("https://aws.amazon.com/blogs/aws/feed/" aws)
+
+          ;; programming
+          ("https://jacobian.org/feed/" test)
+          ("https://news.ycombinator.com/rss" hacker)
+
+
+         ))
+
+(setq-default elfeed-search-filter "@2-days-ago +unread")
+(setq-default elfeed-search-title-max-width 100)
+(setq-default elfeed-search-title-min-width 100)
+#+end_src
+
 ** PDF Tools
 
 [[https://github.com/politza/pdf-tools][PDF Tools]] makes a huge improvement on the built-in [[http://www.gnu.org/software/emacs/manual/html_node/emacs/Document-View.html][doc-view-mode]]; the only
@@ -1175,7 +1199,7 @@ Quick access to Org tags.
                             (:endgroup)
                             ("WAITING" . ?w)
                             ("HOLD" . ?h)
-                            ("PERSONAL" . ?p)
+                            ("@phone" . ?p)
                             ("EIRA" . ?E)
                             ("BODHI" . ?B)
                             ("WORK" . ?W)
@@ -1197,54 +1221,35 @@ Let's test out [[https://github.com/alphapapa/org-super-agenda][org-super-agenda
 
 #+begin_src emacs-lisp
 (org-super-agenda-mode)
-(setq org-super-agenda-groups
-      '((:name "Next Items"
-               :time-grid t
-               :tag ("NEXT" "outbox"))
-        (:name "Important"
-               :priority "A")
-        (:name "Quick Picks"
-               :effort< "0:15")
-        (:priority<= "B"
-                     :scheduled future
-                     :order 1)))
-#+end_src
 
-Configure custom agenda views.
-
-#+begin_src emacs-lisp
 ;; Do not dim blocked tasks
 (setq org-agenda-dim-blocked-tasks nil)
 
 ;; Compact the block agenda view
 (setq org-agenda-compact-blocks t)
 
-
 (setq org-agenda-custom-commands
-      '(("x" "Personal"
-         ((agenda "" ((org-agenda-span 'day)
+      '(("p" "Personal"
+         ((agenda "" ((org-agenda-span 3))
+                  ((org-super-agenda-groups
+                        '((:name none
+                                 :time-grid t)))))
+
+          (tags "REFILE" ((org-agenda-overriding-header "")
                       (org-super-agenda-groups
-                       '((:name "Today" :time-grid t
-                                :date today
-                                :todo "TODAY"
-                                :scheduled today
-                                :habit t
-                                :order 1)))))
+                       '((:name "Tasks to refile"
+                                 :tag "REFILE")))))
 
           (alltodo "" ((org-agenda-overriding-header "")
                        (org-super-agenda-groups
-                        '((:discard (:scheduled t
-                                     :tag "WORK"
-                                     :todo "HOLD"))
-                          (:name "Tasks to refile"
-                                 :tag "REFILE"
+                        '((:discard (:tag "WORK"
+                                     :todo "HOLD"
+                                     :scheduled t
+                                     :deadline t
+                                     :habit t))
+                          (:name "Tasks to estimate"
+                                 :and (:children nil :not (:effort< "0:00" :effort> "0:00"))
                                  :order 1)
-                          (:name "Due Today"
-                                 :deadline today
-                                 :order 2)
-                          (:name "Overdue"
-                                 :deadline past
-                                 :order 3)
                           (:name "Next to do"
                                  :todo "NEXT"
                                  :order 4)
@@ -1252,22 +1257,29 @@ Configure custom agenda views.
                                  :priority "A"
                                  :order 5)
                           (:name "Quick Picks"
-                                 :effort< "0:15"
+                                 :and (:effort< "0:15" :todo "TODO")
+                                 :scheduled today
                                  :order 6)
                           (:name "Stuck Projects"
-                                 :and (:todo ("WAITING" "HOLD") :not (:children "NEXT"))
+                                 :and (:todo "TODO" :children t :not (:children "NEXT"))
                                  :order 7)
                           (:name "Projects"
-                                 :children t
+                                 :and (:todo "TODO" :children t)
                                  :order 8)
                           (:name "Waiting"
                                  :todo "WAITING"
                                  :order 9)
-                          (:name "Project Tasks"
-                                 :auto-parent t
-                                 :order 10)
                           ))))))
-        ("p" "PeerJ"
+
+        ("r" "Retrospective"
+         ((tags "" ((org-agenda-overriding-header "Retrospective")
+                       (org-super-agenda-groups
+                        '((:name "Tasks to refile"
+                                 :tag "REFILE"
+                                 :order 1)
+                          ))))))
+
+        ("j" "PeerJ"
          ((agenda "" ((org-agenda-span 'day)
                       (org-super-agenda-groups
                        '((:name "Today" :time-grid t
@@ -1384,7 +1396,7 @@ Capture templates for notes, todo etc.
         ("c" "Call" entry (file "~/org/refile.org")
          "* TODO Call %? :@mobile:\n%u\n" :clock-in t :clock-resume t)
         ("m" "Message" entry (file "~/org/refile.org")
-         "* TODO Message %? :@mobile:\n%u\n" :clock-in t :clock-resume t)
+         "* TODO Message %? :@phone:\n:PROPERTIES:\n:Effort: 0:05\n:END:\n%u\n" :clock-in t :clock-resume t)
         ("r" "Respond" entry (file "~/org/refile.org")
          "* NEXT Respond to %:from on %:subject :EMAIL:\n%U\n%a\n" :clock-in t :clock-resume t :immediate-finish t)
         ("b" "Bookmark" entry (file "~/org/refile.org")
@@ -1826,6 +1838,10 @@ I'm learning to use Nix so let's make it easier to edit Nix expressions:
 ;;
 ** Shell
 
+#+begin_src emacs-lisp
+(add-hook 'sh-mode-hook 'flymake-shellcheck-load)
+#+end_src
+
 Inspired by [[https://github.com/torenord/.emacs.d][torenord]], I maintain quick access to shell buffers with bindings
 ~M-1~ to ~M-9~. In addition, the ~M-§~ (on an international English
 keyboard) toggles between the last visited shell, and the last visited
@@ -1873,9 +1889,9 @@ it.
 ;; Optional: install eglot-format-buffer as a save hook.
 ;; The depth of -10 places this before eglot's willSave notification,
 ;; so that that notification reports the actual contents that will be saved.
-(defun eglot-format-buffer-on-save ()
-  (add-hook 'before-save-hook #'eglot-format-buffer -10 t))
-(add-hook 'go-mode-hook #'eglot-format-buffer-on-save)
+;;(defun eglot-format-buffer-on-save ()
+;;  (add-hook 'before-save-hook #'eglot-format-buffer -10 t))
+;;(add-hook 'go-mode-hook #'eglot-format-buffer-on-save)
 #+end_src
 ;;
 ;;   Use zsh:
