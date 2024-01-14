@@ -353,7 +353,6 @@ installed. To ensure we install missing packages if they are missing.
           web-mode             ; Major mode for editing HTML, CSS, JavaScript
           which-key            ; Display available keybindings in popup
           yaml-pro             ; Edit YAML in Emacs like a pro
-          yankpad              ; Paste snippets from an org-mode file
           yasnippet            ; A template system for Emacs
           )))
   (let ((packages (seq-remove 'package-installed-p packages)))
@@ -760,14 +759,17 @@ I use [[https://github.com/skeeto/elfeed][Elfeed]] to stay informed.
 ;; data is stored in ~/.elfeed
 (setq elfeed-feeds
         '(
-          ;; aws
+          ;; aws (select others from https://aws.amazon.com/blogs)
           ("https://aws.amazon.com/blogs/aws/feed/" aws)
+          ("https://aws.amazon.com/new/feed/" aws recent)
+          ("https://aws.amazon.com/blogs/devops/feed/" aws devops)
+          ("https://aws.amazon.com/blogs/developer/feed/" aws developer)
+          ("https://aws.amazon.com/blogs/security/feed/" aws security)
+          ("https://aws.amazon.com/blogs/database/feed/" aws database)
+          ("https://aws.amazon.com/blogs/compute/feed/" aws compute)
 
           ;; programming
-          ("https://jacobian.org/feed/" test)
           ("https://news.ycombinator.com/rss" hacker)
-
-
          ))
 
 (setq-default elfeed-search-filter "@2-days-ago +unread")
@@ -2198,6 +2200,12 @@ defined.
 
 #+BEGIN_SRC emacs-lisp
 (define-key custom-bindings-map (kbd "C-c m") 'magit-status)
+#+END_SRC
+
+** Bindings for [[*Elfeed][Elfeed]]
+
+#+BEGIN_SRC emacs-lisp
+(global-set-key (kbd "C-x w") 'elfeed)
 #+END_SRC
 
 ** Bindings for [[https://github.com/abo-abo/swiper][Counsel]]
