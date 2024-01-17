@@ -315,6 +315,7 @@ installed. To ensure we install missing packages if they are missing.
           format-all           ; Auto-format code in many languages
           go-mode              ; Go development in Emacs
           golden-ratio         ; Automatic resizing windows to golden ratio
+          impatient-mode       ; See your changes in the browser as you type
           js2-mode             ; Improved JavaScript editing mode
           ledger-mode          ; Major mode for editing ledger files
           magit                ; control Git from Emacs
@@ -725,7 +726,6 @@ Let's try [[http://oremacs.com/swiper/][Ivy]] in favor of helm.
       ivy-on-del-error-function 'ignore)
 (ivy-mode 1)
 #+end_src
-
 ** Magit
 
 [[https://magit.vc/][Magit]] is awesome. Let's use [[https://github.com/magit/forge][Forge]] too.
@@ -1824,6 +1824,21 @@ I'm learning to use Nix so let's make it easier to edit Nix expressions:
 #+begin_src emacs-lisp
 (add-to-list 'auto-mode-alist '("\\.nix\\'" . nix-mode))
 #+end_src
+
+** Impatient Mode
+
+[[https://github.com/skeeto/impatient-mode][impatient-mode]] let's you see the effect of your HTML as you type it.
+
+I also want this to work on Markdown as per [[https://stackoverflow.com/a/36189456][this answer on StackOverflow]].
+
+#+begin_src emacs-lisp
+(defun markdown-html (buffer)
+    (princ (with-current-buffer buffer
+      (format "<!DOCTYPE html><html><title>Impatient Markdown</title><xmp theme=\"united\" style=\"display:none;\"> %s  </xmp><script src=\"http://ndossougbe.github.io/strapdown/dist/strapdown.js\"></script></html>" (buffer-substring-no-properties (point-min) (point-max))))
+    (current-buffer)))
+#+end_src
+
+Tell impatient mode to use Markdown =M-x imp-set-user-filter RET markdown-html RET=
 
 * Mode specific
 
