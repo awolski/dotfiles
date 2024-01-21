@@ -1,0 +1,345 @@
+# -*- mode: snippet -*-
+# name: fortnight
+# key: <f
+# --
+* Fortnight beginning `(yas-fortnight-offset 0)`                    :routine:
+** W1 Sun 01
+*** TODO Clean kitchen                                     :cleaning:@home:
+SCHEDULED: <`(yas-fortnight-offset 0)` 06:00-06:45>
+:PROPERTIES:
+:Effort:   0:45
+:END:
+- [ ] Tidy the area. Wash dishes. Put away as much as possible and remove
+  anything that doesn't belong
+- [ ] Wipe down microwave
+- [ ] Wipe down all benches, splash back, range hood, oven exterior, hot plates,
+  cupboard exteriors
+- [ ] Empty toaster crumbs
+- [ ] Wipe down toaster and kettle
+- [ ] Vacuum
+- [ ] Spray and clean glass door and mirrors
+[`(format-time-string "%Y-%m-%d %a")`]
+*** TODO Plan meals and grocery list                                :@home:
+SCHEDULED: <`(yas-fortnight-offset 0)` 06:45-07:15>
+:PROPERTIES:
+:Effort:   0:30
+:END:
+It's important to get this done early. Get it out of the way and you'll feel
+much better about the week and have some time to yourself in the afternoon. Get
+the food stock take and meal planning done as soon as you get up, while coffee
+is brewing, and do groceries as soon as the Zoom call with the family is done.
+- [ ] Take stock of fridge, freezers, cupboards etc. List what needs using
+- [ ] Plan meals from what's left and what's needed
+- [ ] Do the groceries
+
+
+[`(format-time-string "%Y-%m-%d %a")`]
+*** TODO 5-3-1 Squat                                              :@errand:
+SCHEDULED: <`(yas-fortnight-offset 0)` 07:30-08:45>
+:PROPERTIES:
+:Effort:   1:15
+:END:
+
+[`(format-time-string "%Y-%m-%d %a")`]
+*** TODO Groceries                                                :@errand:
+SCHEDULED: <`(yas-fortnight-offset 0)` 09:30-10:30>
+:PROPERTIES:
+:Effort:   1:00
+:END:
+
+[`(format-time-string "%Y-%m-%d %a")`]
+*** TODO Prepare dinners for Mon and Tue                            :@home:
+SCHEDULED: <`(yas-fortnight-offset 0)` 11:00-12:00>
+Monday is kids' swimming and Tuesday is two sets of football training so you're
+too busy to make dinners on-the-fly. Pre-prepare one meal (Mon?) and something
+else that's simple to throw together?
+:PROPERTIES:
+:Effort:   2:00
+:END:
+
+[`(format-time-string "%Y-%m-%d %a")`]
+*** TODO Organise transport for training on Tuesday night          :@phone:
+SCHEDULED: <`(yas-fortnight-offset 0)`>
+:PROPERTIES:
+:Effort:   0:05
+:END:
+
+[`(format-time-string "%Y-%m-%d %a")`]
+** W1 Mon 02
+*** TODO 5-3-1 Bench press                                        :@errand:
+SCHEDULED: <`(yas-fortnight-offset 1)` 06:00-07:15>
+:PROPERTIES:
+:Effort:   1:00
+:END:
+
+[`(format-time-string "%Y-%m-%d %a")`]
+*** TODO Prepare kids' swimming kit                                 :@home:
+SCHEDULED: <`(yas-fortnight-offset 1)` 07:30>
+Get this out and ready early. Swimming bags and what they'll wear afterwards.
+:PROPERTIES:
+:Effort:   0:05
+:END:
+
+[`(format-time-string "%Y-%m-%d %a")`]
+*** Pick Eira up from CHS                                         :@errand:
+<`(yas-fortnight-offset 1)` 15:00-15:30>
+:PROPERTIES:
+:Effort:   0:30
+:END:
+
+[`(format-time-string "%Y-%m-%d %a")`]
+*** Bodhi Taskmaster Club                                         :@errand:
+<`(yas-fortnight-offset 1)` 15:25-16:25>
+
+[`(format-time-string "%Y-%m-%d %a")`]
+*** Kids swimming                                                 :@errand:
+<`(yas-fortnight-offset 1)` 17:30-18:30>
+:PROPERTIES:
+:Effort:   1:45
+:END:
+
+[`(format-time-string "%Y-%m-%d %a")`]
+** W1 Tue 03
+*** Pick Eira up from CHS                                         :@errand:
+<`(yas-fortnight-offset 2)` 15:00-15:30>
+:PROPERTIES:
+:Effort:   0:30
+:END:
+
+[`(format-time-string "%Y-%m-%d %a")`]
+*** Bodhi football training                                       :@errand:
+<`(yas-fortnight-offset 2)` 17:00-18:00>
+:PROPERTIES:
+:Effort:   1:00
+:END:
+
+[`(format-time-string "%Y-%m-%d %a")`]
+*** Eira football training                                        :@errand:
+<`(yas-fortnight-offset 2)` 18:00-19:00>
+:PROPERTIES:
+:Effort:   1:00
+:END:
+
+[`(format-time-string "%Y-%m-%d %a")`]
+** W1 Wed 04
+*** TODO Clean bathrooms                                   :cleaning:@home:
+SCHEDULED: <`(yas-fortnight-offset 3)` 06:15-07:00>
+:PROPERTIES:
+:Effort:   0:45
+:END:
+- [ ] Tidy the area. Remove anything that doesn't belong
+- [ ] Clean bath and bath ledges, around taps and plug
+- [ ] Clean sink (especially around tap base and plug)
+- [ ] Wipe window ledges, sink bench, bench items
+- [ ] Clean toilet bowl and lids, especially where lid meets bowl
+- [ ] Wipe down ledge where bin sits and bin lid
+- [ ] Change bin bag if full
+- [ ] Vacuum the floor
+- [ ] Spray and clean glass door and mirrors
+
+[`(format-time-string "%Y-%m-%d %a")`]
+** W1 Thu 05
+*** TODO 5-3-1 Dead lift                                          :@errand:
+SCHEDULED: <`(yas-fortnight-offset 4)` 16:30-17:45>
+:PROPERTIES:
+:Effort:   1:15
+:END:
+
+[`(format-time-string "%Y-%m-%d %a")`]
+*** TODO Clean dining and lounge                           :cleaning:@home:
+SCHEDULED: <`(yas-fortnight-offset 4)` 11:30-12:15>
+:PROPERTIES:
+:Effort:   0:30
+:END:
+- [ ] Tidy the area. Remove anything that doesn't belong
+- [ ] Wipe down flat surfaces (window sill, top of storage units, shelves, desk
+- [ ] Vacuum (don't forget nooks and crannies, e.g. in the cracks of the lounge
+  [ ] chairs, use thin nozzle for hard to get places, under lounge, TV unit, below
+  [ ] computer
+- [ ] Spray and clean glass door and mirrors
+
+[`(format-time-string "%Y-%m-%d %a")`]
+** W1 Fri 06
+*** TODO 5-3-1 Shoulder press                                     :@errand:
+SCHEDULED: <`(yas-fortnight-offset 5)` 06:00-07:15>
+:PROPERTIES:
+:Effort:   1:15
+:END:
+
+[`(format-time-string "%Y-%m-%d %a")`]
+*** Pick Eira up from CHS                                         :@errand:
+<`(yas-fortnight-offset 5)` 15:00-15:30>
+:PROPERTIES:
+:Effort:   0:30
+:END:
+
+[`(format-time-string "%Y-%m-%d %a")`]
+*** TODO Book school dinners                                      :@online:
+SCHEDULED: <`(yas-fortnight-offset 5)`>
+:PROPERTIES:
+:Effort:   0:15
+:END:
+
+[`(format-time-string "%Y-%m-%d %a")`]
+** W1 Sat 07
+*** TODO Groom                                                      :@home:
+SCHEDULED: <`(yas-fortnight-offset 6)` 06:30-07:00>
+:PROPERTIES:
+:Effort:   0:30
+:END:
+Feel better for the weekend and the week ahead by getting this out of the way
+
+[`(format-time-string "%Y-%m-%d %a")`]
+** W2 Sun 08
+*** TODO Organise social activity with friends for two weeks' time :@phone:
+SCHEDULED: <`(yas-fortnight-offset 7)`>
+:PROPERTIES:
+:Effort:   0:30
+:END:
+Have something to look forward to on your weekend with the kids by initiating
+contact with another family or kids' friends. They have a better time when
+there are other kids involved.
+
+[`(format-time-string "%Y-%m-%d %a")`]
+** W2 Mon 09
+*** TODO 5-3-1 Squat                                              :@errand:
+SCHEDULED: <`(yas-fortnight-offset 8)` 16:30-17:45>
+:PROPERTIES:
+:Effort:   1:15
+:END:
+
+[`(format-time-string "%Y-%m-%d %a")`]
+*** TODO Clean bedrooms                                    :cleaning:@home:
+SCHEDULED: <`(yas-fortnight-offset 8)` 18:00-18:45>
+:PROPERTIES:
+:Effort:   0:45
+:END:
+- [ ] Tidy first. Put away as much as possible and remove anything that doesn't belong
+- [ ] Dust flat surfaces
+- [ ] Vacuum
+- [ ] Spray and clean glass door and mirrors
+
+[`(format-time-string "%Y-%m-%d %a")`]
+** W2 Tue 10
+*** TODO 5-3-1 Bench press                                        :@errand:
+SCHEDULED: <`(yas-fortnight-offset 9)` 06:00-07:15>
+:PROPERTIES:
+:Effort:   1:15
+:END:
+
+[`(format-time-string "%Y-%m-%d %a")`]
+*** TODO Clean hallways and utility                        :cleaning:@home:
+SCHEDULED: <`(yas-fortnight-offset 9)` 17:15-18:00>
+:PROPERTIES:
+:Effort:   0:45
+:END:
+- [ ] Tidy first. Put away as much as possible and remove anything that doesn't
+  belong
+- [ ] Dust flat surfaces: window sills and shelving
+- [ ] Vacuum
+- [ ] Spray and clean glass door and mirrors
+
+[`(format-time-string "%Y-%m-%d %a")`]
+*** TODO Prepare dinners for Wed and Thu                            :@home:
+SCHEDULED: <`(yas-fortnight-offset 9)` 18:00-20:00>
+:PROPERTIES:
+:Effort:   2:00
+:END:
+Not quite as busy as week one but it's still much nicer on Wednesday and
+Thursday when dinner is done or quick to throw together.
+
+[`(format-time-string "%Y-%m-%d %a")`]
+** W2 Wed 11
+*** TODO 5-3-1 Dead lift                                          :@errand:
+SCHEDULED: <`(yas-fortnight-offset 10)` 06:00-07:15>
+:PROPERTIES:
+:Effort:   1:15
+:END:
+
+[`(format-time-string "%Y-%m-%d %a")`]
+*** Pick Eira up from CHS                                         :@errand:
+<`(yas-fortnight-offset 10)` 15:00-15:30>
+:PROPERTIES:
+:Effort:   0:30
+:END:
+
+[`(format-time-string "%Y-%m-%d %a")`]
+** W2 Thu 12
+*** Pick Eira up from CHS                                         :@errand:
+<`(yas-fortnight-offset 11)` 15:00-15:30>
+:PROPERTIES:
+:Effort:   0:30
+:END:
+
+[`(format-time-string "%Y-%m-%d %a")`]
+** W2 Fri 13
+*** TODO Groom                                                      :@home:
+SCHEDULED: <`(yas-fortnight-offset 12)` 06:30-07:00>
+:PROPERTIES:
+:Effort:   0:30
+:END:
+Feel better for the weekend and the week ahead by getting this out of the way
+
+[`(format-time-string "%Y-%m-%d %a")`]
+*** TODO 5-3-1 Shoulder press                                     :@errand:
+SCHEDULED: <`(yas-fortnight-offset 12)` 16:30-17:45>
+:PROPERTIES:
+:Effort:   1:15
+:END:
+
+[`(format-time-string "%Y-%m-%d %a")`]
+** W2 Sat 14
+*** TODO Fortnightly finances
+SCHEDULED: <`(yas-fortnight-offset 13)`>
+:PROPERTIES:
+:Effort:   1:00
+:END:
+TODO create a link to the finances process
+
+[`(format-time-string "%Y-%m-%d %a")`]
+*** TODO For tomorrow... create fortnight schedule
+SCHEDULED: <`(yas-fortnight-offset 13)` 22:00>
+:PROPERTIES:
+:Effort:   0:10
+:END:
+Tomorrow morning type =<f= into [[file:~/org/todo.org::*Fortnights][Fortnights]].
+
+[`(format-time-string "%Y-%m-%d %a")`]
+** Repeated
+*** TODO Shutdown routine                                           :@home:
+:PROPERTIES:
+:Effort:   0:30
+:END:
+- [ ] Clear inbox, extract tasks
+- [ ] Refile tasks
+- [ ] Document achievements for PeerJ
+- [ ] Bullet journal
+- [ ] Emma journal
+- [ ] Commit and push org
+
+<`(yas-fortnight-offset 1)` 17:00-17:10>
+<`(yas-fortnight-offset 2)` 17:00-17:10>
+<`(yas-fortnight-offset 3)` 17:00-17:10>
+<`(yas-fortnight-offset 4)` 17:00-17:10>
+<`(yas-fortnight-offset 5)` 17:00-17:10>
+<`(yas-fortnight-offset 8)` 17:00-17:10>
+<`(yas-fortnight-offset 9)` 17:00-17:10>
+<`(yas-fortnight-offset 10)` 17:00-17:10>
+<`(yas-fortnight-offset 11)` 17:00-17:10>
+<`(yas-fortnight-offset 12)` 17:00-17:10>
+
+[`(format-time-string "%Y-%m-%d %a")`]
+*** Peerj Stand Up                                                :MEETING:PEERJ:
+https://meet.google.com/oga-wsjm-fyc?authuser=0
+https://github.com/orgs/PeerJ/projects/10
+<`(yas-fortnight-offset 1)` 10:00-10:15>
+<`(yas-fortnight-offset 2)` 10:00-10:15>
+<`(yas-fortnight-offset 3)` 10:00-10:15>
+<`(yas-fortnight-offset 4)` 10:00-10:15>
+<`(yas-fortnight-offset 5)` 10:00-10:15>
+<`(yas-fortnight-offset 8)` 10:00-10:15>
+<`(yas-fortnight-offset 9)` 10:00-10:15>
+<`(yas-fortnight-offset 10)` 10:00-10:15>
+<`(yas-fortnight-offset 11)` 10:00-10:15>
+<`(yas-fortnight-offset 12)` 10:00-10:15>
+[`(format-time-string "%Y-%m-%d %a")`]

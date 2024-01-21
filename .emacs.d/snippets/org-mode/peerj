@@ -1,0 +1,22 @@
+# -*- mode: snippet -*-
+# name: peerj-week
+# key: <p
+# --
+* Week beginning `(yas-fortnight-offset 0)`
+** Sun 01
+*** Do something PeerJ related                              :@errand:@home:
+SCHEDULED: <`(yas-fortnight-offset 0)` 06:30-07:00>
+
+** Mon 02
+*** Prepare kids' swimming kit                                      :@home:
+SCHEDULED: <`(yas-fortnight-offset 1)`>
+Get this out and ready early. Swimming bags and what they'll wear afterwards.
+*** Kids swimming                                                 :@errand:
+SCHEDULED: <`(yas-fortnight-offset 1)` 17:30-18:30>
+*** Shutdown routine
+SCHEDULED: <`(yas-fortnight-offset 1)` 16:30-16:40>
+** Tue 03
+** Wed 04
+** Thu 05
+** Fri 06
+** Sat 07
