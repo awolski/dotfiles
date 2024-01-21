@@ -738,11 +738,10 @@ Let's try [[http://oremacs.com/swiper/][Ivy]] in favor of helm.
       `(("~/w" . 2)))
 #+end_src
 
-** COMMENT  EMMS
+** EMMS
 
 It's quite convenient to be able to control media from within Emacs. [[https://www.emacswiki.org/emacs/EMMS][EMMS]]
-coupled with
-[[https://itsfoss.com/mpv-video-player/][mpv]] is a great lightweight choice.
+coupled with [[https://itsfoss.com/mpv-video-player/][mpv]] is a great lightweight choice.
 
 #+begin_src emacs-lisp
 (require 'emms-setup)
