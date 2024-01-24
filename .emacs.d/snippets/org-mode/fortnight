@@ -122,19 +122,14 @@ Get this out and ready early. Swimming bags and what they'll wear afterwards.
 
 [`(format-time-string "%Y-%m-%d %a")`]
 ** W1 Wed 04
-*** TODO Clean bathrooms                                   :cleaning:@home:
-SCHEDULED: <`(yas-fortnight-offset 3)` 06:15-07:00>
+*** TODO Clean bedrooms                                    :cleaning:@home:
+SCHEDULED: <`(yas-fortnight-offset 3)` 18:00-18:45>
 :PROPERTIES:
 :Effort:   0:45
 :END:
-- [ ] Tidy the area. Remove anything that doesn't belong
-- [ ] Clean bath and bath ledges, around taps and plug
-- [ ] Clean sink (especially around tap base and plug)
-- [ ] Wipe window ledges, sink bench, bench items
-- [ ] Clean toilet bowl and lids, especially where lid meets bowl
-- [ ] Wipe down ledge where bin sits and bin lid
-- [ ] Change bin bag if full
-- [ ] Vacuum the floor
+- [ ] Tidy first. Put away as much as possible and remove anything that doesn't belong
+- [ ] Dust flat surfaces
+- [ ] Vacuum
 - [ ] Spray and clean glass door and mirrors
 
 [`(format-time-string "%Y-%m-%d %a")`]
@@ -209,14 +204,19 @@ SCHEDULED: <`(yas-fortnight-offset 8)` 16:30-17:45>
 :END:
 
 [`(format-time-string "%Y-%m-%d %a")`]
-*** TODO Clean bedrooms                                    :cleaning:@home:
-SCHEDULED: <`(yas-fortnight-offset 8)` 18:00-18:45>
+*** TODO Clean bathrooms                                   :cleaning:@home:
+SCHEDULED: <`(yas-fortnight-offset 8)` 19:00-19:45>
 :PROPERTIES:
 :Effort:   0:45
 :END:
-- [ ] Tidy first. Put away as much as possible and remove anything that doesn't belong
-- [ ] Dust flat surfaces
-- [ ] Vacuum
+- [ ] Tidy the area. Remove anything that doesn't belong
+- [ ] Clean bath and bath ledges, around taps and plug
+- [ ] Clean sink (especially around tap base and plug)
+- [ ] Wipe window ledges, sink bench, bench items
+- [ ] Clean toilet bowl and lids, especially where lid meets bowl
+- [ ] Wipe down ledge where bin sits and bin lid
+- [ ] Change bin bag if full
+- [ ] Vacuum the floor
 - [ ] Spray and clean glass door and mirrors
 
 [`(format-time-string "%Y-%m-%d %a")`]
