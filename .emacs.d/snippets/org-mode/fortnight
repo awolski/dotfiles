@@ -185,6 +185,14 @@ SCHEDULED: <`(yas-fortnight-offset 6)` 06:30-07:00>
 Feel better for the weekend and the week ahead by getting this out of the way
 
 [`(format-time-string "%Y-%m-%d %a")`]
+*** TODO Weekly finances
+SCHEDULED: <`(yas-fortnight-offset 6)` 07:00-08:00>
+:PROPERTIES:
+:Effort:   1:00
+:END:
+[[file:~/org/ledger.org::*Weekly process][Weekly process]]
+
+[`(format-time-string "%Y-%m-%d %a")`]
 ** W2 Sun 08
 *** TODO Organise social activity with friends for two weeks' time :@phone:
 SCHEDULED: <`(yas-fortnight-offset 7)`>
@@ -289,12 +297,12 @@ SCHEDULED: <`(yas-fortnight-offset 12)` 16:30-17:45>
 
 [`(format-time-string "%Y-%m-%d %a")`]
 ** W2 Sat 14
-*** TODO Fortnightly finances
+*** TODO Weekly finances
 SCHEDULED: <`(yas-fortnight-offset 13)`>
 :PROPERTIES:
 :Effort:   1:00
 :END:
-TODO create a link to the finances process
+[[file:~/org/ledger.org::*Weekly process][Weekly process]]
 
 [`(format-time-string "%Y-%m-%d %a")`]
 *** TODO For tomorrow... create fortnight schedule

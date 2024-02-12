@@ -339,6 +339,7 @@ installed. To ensure we install missing packages if they are missing.
           paredit              ; minor mode for editing parentheses
           pass                 ; Password management with pass
           password-store       ; Use password-store for auth-source
+          php-mode             ; Emacs major mode for editing PHP
           pdf-tools            ; Emacs support library for PDF files
           pinentry             ; Allows pinentry prompt via minibuffer
           powerthesaurus       ; Powerthesaurus integration for Emacs
@@ -732,7 +733,8 @@ Let's try [[http://oremacs.com/swiper/][Ivy]] in favor of helm.
 
 #+begin_src emacs-lisp
 (with-eval-after-load 'magit
-    (require 'forge))
+    (require 'forge)
+    (setq magit-todos-mode 1))
 
 (setq magit-repository-directories
       `(("~/w" . 2)))
@@ -766,9 +768,10 @@ I use [[https://github.com/skeeto/elfeed][Elfeed]] to stay informed.
           ("https://aws.amazon.com/blogs/security/feed/" aws security)
           ("https://aws.amazon.com/blogs/database/feed/" aws database)
           ("https://aws.amazon.com/blogs/compute/feed/" aws compute)
+          ("https://www.hashicorp.com/blog/products/terraform/feed.xml" terraform)
 
           ;; programming
-          ("https://news.ycombinator.com/rss" hacker)
+          ;;("https://news.ycombinator.com/rss" hacker)
          ))
 
 (setq-default elfeed-search-filter "@2-days-ago +unread")
@@ -1098,6 +1101,7 @@ Use sane defaults.
       org-duration-format 'h:mm
       org-log-done t
       org-log-into-drawer "LOGBOOK"
+      org-agenda-archives-mode t
       org-agenda-window-setup 'current-window)
 #+end_src
 
@@ -1404,8 +1408,6 @@ Capture templates for notes, todo etc.
          "* %? %(org-set-tags \"BOOKMARK\") \n:PROPERTIES:\n:CREATED: %U\n:END:\n\n" :empty-lines 1)
         ("n" "Note" entry (file  "~/org/refile.org")
          "* %? :NOTE:\n%U\n%a\n" :clock-in t :clock-resume t)
-        ("j" "Journal" entry (file+olp+datetree "~/org/journal.org")
-         "* %?\n%U\n" :clock-in t :clock-resume t :tree-type week)
         ("k" "Time block" entry (file+olp+datetree "~/org/timeblock.org")
          "* %^{Time block}\n%^T\n" :immediate-finish t)
         ("g" "Forge Topic" entry (file "~/org/refile.org")
@@ -1417,7 +1419,7 @@ Capture templates for notes, todo etc.
         ("h" "Habit" entry (file "~/org/refile.org")
          "* TODO %? :habit: \nSCHEDULED: %(format-time-string \"%<<%Y-%m-%d %a .+1d/3d>>\")\n:PROPERTIES:\n:STYLE: habit\n:REPEAT_TO_STATE: TODO\n:END:\n%U\n%a\n")
         ("#" "used by gnus-icalendar-org" entry (file "~/org/refile.org")
-         "%i %?\n" :time-prompt :clock-in t :clock-resume t)
+         "%i %?\n" :time-prompt t :clock-in t :clock-resume t)
         ("e" "E Files")
         ("ee" "Email" entry (file+olp+datetree "~/org/e.org" "Chronology")
          "* %:subject\n\n#+begin_quote\n%i\n#+end_quote\n%a\n" :time-prompt t)
@@ -2165,6 +2167,17 @@ it.
 (add-hook 'terraform-mode-hook 'eglot-ensure)
 (add-hook 'terraform-mode-hook #'outline-minor-mode)
 (add-hook 'terraform-mode-hook 'display-line-numbers-mode)
+#+end_src
+
+** PHP
+
+#+begin_src emacs-lisp
+(with-eval-after-load 'eglot
+  (add-to-list 'eglot-server-programs
+               '(php-mode . ("php-language-server" "serve"))))
+(add-hook 'php-mode-hook 'eglot-ensure)
+(add-hook 'php-mode-hook #'outline-minor-mode)
+(add-hook 'php-mode-hook 'display-line-numbers-mode)
 #+end_src
 
 # ** Markdown
