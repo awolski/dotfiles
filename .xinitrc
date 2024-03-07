@@ -8,4 +8,6 @@ xset -b
 
 exec emacs &
 
+dbus-update-activation-environment DISPLAY XAUTHORITY WAYLAND_DISPLAY
+
 exec i3

@@ -154,116 +154,6 @@ number, and restore the default value after initialization.
 
 ** Packages
 
-Let's use [[https://github.com/radian-software/straight.el][straight.el]]: next-generation, purely functional package manager for
-the Emacs hacker, to manage our packages. First we need to initialise it.
-
-#+begin_src emacs-lisp
-;;(defvar bootstrap-version)
-;;(let ((bootstrap-file
-;;       (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
-;;      (bootstrap-version 6))
-;;  (unless (file-exists-p bootstrap-file)
-;;    (with-current-buffer
-;;        (url-retrieve-synchronously
-;;         "https://raw.githubusercontent.com/radian-software/straight.el/develop/install.el"
-;;         'silent 'inhibit-cookies)
-;;      (goto-char (point-max))
-;;      (eval-print-last-sexp)))
-;;  (load bootstrap-file nil 'nomessage))
-;;
-;; Disable package.el in favor of straight.el
-;;(setq package-enable-at-startup nil)
-
-;; Install use-package
-;;(straight-use-package 'use-package)
-
-;; Configure use-package to use straight.el by default
-;;(use-package straight
-;;  :custom
-;;  (straight-use-package-by-default t))
-;;#+end_src
-
-;Let's test use-package and straight by installing and configuring ledger.
-
-;;#+begin_src emacs-lisp
-;;(use-package ledger-mode)
-;;#+end_src
-
-;;#+begin_src emacs-lisp
-;;(use-package elfeed
-;;  :straight t
-;;  :ensure t)
-;;#+end_src
-
-;;#+begin_src emacs-lisp
-;;;; data is stored in ~/.elfeed
-;;(setq elfeed-feeds
-;;        '(
-;;          ;; programming
-;;          ("https://jacobian.org/feed/" test)
-;;          ("https://news.ycombinator.com/rss" hacker)
-;;         ))
-;;
-;;(setq-default elfeed-search-filter "@2-days-ago +unread")
-;;(setq-default elfeed-search-title-max-width 100)
-;;(setq-default elfeed-search-title-min-width 100)
-;;#+end_src
-
-;;#+begin_src emacs-lisp
-;;(use-package org)
-;;#+end_src
-;;
-;;#+begin_src emacs-lisp
-;;(use-package org-contrib)
-;;#+end_src
-
-;;#+begin_src emacs-lisp
-;;(straight-use-package 'company)              ; Modular text completion framework
-;;(straight-use-package 'counsel)              ; Various completion functions using Ivy
-;;(straight-use-package 'counsel-jq)           ; Traverse complex JSON and YAML structures with live feedback
-;;(straight-use-package 'counsel-projectile)   ; Ivy integration for Projectile
-;;(straight-use-package 'define-word)          ; display the definition of word at point
-;;(straight-use-package 'diff-hl)              ; Highlight uncommitted changes using VC
-;;(straight-use-package 'doom-themes)          ; An opinionated pack of modern color-themes
-;;(straight-use-package 'eglot)                ; Emacs Polyglot; LSP client that stays out of your way
-;;(straight-use-package 'emms)                 ; Emacs multi-Media System, a media player
-;;(straight-use-package 'focus)                ; Dim color of text in surrounding sections
-;;(straight-use-package 'forge)                ; Work with Git Forges, like GitHub, in Magit
-;;(straight-use-package 'format-all)           ; Auto-format code in many languages
-;;(straight-use-package 'golden-ratio)         ; Automatic resizing windows to golden ratio
-;;(straight-use-package 'js2-mode)             ; Improved JavaScript editing mode
-;;(straight-use-package 'ledger-mode)          ; Major mode for editing ledger files
-;;(straight-use-package 'magit)                ; control Git from Emacs
-;;(straight-use-package 'markdown-mode)        ; Emacs Major mode for Markdown-formatted files
-;;(straight-use-package 'multiple-cursors)     ; Multiple cursors for Emacs
-;;(straight-use-package 'multi-vterm)          ; Manage multiple vterms in Emacs
-;;(straight-use-package 'ob-http)              ; Make http request within org-mode babel
-;;(straight-use-package 'olivetti)             ; Minor mode for a nice writing environment
-;;(straight-use-package 'org)                  ; Outline-based notes management and organizer
-;;(straight-use-package 'org-bullets)          ; Show bullets in org-mode as UTF-8 characters
-;;(straight-use-package 'org-ql)               ; Org query language, includes search commands and saved views
-;;(straight-use-package 'orgit)                ; Link to Magit buffers from Org documents
-;;(straight-use-package 'orgit-forge)          ; Org links to Forge Issue buffers
-;;(straight-use-package 'paredit)              ; minor mode for editing parentheses
-;;(straight-use-package 'pass)                 ; Password management with pass
-;;(straight-use-package 'password-store)       ; Use password-store for auth-source
-;;(straight-use-package 'pdf-tools)            ; Emacs support library for PDF files
-;;(straight-use-package 'pinentry)             ; Allows pinentry prompt via minibuffer
-;;(straight-use-package 'powerthesaurus)       ; Powerthesaurus integration for Emacs
-;;(straight-use-package 'projectile)           ; Manage and navigate projects in Emacs easily
-;;(straight-use-package 'restclient)           ; HTTP REST client tool for Emacs
-;;(straight-use-package 'slime)                ; Superior Lisp Interaction Mode for Emacs
-;;(straight-use-package 'smex)                 ; M-x interface with Ido-style fuzzy matching
-;;(straight-use-package 'sqlite3)              ; sqlite3 database engine
-;;(straight-use-package 'terraform-mode)       ; Major mode for editing Terraform files
-;;(straight-use-package 'try)                  ; Try out Emacs packages
-;;(straight-use-package 'use-package)          ; Use-package declaration for simplifying your .emacs
-;;(straight-use-package 'vterm)                ; A terminal via libvterm
-;;(straight-use-package 'web-mode)             ; Major mode for editing HTML, CSS, JavaScript
-;;(straight-use-package 'which-key)            ; Display available keybindings in popup
-;;(straight-use-package 'yaml-mode)            ; Major mode for editing YAML
-#+end_src
-
 Managing extensions for Emacs is simplified using =package= which is
 built in to Emacs 24 and newer. To load downloaded packages we need to
 initialize =package=. =cl= is a library that contains many functions from
@@ -302,7 +192,6 @@ installed. To ensure we install missing packages if they are missing.
           counsel-projectile   ; Ivy integration for Projectile
           define-word          ; display the definition of word at point
           diff-hl              ; Highlight uncommitted changes using VC
-          doom-themes          ; An opinionated pack of modern color-themes
           eglot                ; Emacs Polyglot; LSP client that stays out of your way
           elfeed               ; An Emacs web feeds client
           emms                 ; Emacs multi-Media System, a media player
@@ -623,19 +512,19 @@ View and reply to iCalendar events.
 
 ** Visual
 
-Change the color-theme to =doom-solarized-dark=.
+Change the color-theme to =modus-operandi=.
 
 #+BEGIN_SRC emacs-lisp
-(load-theme 'doom-oceanic-next t)
+(load-theme 'modus-operandi t)
 #+END_SRC
 
-=doom-one-light= is my preferred light theme, but =doom-one= makes a very nice
-dark theme. I want to be able to cycle between these.
+=modus-operandi= is my preferred light theme and =modus-vivendi= is preferred
+dark. I want to be able to cycle between these.
 
 #+BEGIN_SRC emacs-lisp
 (defun cycle-themes ()
   "Returns a function that lets you cycle your themes."
-  (let ((themes '#1=(doom-solarized-light doom-solarized-dark doom-oceanic-next . #1#)))
+  (let ((themes '#1=(modus-operandi modus-vivendi . #1#)))
     (lambda ()
       (interactive)
       ;; Rotates the thme cycle and changes the current theme.
@@ -737,7 +626,8 @@ Let's try [[http://oremacs.com/swiper/][Ivy]] in favor of helm.
     (setq magit-todos-mode 1))
 
 (setq magit-repository-directories
-      `(("~/w" . 2)))
+      `(("~/h" . 1)
+        ("~/w" . 2)))
 #+end_src
 
 ** EMMS
@@ -877,16 +767,12 @@ amounts is too narrow.
 #+BEGIN_SRC emacs-lisp
 (setq ledger-post-amount-alignment-column 60
       ledger-reports '(("bal" "ledger [[ledger-mode-flags]] -f %(ledger-file) bal")
+                       ("real" "ledger [[ledger-mode-flags]] -f %(ledger-file) bal --real")
                        ("reg" "%(binary) -f %(ledger-file) reg")
                        ("payee" "%(binary) -f %(ledger-file) reg @%(payee)")
                        ("account" "%(binary) -f %(ledger-file) reg %(account)")
                        ("reg" "%(binary) -f %(ledger-file) --unbudgeted --monthly reg ^Expenses")))
 #+END_SRC
-
-#+begin_src emacs-lisp
-'(ledger-reports
-   )
-#+end_src
 
 ** COMMENT Org Roam
 
@@ -1101,7 +987,6 @@ Use sane defaults.
       org-duration-format 'h:mm
       org-log-done t
       org-log-into-drawer "LOGBOOK"
-      org-agenda-archives-mode t
       org-agenda-window-setup 'current-window)
 #+end_src
 
@@ -1199,7 +1084,6 @@ Quick access to Org tags.
                                         ; Tags with fast selection keys
 (setq org-tag-alist (quote ((:startgroup)
                             ("@errand" . ?e)
-                            ("@office" . ?o)
                             ("@home" . ?H)
                             (:endgroup)
                             ("WAITING" . ?w)
@@ -1237,52 +1121,58 @@ Let's test out [[https://github.com/alphapapa/org-super-agenda][org-super-agenda
       '(("p" "Personal"
          ((agenda "" ((org-agenda-span 3))
                   ((org-super-agenda-groups
-                        '((:name none
-                                 :time-grid t)))))
+                    '((:name none
+                             :time-grid t)))))
 
           (tags "REFILE" ((org-agenda-overriding-header "")
-                      (org-super-agenda-groups
-                       '((:name "Tasks to refile"
-                                 :tag "REFILE")))))
+                          (org-super-agenda-groups
+                           '((:name "Tasks to refile"
+                                    :tag "REFILE")))))
 
           (alltodo "" ((org-agenda-overriding-header "")
                        (org-super-agenda-groups
                         '((:discard (:tag "WORK"
-                                     :todo "HOLD"
-                                     :scheduled t
-                                     :deadline t
-                                     :habit t))
+                                          :todo "HOLD"
+                                          :scheduled t
+                                          :deadline t
+                                          :habit t))
                           (:name "Tasks to estimate"
                                  :and (:children nil :not (:effort< "0:00" :effort> "0:00"))
                                  :order 1)
                           (:name "Next to do"
                                  :todo "NEXT"
-                                 :order 4)
+                                 :order 2)
                           (:name "Important"
                                  :priority "A"
+                                 :order 3)
+                          (:name "Stuck Projects"
+                                 :and (:todo "TODO" :children t :not (:children "NEXT"))
+                                 :order 4)
+                          (:name "Errands"
+                                 :and (:tag "@errand" :todo "TODO")
+                                 :scheduled today
                                  :order 5)
                           (:name "Quick Picks"
                                  :and (:effort< "0:15" :todo "TODO")
                                  :scheduled today
                                  :order 6)
-                          (:name "Stuck Projects"
-                                 :and (:todo "TODO" :children t :not (:children "NEXT"))
-                                 :order 7)
                           (:name "Projects"
                                  :and (:todo "TODO" :children t)
-                                 :order 8)
+                                 :order 7)
+;                          (:name "Home"
+;                                 :and (:tag "@home" :todo "TODO")
+;                                 :scheduled today
+;                                 :order 8)
                           (:name "Waiting"
                                  :todo "WAITING"
-                                 :order 9)
+                                 :order 10)
                           ))))))
 
         ("r" "Retrospective"
-         ((tags "" ((org-agenda-overriding-header "Retrospective")
-                       (org-super-agenda-groups
-                        '((:name "Tasks to refile"
-                                 :tag "REFILE"
-                                 :order 1)
-                          ))))))
+         ((tags "/DONE|CANCELLED" ((org-agenda-overriding-header "")
+                                   (org-super-agenda-groups
+                                    '((:name "Tasks to archive"
+                                             :order 1)))))))
 
         ("j" "PeerJ"
          ((agenda "" ((org-agenda-span 'day)
@@ -1413,7 +1303,7 @@ Capture templates for notes, todo etc.
         ("g" "Forge Topic" entry (file "~/org/refile.org")
          "* TODO %:description\n%?\n%a\n%u\n" :clock-in t :clock-resume t)
         ("i" "Meeting" entry (file "~/org/refile.org")
-         "* MEETING Meeting with %? :MEETING:\n%U" :clock-in t :clock-resume t)
+         "* MEETING %? :MEETING:\n%U" :clock-in t :clock-resume t)
         ("p" "Phone call" entry (file "~/org/refile.org")
          "* PHONE Call with %? :PHONE:\n%U" :clock-in t :clock-resume t)
         ("h" "Habit" entry (file "~/org/refile.org")
@@ -1421,13 +1311,13 @@ Capture templates for notes, todo etc.
         ("#" "used by gnus-icalendar-org" entry (file "~/org/refile.org")
          "%i %?\n" :time-prompt t :clock-in t :clock-resume t)
         ("e" "E Files")
-        ("ee" "Email" entry (file+olp+datetree "~/org/e.org" "Chronology")
-         "* %:subject\n\n#+begin_quote\n%i\n#+end_quote\n%a\n" :time-prompt t)
-        ("em" "Message" entry (file+olp+datetree "~/org/e.org" "Chronology")
-         "* Message from %^{prompt|Emma|Tony} at %<%H:%M>\n#+begin_quote\n%?\n#+end_quote\n" :time-prompt t)
-        ("ew" "OFW Message" entry (file+olp+datetree "~/org/e.org" "Chronology")
-         "* Message from %^{prompt|Emma|Tony} at %<%H:%M>\n#+begin_quote\n%?\n#+end_quote\n" :time-prompt t)
-        ("eo" "Other" entry (file+olp+datetree "~/org/e.org" "Chronology")
+        ("ee" "Email" entry (file+olp+datetree "~/h/e/e.org" "Emails")
+         "* Email from %:from at %:date-timestamp-inactive\n:PROPERTIES:\n:CUSTOM_ID: %(upcase (org-id-uuid))\n:END:\n#+ATTR_HTML: :class %:fromname\n#+BEGIN_div\n%i\n#+END_div\n" :time-prompt t)
+        ("em" "Message" entry (file+olp+datetree "~/h/e/e.org" "Signal Messages")
+         "* Message from %^{prompt|Emma|Tony} at %<%H:%M>\n:PROPERTIES:\n:CUSTOM_ID: %(upcase(org-id-uuid))\n:END:\n#+ATTR_HTML: :class %^{prompt|Emma|Tony}\n#+BEGIN_div\n%?\n#+END_div\n" :time-prompt t)
+        ("ew" "OFW Message" entry (file+olp+datetree "~/h/e/e.org" "OFW Messages")
+         "* Message from %^{prompt|Emma|Tony} at %<%H:%M>\n#+ATTR_HTML: :class %^{prompt|Emma|Tony}\n#+BEGIN_div_\n%?\n#+END_div\n" :time-prompt t)
+        ("eo" "Other" entry (file+olp+datetree "~/h/e/e.org" "Chronology")
          "* %^{prompt|Emma|Eira|Bodhi} %? ~%<%H:%M>  \n" :time-prompt t)))
 #+end_src
 
@@ -1841,6 +1731,15 @@ I also want this to work on Markdown as per [[https://stackoverflow.com/a/361894
 
 Tell impatient mode to use Markdown =M-x imp-set-user-filter RET markdown-html RET=
 
+** Ediff
+
+#+begin_src emacs-lisp
+(setq ediff-keep-variants nil
+      ediff-make-buffers-readonly-at-startup nil
+      ediff-show-clashes-only t
+      ediff-split-window-function 'split-window-horizontally
+      ediff-window-setup-function 'ediff-setup-windows-plain)
+#+end_src
 * Mode specific
 
 ;;** Compilation
