@@ -440,33 +440,38 @@ I'm testing out mu4e to manage my mail.
       (list
        ;; awolski.com account
        (make-mu4e-context
-        :name "awolski"
+        :name "migadu"
         :match-func
         (lambda (msg)
           (when msg
-            (string-prefix-p "/awolski" (mu4e-message-field msg :maildir))))
+            (string-prefix-p "/awolski.com" (mu4e-message-field msg :maildir))))
         :vars '((user-mail-address      . "tony@awolski.com")
                 (user-full-name         . "Tony Wolski")
                 (mu4e-compose-signature . "Tony\n\n\https://awol.ski")
                 (smtpmail-smtp-user     . "tony@awolski.com")
-                (smtpmail-smtp-server   . "smtp.fastmail.com")
+                (smtpmail-smtp-server   . "smtp.migadu.com")
                 (smtpmail-smtp-service  . 587)
                 (smtpmail-stream-type   . starttls)
-                (mu4e-drafts-folder     . "/awolski/Drafts")
-                (mu4e-sent-folder       . "/awolski/Sent")
-                (mu4e-refile-folder     . "/awolski/Archive")
-                (mu4e-trash-folder      . "/awolski/Trash")))))
+                (mu4e-drafts-folder     . "/awolski.com/Drafts")
+                (mu4e-sent-folder       . "/awolski.com/Sent")
+                (mu4e-refile-folder     . "/awolski.com/Archive")
+                (mu4e-trash-folder      . "/awolski.com/Trash")))
+       ))
 
 (setq mu4e-maildir-shortcuts
-      '(("/awolski/Inbox"   . ?i)
-        ("/awolski/Archive" . ?a)
-        ("/awolski/Trash"   . ?t)))
+      '(("/awolski.com/Inbox"   . ?i)
+        ("/awolski.com/Archive" . ?a)
+        ("/awolski.com/Trash"   . ?t)
+        ("/fastmail/Inbox"      . ?j)
+        ("/fastmail/Archive"    . ?k)
+        ("/fastmail/Trash"      . ?l)))
 
 ;; Empty the initial bookmark list
 (setq mu4e-bookmarks '())
 
 ;; All inboxes
-(defvar inbox-folders (string-join '("maildir:/awolski/INBOX")
+(defvar inbox-folders (string-join '("maildir:/fastmail/INBOX"
+                                     "maildir:/awolski.com/INBOX")
                                    " OR "))
 
 ;;   (add-to-list 'mu4e-bookmarks
@@ -1210,15 +1215,12 @@ Let's test out [[https://github.com/alphapapa/org-super-agenda][org-super-agenda
                                  :and (:effort< "4:00" :todo "TODO")
                                  :scheduled today
                                  :order 6)
-                          (:name "Active Projects"
-                                 :and (:todo "TODO" :children todo)
-                                 :order 7)
                           (:name "Stuck Projects"
                                  :and (:todo ("WAITING" "HOLD") :children todo)
-                                 :order 8)
+                                 :order 7)
                           (:name "Project Tasks"
                                  :auto-parent t
-                                 :order 9)
+                                 :order 8)
                           ))))))))
 #+end_src
 
@@ -1262,7 +1264,7 @@ Capture templates for notes, todo etc.
          "* Message from %^{prompt|Emma|Tony} at %<%H:%M>\n:PROPERTIES:\n:CUSTOM_ID: %(upcase(org-id-uuid))\n:END:\n#+ATTR_HTML: :class %^{prompt|Emma|Tony}\n#+BEGIN_div\n%?\n#+END_div\n" :time-prompt t)
         ("ew" "OFW Message" entry (file+olp+datetree "~/h/e/e.org" "OFW Messages")
          "* Message from %^{prompt|Emma|Tony} at %<%H:%M>\n#+ATTR_HTML: :class %^{prompt|Emma|Tony}\n#+BEGIN_div_\n%?\n#+END_div\n" :time-prompt t)
-        ("eo" "Other" entry (file+olp+datetree "~/h/e/e.org" "Chronology")
+        ("eo" "Other" entry (file+olp+datetree "~/org/e.org" "Chronology")
          "* %^{prompt|Emma|Eira|Bodhi} %? ~%<%H:%M>  \n" :time-prompt t)))
 #+end_src
 
