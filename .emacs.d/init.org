@@ -428,7 +428,7 @@ I'm testing out mu4e to manage my mail.
       smtpmail-debug-info t
       message-kill-buffer-on-exit t
       mu4e-get-mail-command "mbsync -a"
-      ;; mu4e-update-interval (* 60 60)
+      mu4e-update-interval (* 60 60)
       ;; Prevent 'Maildir error: duplicate UID <id>' errors
       mu4e-change-filenames-when-moving t
       mu4e-attachment-dir "~/Downloads"
@@ -461,6 +461,7 @@ I'm testing out mu4e to manage my mail.
 (setq mu4e-maildir-shortcuts
       '(("/awolski.com/Inbox"   . ?i)
         ("/awolski.com/Archive" . ?a)
+        ("/awolski.com/Sent"    . ?s)
         ("/awolski.com/Trash"   . ?t)
         ("/fastmail/Inbox"      . ?j)
         ("/fastmail/Archive"    . ?k)
@@ -776,7 +777,8 @@ amounts is too narrow.
                        ("reg" "%(binary) -f %(ledger-file) reg")
                        ("payee" "%(binary) -f %(ledger-file) reg @%(payee)")
                        ("account" "%(binary) -f %(ledger-file) reg %(account)")
-                       ("reg" "%(binary) -f %(ledger-file) --unbudgeted --monthly reg ^Expenses")))
+                       ("reconcile" "%(binary) -f %(ledger-file) reg --sort '-date' %(account)")
+                       ))
 #+END_SRC
 
 ** COMMENT Org Roam
