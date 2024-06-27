@@ -771,13 +771,14 @@ I use [[https://www.ledger-cli.org/][Ledger]] to keep track of my financial life
 amounts is too narrow.
 
 #+BEGIN_SRC emacs-lisp
-(setq ledger-post-amount-alignment-column 60
+(setq ledger-post-amount-alignment-column 70
       ledger-reports '(("bal" "ledger [[ledger-mode-flags]] -f %(ledger-file) bal")
                        ("real" "ledger [[ledger-mode-flags]] -f %(ledger-file) bal --real")
                        ("reg" "%(binary) -f %(ledger-file) reg")
                        ("payee" "%(binary) -f %(ledger-file) reg @%(payee)")
                        ("account" "%(binary) -f %(ledger-file) reg %(account)")
                        ("reconcile" "%(binary) -f %(ledger-file) reg --sort '-date' %(account)")
+                       ("ynab" "%(binary) -f %(ledger-file) bal ^Assets:Cash ^Funds ^Liabilities -X £")
                        ))
 #+END_SRC
 
@@ -994,6 +995,7 @@ Use sane defaults.
       org-duration-format 'h:mm
       org-log-done t
       org-log-into-drawer "LOGBOOK"
+      org-agenda-sticky t
       org-agenda-window-setup 'current-window)
 #+end_src
 
@@ -1293,8 +1295,8 @@ Let's test out [[https://github.com/bastibe/org-journal][org-journal]] for journ
 
 #+BEGIN_SRC emacs-lisp
 (setq org-journal-dir "~/org/journal/"
-      org-journal-file-type 'monthly
-      org-journal-file-format "%Y-%m.org"
+      org-journal-file-type 'daily
+      org-journal-file-format "%Y-%m-%d.org"
       org-journal-date-format "%Y-%m-%d %a")
 
 (setq tramp-verbose 6)
@@ -1689,6 +1691,20 @@ Tell impatient mode to use Markdown =M-x imp-set-user-filter RET markdown-html R
       ediff-split-window-function 'split-window-horizontally
       ediff-window-setup-function 'ediff-setup-windows-plain)
 #+end_src
+** Snippets
+
+I use [[https://github.com/joaotavora/yasnippet][yasnippet]], an awesome template system.
+
+#+begin_src emacs-lisp
+(setq yas-snippet-dirs
+      '("~/.emacs.d/snippets"                 ;; personal snippets
+        ;; "/path/to/some/collection/"           ;; foo-mode and bar-mode snippet collection
+        ;; "/path/to/yasnippet/yasmate/snippets" ;; the yasmate collection
+        ))
+
+(yas-global-mode 1) ;; or M-x yas-reload-all if you've started YASnippet already.
+#+end_src
+
 * Mode specific
 
 ;;** Compilation
@@ -2179,6 +2195,25 @@ Lastly we need to activate the map by creating and activating the =minor-mode=.
   :keymap custom-bindings-map)
 
 (global-set-key (kbd "C-c t") (custom-bindings-mode))
+#+END_SRC
+
+* Publish
+
+
+
+#+BEGIN_SRC emacs-lisp
+(setq org-publish-project-alist
+      '(("test"
+         :base-directory "~/Downloads/org/"
+         :publishing-function org-html-publish-to-html
+         :publishing-directory "~/Downloads/public_html"
+         :section-numbers nil
+         :include ("css")
+         :recursive t
+         :with-toc nil
+         :html-head "<link rel=\"stylesheet\"
+                           href=\"../other/mystyle.css\"
+                           type=\"text/css\"/>")))
 #+END_SRC
 
 * License
