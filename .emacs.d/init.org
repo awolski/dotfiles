@@ -195,6 +195,8 @@ installed. To ensure we install missing packages if they are missing.
           eglot                ; Emacs Polyglot; LSP client that stays out of your way
           elfeed               ; An Emacs web feeds client
           emms                 ; Emacs multi-Media System, a media player
+          docker               ; Manage docker from Emacs
+          dockerfile-mode      ; An emacs mode for handling Dockerfiles
           ;;expand-region        ; Increase selected region by semantic units
           focus                ; Dim color of text in surrounding sections
           ;;flycheck             ; Modern on-the-fly syntax checking
@@ -1261,6 +1263,8 @@ Capture templates for notes, todo etc.
         ("p" "PeerJ")
         ("pc" "Meeting" entry (file+headline "~/org/peerj.org" "Meetings")
          "* MEETING Call with %? :MEETING:CALL:\n%T\n%U" :clock-in t :clock-resume t :time-prompt t)
+        ("pt" "Task" entry (file+headline "~/org/peerj.org" "Tasks")
+         "* TODO %?\n%u\n%a\n" :clock-in t :clock-resume t)
         ("e" "E Files")
         ("ee" "Email" entry (file+olp+datetree "~/h/e/e.org" "Emails")
          "* Email from %:from at %:date-timestamp-inactive\n:PROPERTIES:\n:CUSTOM_ID: %(upcase (org-id-uuid))\n:END:\n#+ATTR_HTML: :class %:fromname\n#+BEGIN_div\n%i\n#+END_div\n" :time-prompt t)
