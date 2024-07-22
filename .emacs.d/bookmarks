@@ -1,0 +1,29 @@
+;;;; Emacs Bookmark Format Version 1;;;; -*- coding: utf-8-emacs; mode: lisp-data -*-
+;;; This format is meant to be slightly human-readable;
+;;; nevertheless, you probably don't want to edit it.
+;;; -*- End Of Bookmark File Format Version Stamp -*-
+(("iBenefit"
+ (filename . "~/org/peerj.org")
+ (front-context-string . "[[https://ibenef")
+ (rear-context-string . "][HR Benefits]]\n")
+ (position . 408276)
+ (last-modified 26269 63252 729730 392000))
+("org-capture-last-stored-marker"
+ (filename . "~/org/todo.org")
+ (front-context-string . "*** TODO Find a ")
+ (rear-context-string . "2024-07-09 Tue]\n")
+ (position . 137115)
+ (last-modified 26270 23023 17071 340000))
+("org-refile-last-stored"
+ (filename . "~/org/todo.org")
+ (front-context-string . "*** TODO Find a ")
+ (rear-context-string . "2024-07-09 Tue]\n")
+ (position . 137115)
+ (last-modified 26270 23023 10005 687000))
+("org-capture-last-stored"
+ (filename . "~/org/refile.org")
+ (front-context-string . "* TODO Find a do")
+ (rear-context-string . "rj/Dockerfile]]\n")
+ (position . 585)
+ (last-modified 26270 23017 927371 977000))
+)
