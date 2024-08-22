@@ -780,7 +780,9 @@ amounts is too narrow.
                        ("payee" "%(binary) -f %(ledger-file) reg @%(payee)")
                        ("account" "%(binary) -f %(ledger-file) reg %(account)")
                        ("reconcile" "%(binary) -f %(ledger-file) reg --sort '-date' %(account)")
-                       ("ynab" "%(binary) -f %(ledger-file) bal ^Assets:Cash ^Funds ^Liabilities -X £")
+                       ("No Funds" "%(binary) -f %(ledger-file) reg expr 'not any(account =~ /Funds/)' -X £")
+                       ("Unknown" "%(binary) -f %(ledger-file) reg Expenses:Unknown")
+                       ("YNAB" "%(binary) -f %(ledger-file) bal ^Assets:Cash ^Assets:Owed ^Funds ^Liabilities -X £")
                        ("wise" "%(binary) -f %(ledger-file) bal Wise$ --real")
                        ))
 #+END_SRC
