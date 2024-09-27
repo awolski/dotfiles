@@ -218,7 +218,6 @@ installed. To ensure we install missing packages if they are missing.
           ob-http              ; Make http request within org-mode babel
           olivetti             ; Minor mode for a nice writing environment
           org                  ; Outline-based notes management and organizer
-          org-bullets          ; Show bullets in org-mode as UTF-8 characters
           org-contrib          ; Org-mode contributed packages
           org-journal          ; Simple org-mode based journaling mode
           org-ql               ; Org query language, includes search commands and saved views
@@ -1266,6 +1265,8 @@ Capture templates for notes, todo etc.
         ("p" "PeerJ")
         ("pc" "Meeting" entry (file+headline "~/org/peerj.org" "Meetings")
          "* MEETING Call with %? :MEETING:CALL:\n%T\n%U" :clock-in t :clock-resume t :time-prompt t)
+        ("ps" "Stand up" entry (file+headline "~/org/peerj.org" "Meetings")
+         "* MEETING Stand up :MEETING:CALL:\n<ps%?\n%T\n%U" :clock-in t :clock-resume t :time-prompt t)
         ("pt" "Task" entry (file+headline "~/org/peerj.org" "Tasks")
          "* TODO %?\n%u\n%a\n" :clock-in t :clock-resume t)
         ("e" "E Files")
@@ -1599,12 +1600,6 @@ Org helper functions.
 ;;     (setcar (nthcdr 2 org-emphasis-regexp-components) " \t\n,")
 ;;     (custom-set-variables `(org-emphasis-alist ',org-emphasis-alist)))
 ;;   #+END_SRC
-
-Enable org-bullets when opening org-files.
-
-#+BEGIN_SRC emacs-lisp
-;;(add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
-#+END_SRC
 
 ** Advice
 
