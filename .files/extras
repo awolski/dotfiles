@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
 
+if [ -f /usr/share/bash-completion/bash_completion ]; then
+  source /usr/share/bash-completion/bash_completion
+fi
+
 # Enable aws cli command completion
 aws_completer=$(which aws_completer)
 if [ -n "$aws_completer" ]; then
@@ -10,6 +14,12 @@ fi
 packer=$(which packer)
 if [ -n "$packer" ]; then
   complete -C '"$packer"' packer
+fi
+
+# Enable terraform cli command completion
+terraform=$(which terraform)
+if [ -n "$terraform" ]; then
+  complete -C '"$terraform"' terraform
 fi
 
 # Use direnv
