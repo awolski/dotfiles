@@ -1,0 +1,13 @@
+# -*- mode: snippet -*-
+# name: ledger-transaction-wise-aud
+# key: <ltwa
+# expand-env: ((yas-indent-line 'fixed))
+# --
+
+${5:`(org-read-date)`} * $1
+    expenses:$3    ${2:} AUD
+    assets:cash:wise_aud
+
+$5 * Budget Allocation
+    assets:cash:petty:budget:$4                                $-2 AUD
+    assets:cash:wise_aud

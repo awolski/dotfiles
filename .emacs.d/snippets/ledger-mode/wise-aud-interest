@@ -1,0 +1,10 @@
+# -*- mode: snippet -*-
+# name: ledger_wise_aud_interest
+# key: lwai
+# expand-env: ((yas-indent-line 'fixed))
+# --
+
+
+`(format-time-string "%Y-%m-%d")` * Wise AUD Interest
+    income:interest                                             $1 AUD
+    assets:cash:wise_aud:budget:unallocated

@@ -1,0 +1,9 @@
+# -*- mode: snippet -*-
+# name: ledger_budget
+# key: lb
+# expand-env: ((yas-indent-line 'fixed))
+# --
+
+`(format-time-string "%Y-%m-%d")` * Budget Allocation
+    assets:cash:wise:budget:$2                                £-$1
+    assets:cash:wise:budget:$3

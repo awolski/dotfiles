@@ -192,11 +192,11 @@ installed. To ensure we install missing packages if they are missing.
           counsel-projectile   ; Ivy integration for Projectile
           define-word          ; display the definition of word at point
           diff-hl              ; Highlight uncommitted changes using VC
+          docker               ; Manage docker from Emacs
+          dockerfile-mode      ; An emacs mode for handling Dockerfiles
           eglot                ; Emacs Polyglot; LSP client that stays out of your way
           elfeed               ; An Emacs web feeds client
           emms                 ; Emacs multi-Media System, a media player
-          docker               ; Manage docker from Emacs
-          dockerfile-mode      ; An emacs mode for handling Dockerfiles
           ;;expand-region        ; Increase selected region by semantic units
           focus                ; Dim color of text in surrounding sections
           ;;flycheck             ; Modern on-the-fly syntax checking
@@ -206,6 +206,7 @@ installed. To ensure we install missing packages if they are missing.
           format-all           ; Auto-format code in many languages
           go-mode              ; Go development in Emacs
           golden-ratio         ; Automatic resizing windows to golden ratio
+          gptel                ; A simple LLM client for Emacs
           impatient-mode       ; See your changes in the browser as you type
           js2-mode             ; Improved JavaScript editing mode
           ledger-mode          ; Major mode for editing ledger files
@@ -280,7 +281,7 @@ change them in a single buffer. Using =setq-default= we change the
 buffer-local variable's default value.
 
 #+BEGIN_SRC emacs-lisp
-(setq-default tab-width 4                       ; Smaller tabs
+(setq-default tab-width 8                       ; Smaller tabs
               fill-column 79                    ; Maximum line width
               truncate-lines t                  ; Don't fold lines
               indent-tabs-mode nil              ; Use spaces instead of tabs
@@ -411,7 +412,7 @@ secrets securely.
 #+begin_src emacs-lisp
 (auth-source-pass-enable)
 (setq auth-source-debug t)
-(setq auth-source-do-cache nil)
+(setq auth-source-do-cache t)
 (setq auth-sources '(password-store))
 #+end_src
 
@@ -463,6 +464,7 @@ I'm testing out mu4e to manage my mail.
       '(("/awolski.com/Inbox"   . ?i)
         ("/awolski.com/Archive" . ?a)
         ("/awolski.com/Sent"    . ?s)
+        ("/awolski.com/Spam"    . ?p)
         ("/awolski.com/Trash"   . ?t)
         ("/fastmail/Inbox"      . ?j)
         ("/fastmail/Archive"    . ?k)
@@ -636,6 +638,13 @@ Let's try [[http://oremacs.com/swiper/][Ivy]] in favor of helm.
       `(("~/h" . 1)
         ("~/w" . 2)))
 #+end_src
+** gptel
+
+[[https://github.com/karthink/gptel][gptel]] is awesome.
+
+#+begin_src emacs-lisp
+(global-set-key (kbd "C-c RET") 'gptel-send)
+#+end_src
 
 ** EMMS
 
@@ -773,16 +782,17 @@ amounts is too narrow.
 
 #+BEGIN_SRC emacs-lisp
 (setq ledger-post-amount-alignment-column 70
-      ledger-reports '(("bal" "ledger [[ledger-mode-flags]] -f %(ledger-file) bal")
-                       ("real" "ledger [[ledger-mode-flags]] -f %(ledger-file) bal --real")
+      ledger-reports '(("budget" "%(binary) -f %(ledger-file) bal ^assets:cash ^liabilities:credit -X £ --strict")
+                       ("reconcile" "%(binary) -f %(ledger-file) reg %(account)$ --strict")
+                       ("unknown_expenses" "%(binary) -f %(ledger-file) reg Expenses:Unknown --strict")
+                       ("wise_interest" "%(binary) -f %(ledger-file) reg @Wise\\ Interest --subtotal")
+                       ("wise_aud_interest" "%(binary) -f %(ledger-file) reg @Wise\\ AUD\\ Interest --subtotal")
+                       ("check_unknown" "%(binary) -f %(ledger-file) reg expenses:food:groceries --strict")
+                       ("bal" "ledger [[ledger-mode-flags]] -f %(ledger-file) bal")
                        ("reg" "%(binary) -f %(ledger-file) reg")
                        ("payee" "%(binary) -f %(ledger-file) reg @%(payee)")
                        ("account" "%(binary) -f %(ledger-file) reg %(account)")
-                       ("reconcile" "%(binary) -f %(ledger-file) reg --sort '-date' %(account)")
-                       ("No Funds" "%(binary) -f %(ledger-file) reg expr 'not any(account =~ /Funds/)' -X £")
-                       ("Unknown" "%(binary) -f %(ledger-file) reg Expenses:Unknown")
-                       ("YNAB" "%(binary) -f %(ledger-file) bal ^Assets:Cash ^Assets:Owed ^Funds ^Liabilities -X £")
-                       ("wise" "%(binary) -f %(ledger-file) bal Wise$ --real")
+                       ("wise" "%(binary) -f %(ledger-file) bal wise$ --real")
                        ))
 #+END_SRC
 
@@ -1708,7 +1718,6 @@ I use [[https://github.com/joaotavora/yasnippet][yasnippet]], an awesome templat
 #+end_src
 
 * Mode specific
-
 ;;** Compilation
 ;;
 ;;   I often run ~latexmk -pdf -pvc~ in a compilation buffer, which recompiles
@@ -2201,21 +2210,34 @@ Lastly we need to activate the map by creating and activating the =minor-mode=.
 
 * Publish
 
-
-
 #+BEGIN_SRC emacs-lisp
 (setq org-publish-project-alist
-      '(("test"
-         :base-directory "~/Downloads/org/"
+      '(("content"
+         :base-directory "~/org/website"
+         :base-extension "org"
          :publishing-function org-html-publish-to-html
          :publishing-directory "~/Downloads/public_html"
          :section-numbers nil
-         :include ("css")
+         :org-html-validation-link nil
+         :org-html-head-include-scripts nil
+         :html-head-include-default-style nil
+         :html-head "<link rel=\"stylesheet\ href=\"style.css\" type=\"text/css\"/>"
+         :html-divs ((preamble "header" "preamble")
+            (content "main" "content")
+            (postamble "footer" "postamble"))
          :recursive t
          :with-toc nil
-         :html-head "<link rel=\"stylesheet\"
-                           href=\"../other/mystyle.css\"
-                           type=\"text/css\"/>")))
+        )
+        ("static"
+         :base-directory "~/org/website"
+         :base-extension "css\\|js\\|png\\|jpg\\|gif\\|pdf\\|mp3\\|ogg\\|swf"
+         :publishing-directory "~/Downloads/public_html/"
+         :recursive t
+         :publishing-function org-publish-attachment
+        )
+        ("awol.ski"
+         :components ("content" "static")))
+)
 #+END_SRC
 
 * License
@@ -2236,3 +2258,9 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+#+begin_src emacs-lisp
+(defun hello-world ()
+  (interactive)
+  (message "Hello world!"))
+#+end_src
