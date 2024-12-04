@@ -1,0 +1,9 @@
+# -*- mode: snippet -*-
+# name: credit-cash-petty
+# key: <cp
+# expand-env: ((yas-indent-line 'fixed))
+# --
+
+${1:`(org-read-date)`} * $2
+    income:$4    £-${3:}
+    assets:cash:petty

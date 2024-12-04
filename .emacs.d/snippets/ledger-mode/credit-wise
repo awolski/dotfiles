@@ -1,0 +1,9 @@
+# -*- mode: snippet -*-
+# name: credit-cash-wise
+# key: <cw
+# expand-env: ((yas-indent-line 'fixed))
+# --
+
+${1:`(org-read-date)`} * $2
+    income:$4
+    assets:cash:wise:budget:$5                   £${3:}

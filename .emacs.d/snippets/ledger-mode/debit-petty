@@ -1,13 +1,13 @@
 # -*- mode: snippet -*-
-# name: ledger-transaction-cash
-# key: <ltc
+# name: debit-cash-petty
+# key: <dc
 # expand-env: ((yas-indent-line 'fixed))
 # --
 
-${5:`(org-read-date)`} * $1
-    expenses:$3    £${2:}
+${1:`(org-read-date)`} * $2
+    expenses:$4    £${3:}
     assets:cash:petty
 
-$5 * Budget Allocation
-    assets:cash:petty:budget:$4                                 £-$2
+$1 * Budget Allocation
+    assets:cash:petty:budget:$5                                 £-$3
     assets:cash:petty

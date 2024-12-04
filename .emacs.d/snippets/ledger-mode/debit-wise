@@ -1,0 +1,9 @@
+# -*- mode: snippet -*-
+# name: debit-cash-petty
+# key: <dw
+# expand-env: ((yas-indent-line 'fixed))
+# --
+
+${1:`(org-read-date)`} * $2
+    expenses:$4
+    assets:cash:wise:budget:$5                  £-${3:}

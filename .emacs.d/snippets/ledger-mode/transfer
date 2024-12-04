@@ -1,0 +1,9 @@
+# -*- mode: snippet -*-
+# name: transfer-cash
+# key: <t
+# expand-env: ((yas-indent-line 'fixed))
+# --
+
+${1:`(org-read-date)`} * Transfer
+    assets:cash:$3    £-${2:}
+    assets:cash:$4

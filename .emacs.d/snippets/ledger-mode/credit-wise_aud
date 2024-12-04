@@ -1,0 +1,13 @@
+# -*- mode: snippet -*-
+# name: ledger-credit-wise-aud
+# key: <cwa
+# expand-env: ((yas-indent-line 'fixed))
+# --
+
+${5:`(org-read-date)`} * $1
+    income:$3    -${2:} AUD
+    assets:cash:wise_aud
+
+$5 * Budget Allocation
+    assets:cash:wise_aud:budget:$4                                $2 AUD
+    assets:cash:wise_aud

@@ -1,6 +1,6 @@
 # -*- mode: snippet -*-
 # name: ledger_wise_aud_interest
-# key: lwai
+# key: <iwa
 # expand-env: ((yas-indent-line 'fixed))
 # --
 

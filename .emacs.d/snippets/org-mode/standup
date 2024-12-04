@@ -1,0 +1,15 @@
+# -*- mode: snippet -*-
+# name: standup
+# key: <ps
+# --
+
+<`(yas-fortnight-offset 0)` 10:00-10:15>
+<`(yas-fortnight-offset 1)` 10:00-10:15>
+<`(yas-fortnight-offset 2)` 10:00-10:15>
+<`(yas-fortnight-offset 3)` 10:00-10:15>
+<`(yas-fortnight-offset 4)` 10:00-10:15>
+<`(yas-fortnight-offset 7)` 10:00-10:15>
+<`(yas-fortnight-offset 8)` 10:00-10:15>
+<`(yas-fortnight-offset 9)` 10:00-10:15>
+<`(yas-fortnight-offset 10)` 10:00-10:15>
+<`(yas-fortnight-offset 11)` 10:00-10:15>
