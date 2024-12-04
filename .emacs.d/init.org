@@ -604,15 +604,6 @@ simple and beautiful. The default width is just a bit short.
   (remove-hook 'olivetti-mode-on-hook 'visual-line-mode))
 #+END_SRC
 
-[[https://ox-hugo.scripter.co/][ox-hugo]] is an Org exporter backend that exports Org to [[https://gohugo.io/][Hugo]]-compatible Markdown
-(Blackfriday). With it we can write format). With it we can keep all our posts
-in a single org file.
-
-#+BEGIN_SRC emacs-lisp
-(with-eval-after-load 'ox
-  (require 'ox-hugo))
-#+END_SRC
-
 ** Ivy
 
 Let's try [[http://oremacs.com/swiper/][Ivy]] in favor of helm.
@@ -782,8 +773,8 @@ amounts is too narrow.
 
 #+BEGIN_SRC emacs-lisp
 (setq ledger-post-amount-alignment-column 70
-      ledger-reports '(("budget" "%(binary) -f %(ledger-file) bal ^assets:cash ^liabilities:credit -X £ --strict")
-                       ("reconcile" "%(binary) -f %(ledger-file) reg %(account)$ --strict")
+      ledger-reports '(("budget" "%(binary) -f %(ledger-file) bal ^assets:cash ^liabilities:credit ^assets:owed -X £ --strict --cleared")
+                       ("reconcile" "%(binary) -f %(ledger-file) reg %(account) --strict")
                        ("unknown_expenses" "%(binary) -f %(ledger-file) reg Expenses:Unknown --strict")
                        ("wise_interest" "%(binary) -f %(ledger-file) reg @Wise\\ Interest --subtotal")
                        ("wise_aud_interest" "%(binary) -f %(ledger-file) reg @Wise\\ AUD\\ Interest --subtotal")
