@@ -227,6 +227,7 @@ installed. To ensure we install missing packages if they are missing.
           ;;org-roam             ; Roam Research replica with Org-mode
           ;;org-roam-server      ; Org Roam Database Visualizer
           ox-hugo              ; A carefully crafted Org exporter back-end for Hugo
+          ox-reveal            ; Exports Org-mode contents to Reveal.js HTML presentation
           paredit              ; minor mode for editing parentheses
           pass                 ; Password management with pass
           password-store       ; Use password-store for auth-source
@@ -657,15 +658,16 @@ I use [[https://github.com/skeeto/elfeed][Elfeed]] to stay informed.
 ;; data is stored in ~/.elfeed
 (setq elfeed-feeds
         '(
+          ("https://mcfunley.com/feed.xml")
           ;; aws (select others from https://aws.amazon.com/blogs)
-          ("https://aws.amazon.com/blogs/aws/feed/" aws)
-          ("https://aws.amazon.com/new/feed/" aws recent)
-          ("https://aws.amazon.com/blogs/devops/feed/" aws devops)
-          ("https://aws.amazon.com/blogs/developer/feed/" aws developer)
-          ("https://aws.amazon.com/blogs/security/feed/" aws security)
-          ("https://aws.amazon.com/blogs/database/feed/" aws database)
-          ("https://aws.amazon.com/blogs/compute/feed/" aws compute)
-          ("https://www.hashicorp.com/blog/products/terraform/feed.xml" terraform)
+          ;;("https://aws.amazon.com/blogs/aws/feed/" aws)
+          ;;("https://aws.amazon.com/new/feed/" aws recent)
+          ;;("https://aws.amazon.com/blogs/devops/feed/" aws devops)
+          ;;("https://aws.amazon.com/blogs/developer/feed/" aws developer)
+          ;;("https://aws.amazon.com/blogs/security/feed/" aws security)
+          ;;("https://aws.amazon.com/blogs/database/feed/" aws database)
+          ;;("https://aws.amazon.com/blogs/compute/feed/" aws compute)
+          ;;("https://www.hashicorp.com/blog/products/terraform/feed.xml" terraform)
 
           ;; programming
           ;;("https://news.ycombinator.com/rss" hacker)
@@ -778,12 +780,11 @@ amounts is too narrow.
                        ("unknown_expenses" "%(binary) -f %(ledger-file) reg Expenses:Unknown --strict")
                        ("wise_interest" "%(binary) -f %(ledger-file) reg @Wise\\ Interest --subtotal")
                        ("wise_aud_interest" "%(binary) -f %(ledger-file) reg @Wise\\ AUD\\ Interest --subtotal")
-                       ("check_unknown" "%(binary) -f %(ledger-file) reg expenses:food:groceries --strict")
+                       ("monthly-average" "%(binary) -f %(ledger-file) reg %(account) --monthly --average --strict")
                        ("bal" "ledger [[ledger-mode-flags]] -f %(ledger-file) bal")
                        ("reg" "%(binary) -f %(ledger-file) reg")
                        ("payee" "%(binary) -f %(ledger-file) reg @%(payee)")
                        ("account" "%(binary) -f %(ledger-file) reg %(account)")
-                       ("wise" "%(binary) -f %(ledger-file) bal wise$ --real")
                        ))
 #+END_SRC
 
@@ -990,8 +991,8 @@ Use the key bindings suggested in Org mode's [[https://orgmode.org/manual/Activa
 Use sane defaults.
 
 #+begin_src emacs-lisp
-(setq org-directory "~/org"
-      org-agenda-files (list org-directory)
+(setq org-directory "~/git/org"
+      org-agenda-files (list "~/git/peerj" org-directory)
       org-default-notes-file (concat org-directory "/refile.org")
       org-fold-catch-invisible-edits 'smart
       org-hierarchical-todo-statistics nil
@@ -1021,7 +1022,7 @@ Refiling...
 Enable iCalendar to Org sync functionality for [[https://www.djcbsoftware.nl/code/mu/mu4e/iCalendar.html][mu4e]].
 
 #+begin_src emacs-lisp
-(setq gnus-icalendar-org-capture-file "~/org/refile.org")
+(setq gnus-icalendar-org-capture-file org-default-notes-file)
 (setq gnus-icalendar-org-capture-headline '(""))
 (gnus-icalendar-org-setup)
 
@@ -1241,49 +1242,41 @@ Capture templates for notes, todo etc.
 
 #+begin_src emacs-lisp
 (setq org-capture-templates
-      '(("t" "Task" entry (file "~/org/refile.org")
+      '(("t" "Task" entry (file org-default-notes-file)
          "* TODO %?\n%u\n%a\n" :clock-in t :clock-resume t)
         ("x" "Email Task" entry (file "~/org/refile.org")
          "* TODO %:subject :EMAIL:\n%U\n%a\n" :clock-in t :clock-resume t :immediate-finish t)
-        ("c" "Call" entry (file "~/org/refile.org")
+        ("c" "Call" entry (file org-default-notes-file)
          "* TODO Call %? :@mobile:\n%u\n" :clock-in t :clock-resume t)
-        ("m" "Message" entry (file "~/org/refile.org")
+        ("m" "Message" entry (file org-default-notes-file)
          "* TODO Message %? :@phone:\n:PROPERTIES:\n:Effort: 0:05\n:END:\n%u\n" :clock-in t :clock-resume t)
-        ("r" "Respond" entry (file "~/org/refile.org")
+        ("r" "Respond" entry (file org-default-notes-file)
          "* NEXT Respond to %:from on %:subject :EMAIL:\n%U\n%a\n" :clock-in t :clock-resume t :immediate-finish t)
-        ("b" "Bookmark" entry (file "~/org/refile.org")
+        ("b" "Bookmark" entry (file org-default-notes-file)
          "* %? %(org-set-tags \"BOOKMARK\") \n:PROPERTIES:\n:CREATED: %U\n:END:\n\n" :empty-lines 1)
-        ("n" "Note" entry (file  "~/org/refile.org")
+        ("n" "Note" entry (file  org-default-notes-file)
          "* %? :NOTE:\n%U\n%a\n" :clock-in t :clock-resume t)
-        ("g" "Forge Topic" entry (file "~/org/refile.org")
+        ("g" "Forge Topic" entry (file org-default-notes-file)
          "* TODO %:description\n%?\n%a\n%u\n" :clock-in t :clock-resume t)
-        ("i" "Meeting" entry (file "~/org/refile.org")
+        ("i" "Meeting" entry (file org-default-notes-file)
          "* MEETING %? :MEETING:\n%U" :clock-in t :clock-resume t)
-        ("p" "Phone call" entry (file "~/org/refile.org")
+        ("p" "Phone call" entry (file org-default-notes-file)
          "* PHONE Call with %? :PHONE:\n%U" :clock-in t :clock-resume t)
-        ("#" "used by gnus-icalendar-org" entry (file "~/org/refile.org")
+        ("#" "used by gnus-icalendar-org" entry (file org-default-notes-file)
          "%i %?\n" :time-prompt t :clock-in t :clock-resume t)
         ("p" "PeerJ")
-        ("pc" "Meeting" entry (file+headline "~/org/peerj.org" "Meetings")
+        ("pc" "Meeting" entry (file+headline "~/git/peerj/peerj.org" "Meetings")
          "* MEETING Call with %? :MEETING:CALL:\n%T\n%U" :clock-in t :clock-resume t :time-prompt t)
-        ("ps" "Stand up" entry (file+headline "~/org/peerj.org" "Meetings")
+        ("ps" "Stand up" entry (file+headline "~/git/peerj/peerj.org" "Meetings")
          "* MEETING Stand up :MEETING:CALL:\n<ps%?\n%T\n%U" :clock-in t :clock-resume t :time-prompt t)
-        ("pt" "Task" entry (file+headline "~/org/peerj.org" "Tasks")
+        ("pt" "Task" entry (file+headline "~/git/peerj/peerj.org" "Tasks")
          "* TODO %?\n%u\n%a\n" :clock-in t :clock-resume t)
-        ("e" "E Files")
-        ("ee" "Email" entry (file+olp+datetree "~/h/e/e.org" "Emails")
-         "* Email from %:from at %:date-timestamp-inactive\n:PROPERTIES:\n:CUSTOM_ID: %(upcase (org-id-uuid))\n:END:\n#+ATTR_HTML: :class %:fromname\n#+BEGIN_div\n%i\n#+END_div\n" :time-prompt t)
-        ("em" "Message" entry (file+olp+datetree "~/h/e/e.org" "Signal Messages")
-         "* Message from %^{prompt|Emma|Tony} at %<%H:%M>\n:PROPERTIES:\n:CUSTOM_ID: %(upcase(org-id-uuid))\n:END:\n#+ATTR_HTML: :class %^{prompt|Emma|Tony}\n#+BEGIN_div\n%?\n#+END_div\n" :time-prompt t)
-        ("ew" "OFW Message" entry (file+olp+datetree "~/h/e/e.org" "OFW Messages")
-         "* Message from %^{prompt|Emma|Tony} at %<%H:%M>\n#+ATTR_HTML: :class %^{prompt|Emma|Tony}\n#+BEGIN_div_\n%?\n#+END_div\n" :time-prompt t)
-        ("eo" "Other" entry (file+olp+datetree "~/org/e.org" "Chronology")
-         "* %^{prompt|Emma|Eira|Bodhi} %? ~%<%H:%M>  \n" :time-prompt t)))
+        ))
 #+end_src
 
 Keybindings straight to capture templates.
 
-,#+begin_src emacs-lisp
+#+begin_src emacs-lisp
 ;;(define-key global-map (kbd "C-c r")
 ;;  (lambda () (interactive) (org-capture nil "r")))
 #+end_src
@@ -1309,6 +1302,13 @@ Let's test out [[https://github.com/bastibe/org-journal][org-journal]] for journ
       org-journal-date-format "%Y-%m-%d %a")
 
 (setq tramp-verbose 6)
+#+END_SRC
+
+Let's also take [[https://github.com/yjwen/org-reveal/][org-reveal]] for a spin.
+
+#+BEGIN_SRC emacs-lisp
+(with-eval-after-load 'org
+  (require 'ox-reveal))
 #+END_SRC
 
 
