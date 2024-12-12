@@ -1,5 +1,5 @@
 # -*- mode: snippet -*-
-# name: debit-cash-petty
+# name: debit-wise
 # key: <dw
 # expand-env: ((yas-indent-line 'fixed))
 # --

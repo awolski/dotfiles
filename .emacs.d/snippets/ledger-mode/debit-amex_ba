@@ -1,5 +1,5 @@
 # -*- mode: snippet -*-
-# name: ledger-debit-amex_ba
+# name: debit-amex_ba
 # key: <da
 # expand-env: ((yas-indent-line 'fixed))
 # --
@@ -8,6 +8,6 @@ ${5:`(org-read-date)`} ! $1
     expenses:$3
     liabilities:credit:amex_ba                                £-${2:}
 
-$5 ! Budget Allocation
+$5 * Budget Allocation
     assets:cash:wise:budget:$4
     assets:cash:wise:budget:pending:amex_ba                    £$2

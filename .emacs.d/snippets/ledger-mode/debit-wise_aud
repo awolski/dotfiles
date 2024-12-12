@@ -1,5 +1,5 @@
 # -*- mode: snippet -*-
-# name: ledger-transaction-wise-aud
+# name: debit-wise-aud
 # key: <dwa
 # expand-env: ((yas-indent-line 'fixed))
 # --
