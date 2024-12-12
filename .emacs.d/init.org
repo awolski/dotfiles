@@ -220,14 +220,15 @@ installed. To ensure we install missing packages if they are missing.
           olivetti             ; Minor mode for a nice writing environment
           org                  ; Outline-based notes management and organizer
           org-contrib          ; Org-mode contributed packages
+          org-inline-anim      ; Inline playback of animated GIF/PNG for Org
           org-journal          ; Simple org-mode based journaling mode
           org-ql               ; Org query language, includes search commands and saved views
+          org-tree-slide       ; A presentation tool for org-mode based
           orgit                ; Link to Magit buffers from Org documents
           orgit-forge          ; Org links to Forge Issue buffers
           ;;org-roam             ; Roam Research replica with Org-mode
           ;;org-roam-server      ; Org Roam Database Visualizer
           ox-hugo              ; A carefully crafted Org exporter back-end for Hugo
-          ox-reveal            ; Exports Org-mode contents to Reveal.js HTML presentation
           paredit              ; minor mode for editing parentheses
           pass                 ; Password management with pass
           password-store       ; Use password-store for auth-source
@@ -677,6 +678,34 @@ I use [[https://github.com/skeeto/elfeed][Elfeed]] to stay informed.
 (setq-default elfeed-search-title-max-width 100)
 (setq-default elfeed-search-title-min-width 100)
 #+end_src
+
+** Present
+
+Let's try out [[https://github.com/takaxp/org-tree-slide][org-tree-slide]] for presentations.
+
+#+BEGIN_SRC emacs-lisp
+(require 'org-tree-slide)
+
+; Configure fill width
+(setq visual-fill-column-width 110
+      visual-fill-column-center-text t)
+
+(defun my/org-tree-slide-start ()
+  ;; Center the presentation and wrap lines
+  (visual-fill-column-mode 1)
+  (visual-line-mode 1)
+  (org-inline-anim-mode 1))
+
+(defun my/org-tree-slide-end ()
+  ;; Stop centering the document
+  (visual-fill-column-mode 0)
+  (visual-line-mode 0)
+  (org-inline-anim-mode 0))
+
+;; Register hooks with org-present
+(add-hook 'org-tree-slide-play-hook 'my/org-tree-slide-start)
+(add-hook 'org-tree-slide-stop-hook 'my/org-tree-slide-end)
+#+END_SRC
 
 ** PDF Tools
 
@@ -1244,7 +1273,7 @@ Capture templates for notes, todo etc.
 (setq org-capture-templates
       '(("t" "Task" entry (file org-default-notes-file)
          "* TODO %?\n%u\n%a\n" :clock-in t :clock-resume t)
-        ("x" "Email Task" entry (file "~/org/refile.org")
+        ("x" "Email Task" entry (file org-default-notes-file)
          "* TODO %:subject :EMAIL:\n%U\n%a\n" :clock-in t :clock-resume t :immediate-finish t)
         ("c" "Call" entry (file org-default-notes-file)
          "* TODO Call %? :@mobile:\n%u\n" :clock-in t :clock-resume t)
@@ -1296,7 +1325,7 @@ themed as they would in their native mode.
 Let's test out [[https://github.com/bastibe/org-journal][org-journal]] for journaling.
 
 #+BEGIN_SRC emacs-lisp
-(setq org-journal-dir "~/org/journal/"
+(setq org-journal-dir "~/git/org/journal/"
       org-journal-file-type 'daily
       org-journal-file-format "%Y-%m-%d.org"
       org-journal-date-format "%Y-%m-%d %a")
