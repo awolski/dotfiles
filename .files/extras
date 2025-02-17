@@ -23,4 +23,7 @@ if [ -n "$terraform" ]; then
 fi
 
 # Use direnv
-eval "$(direnv hook bash)"
+direnv=$(which direnv)
+if [ -n "$direnv" ]; then
+  eval "$(direnv hook bash)"
+fi
