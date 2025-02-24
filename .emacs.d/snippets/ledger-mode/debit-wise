@@ -4,6 +4,7 @@
 # expand-env: ((yas-indent-line 'fixed))
 # --
 
-${1:`(org-read-date)`} * $2
+`(org-read-date)` ! $1
+    ; $2
     expenses:$4
     assets:cash:wise:budget:$5                  £-${3:}

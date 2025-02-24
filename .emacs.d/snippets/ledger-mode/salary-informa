@@ -1,0 +1,35 @@
+`(org-read-date)` * Informa
+    income:informa:salary                                   £-5,916.67
+    expenses:gross:flex_adjustment                              £23.61
+    expenses:gross:pension                                   £1,715.84
+    expenses:gross:tax:income                                  £628.86
+    expenses:gross:tax:ni                                      £250.34
+    expenses:giving:charitable_donations                        £10.00
+    assets:cash:wise:budget:bills                             £1300.00  ;; Mortgage
+    assets:cash:wise:budget:bills                              £198.00  ;; Council Tax
+    assets:cash:wise:budget:bills                              £103.21  ;; Utilities
+    assets:cash:wise:budget:bills                               £20.68  ;; Pet Insurance
+    assets:cash:wise:budget:bills                               £33.79  ;; Broadband
+    assets:cash:wise:budget:bills                               £25.50  ;; Water
+    assets:cash:wise:budget:bills                               £10.00  ;; Mobile
+    assets:cash:wise:budget:bills                                £4.99  ;; Netflix
+    assets:cash:wise:budget:bills                                £5.00  ;; Kids Mobile
+    assets:cash:wise:budget:holiday                            £350.00
+    assets:cash:wise:budget:fun                                £300.00
+    assets:cash:wise:budget:emergency_fund                     £100.00
+    assets:cash:wise:budget:food                               £300.00
+    assets:cash:wise:budget:home:maintenance                    £50.00
+    assets:cash:wise:budget:kids                                £65.00  ;; Pocket money (monthly, but...)
+    assets:cash:wise:budget:pet                                 £40.00  ;; Random guess
+    assets:cash:wise:budget:gym_membership                     £127.00  ;; £1524 p/a = £127 (David Lloyd)
+    assets:cash:wise:budget:birthdays                           £40.00  ;; £240 each
+    assets:cash:wise:budget:christmas                           £40.00  ;; £240 each
+    assets:cash:wise:budget:car:insurance                       £35.00  ;; £405.03 p/a = £33.75 (Car Insurance)
+    assets:cash:wise:budget:car:maintenance                     £40.00  ;; £360 estimate p/a = £30.00
+    assets:cash:wise:budget:car:maintenance                      £2.50  ;; £30.00 p/a =  £2.50 (Road Tax)
+    assets:cash:wise:budget:car:maintenance                      £2.00  ;; £23.98 p/a =  £2.00 (Roadside Assistance)
+    assets:cash:wise:budget:car:petrol                          £50.00
+    assets:cash:wise:budget:home:insurance                      £20.00  ;; £212.00 p/a = £17.67 (Home Insurance)
+    assets:cash:wise:budget:subscriptions:ofw                   £14.00  ;; £79.00 * 2 p/a = £13.167 (OFW)
+    assets:cash:wise:budget:travel_insurance                     £8.00  ;; 83.83 in 2024
+    assets:cash:wise:budget:unallocated                          £3.35

@@ -1,0 +1,9 @@
+# -*- mode: snippet -*-
+# name: credit-cash-monzo
+# key: <cm
+# expand-env: ((yas-indent-line 'fixed))
+# --
+
+${1:`(org-read-date)`} * $2
+    income:$4
+    assets:cash:monzo                   £${3:}

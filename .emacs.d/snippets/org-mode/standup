@@ -1,8 +1,7 @@
 # -*- mode: snippet -*-
 # name: standup
-# key: <ps
+# key: <psu
 # --
-
 <`(yas-fortnight-offset 0)` 10:00-10:15>
 <`(yas-fortnight-offset 1)` 10:00-10:15>
 <`(yas-fortnight-offset 2)` 10:00-10:15>

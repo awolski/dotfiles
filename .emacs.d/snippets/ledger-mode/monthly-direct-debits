@@ -4,24 +4,28 @@
 # expand-env: ((yas-indent-line 'fixed))
 # --
 
-${1:`(org-read-date)`} * Santander UK (MORTGAGES)
+${1:`(org-read-date)`} * Santander
     liabilities:mortgage:turnham                               £484.95
     expenses:mortgage:interest                                 £732.51
     liabilities:mortgage:turnham
     assets:cash:wise:budget:bills                           £-1,300.00
 
-$1 * Octopus Energy Limited
-    expenses:home:utilities                                     £82.19
+$1 * Octopus Energy
+    expenses:home:utilities                                    £103.21
     assets:cash:wise:budget:bills
 
-$1 * GC re Waggel Limited
+$1 * Waggel
     expenses:pet:insurance                                      £20.68
     assets:cash:wise:budget:bills
 
-$1 * Cardiff Council-CC CTAX & NDR
+$1 * Cardiff Council
     expenses:home:council_tax                                  £198.00
     assets:cash:wise:budget:bills
 
-$1 * DWR CYMRU WELSH WATER
+$1 * Welsh Water
     expenses:home:water                                         £24.00
+    assets:cash:wise:budget:bills
+
+$1 * Virgin Media
+    expenses:bills:internet                                     £20.87
     assets:cash:wise:budget:bills

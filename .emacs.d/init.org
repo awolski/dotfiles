@@ -805,7 +805,7 @@ amounts is too narrow.
 
 #+BEGIN_SRC emacs-lisp
 (setq ledger-post-amount-alignment-column 70
-      ledger-reports '(("budget" "%(binary) -f %(ledger-file) bal budget -X £ --strict --cleared")
+      ledger-reports '(("budget" "%(binary) -f %(ledger-file) bal assets:cash -X £ --strict --cleared")
                        ("net_worth" "%(binary) -f %(ledger-file) bal ^assets ^liabilities -X £ --strict --cleared --depth 2")
                        ("reconcile" "%(binary) -f %(ledger-file) reg %(account) --strict")
                        ("unknown_expenses" "%(binary) -f %(ledger-file) reg Expenses:Unknown --strict")
@@ -1023,7 +1023,7 @@ Use sane defaults.
 
 #+begin_src emacs-lisp
 (setq org-directory "~/git/org"
-      org-agenda-files (list "~/git/peerj" org-directory)
+      org-agenda-files (list "~/git/peerj/org" org-directory)
       org-default-notes-file (concat org-directory "/refile.org")
       org-fold-catch-invisible-edits 'smart
       org-hierarchical-todo-statistics nil
@@ -1132,6 +1132,7 @@ Quick access to Org tags.
 #+begin_src emacs-lisp
 ; Tags with fast selection keys
 (setq org-tag-alist (quote ((:startgroup)
+                            ("@bujo" . ?b)
                             ("@errand" . ?e)
                             ("@home" . ?H)
                             (:endgroup)
@@ -1181,18 +1182,28 @@ Let's test out [[https://github.com/alphapapa/org-super-agenda][org-super-agenda
 
           (alltodo "" ((org-agenda-overriding-header "")
                        (org-super-agenda-groups
-                        '((:discard (:todo "HOLD"
-                                     :scheduled t
-                                     :deadline t
-                                     :habit t))
+                        '(;;(:discard (:todo "HOLD"))
                           (:name "Estimate"
                                  :and (:children nil :not (:effort< "0:00" :effort> "0:00"))
                                  :order 1)
                           (:name "Context"
-                                 :not (:tag "@errand")
+                                 :not (:tag ("@home" "@errand" "@bujo" "email"))
                                  :order 2)
                           ))))))
         ("h" "Holding Tank"
+         ((agenda "" ((org-agenda-span 0))
+                  ((org-super-agenda-groups
+                    '((:name none
+                       :time-grid nil)))))
+
+          (alltodo "" ((org-agenda-overriding-header "")
+                          (org-super-agenda-groups
+                           '((:name "Hold"
+                                    :tag "HOLD")
+                             (:discard (:anything t))
+                             ))))))
+
+        ("f" "Focus"
          ((agenda "" ((org-agenda-span 0))
                   ((org-super-agenda-groups
                     '((:name none
@@ -1336,13 +1347,13 @@ Capture templates for notes, todo etc.
         ("#" "used by gnus-icalendar-org" entry (file org-default-notes-file)
          "%i %?\n" :time-prompt t :clock-in t :clock-resume t)
         ("p" "PeerJ")
-        ("pi" "Issue" entry (file+headline "~/git/peerj/peerj.org" "Tasks")
+        ("pi" "Issue" entry (file+headline "~/git/peerj/org/peerj.org" "Tasks")
          "* TODO %:description\n%?\n%a\n%u\n" :clock-in t :clock-resume t)
-        ("pc" "Meeting" entry (file+headline "~/git/peerj/peerj.org" "Meetings")
+        ("pc" "Meeting" entry (file+headline "~/git/peerj/org/peerj.org" "Meetings")
          "* MEETING Call with %? :MEETING:CALL:\n%T\n%U" :clock-in t :clock-resume t :time-prompt t)
-        ("ps" "Stand up" entry (file+headline "~/git/peerj/peerj.org" "Meetings")
+        ("ps" "Stand up" entry (file+headline "~/git/peerj/org/peerj.org" "Meetings")
          "* MEETING PeerJ Stand up :MEETING:CALL:\n<pjsu%?\n\n%U" :clock-in t :clock-resume t :time-prompt t)
-        ("pt" "Task" entry (file+headline "~/git/peerj/peerj.org" "Tasks")
+        ("pt" "Task" entry (file+headline "~/git/peerj/org/peerj.org" "Tasks")
          "* TODO %?\n%u\n%a\n" :clock-in t :clock-resume t)
         ))
 #+end_src
