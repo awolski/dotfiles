@@ -9,8 +9,8 @@
 * About
 
 This is an Emacs configuration file written in [[http://orgmode.org][Org mode]]. It is an attempt to
-keep my =~/.emacs.d= tidy, but still be able to keep it all in one file. I aim
-to briefly explain all my configurations as I go along!
+keep my =~/.config/emacs/= tidy, but still be able to keep it all in one file.
+I aim to briefly explain all my configurations as I go along!
 
 I would not recommend using this configuration /as-is/, because it probably
 contains a lot you don't really need. I do, however, hope people find some
@@ -20,30 +20,29 @@ If you really do want to try this config out, this is how I'd go about it:
 
 Clone the repo.
 #+BEGIN_SRC sh :tangle no
-git clone https://github.com/larstvei/dot-emacs
+git clone https://github.com/awolski/dot-emacs
 #+END_SRC
 
-Backup your old =~/.emacs.d= (if necessary).
+Backup your old =~/.config/emacs= (if necessary).
 #+BEGIN_SRC sh :tangle no
-mv ~/.emacs.d ~/.emacs.d-bak
-#+END_SRC
-
-Backup your old =~/.emacs=-file (if necessary).
-#+BEGIN_SRC sh :tangle no
-mv ~/.emacs ~/.emacs-bak
+mv ~/.config/emacs ~/.config/emacs-bak
 #+END_SRC
 
 And finally
 #+BEGIN_SRC sh :tangle no
-mv dot-emacs ~/.emacs.d
+mv dot-emacs ~/.config/emacs
 #+END_SRC
 
 On first run it should install a bunch of packages (this might take a while),
 and you might have to restart your Emacs the first time. If you experience
 bugs, please let me know!
 
-* Configurations
-** Meta
+** Resources
+
+- [[https://pages.sachachua.com/.emacs.d/Sacha.html][Sacha Chua's Emacs configuration]]
+- [[https://github.com/larstvei/dot-emacs/blob/main/init.org][larstvei/dot-emacs]]
+
+* Meta
 
 All changes to the configuration should be done in =init.org=, *not* in
 =init.el=. Any changes in the =init.el= will be overwritten by saving
@@ -97,7 +96,7 @@ I want lexical scoping for the init-file, which can be specified in the
 header. The first line of the configuration is as follows:
 
 #+BEGIN_SRC emacs-lisp
-;;; -*- lexical-binding: t -*-
+;; -*- lexical-binding: t -*-
 #+END_SRC
 
 The =init.el= should (after the first run) mirror the source blocks in
@@ -110,6 +109,8 @@ the =after-save-hook= ensuring to always tangle and byte-compile the
 =org=-document after changes.
 
 #+BEGIN_SRC emacs-lisp
+(require 'org)
+
 (defun tangle-init ()
   "If the current buffer is \\='init.org\\=' the code-blocks are
    tangled, and the tangled file is compiled."
@@ -126,25 +127,316 @@ the =after-save-hook= ensuring to always tangle and byte-compile the
 I'd like to keep a few settings private, so we load a =private.el= if it
 exists after the init-file has loaded.
 
-;#+BEGIN_SRC emacs-lisp
-;(add-hook
-; 'after-init-hook
-; (lambda ()
-;   (let ((private-file (concat user-emacs-directory "private.el")))
-;     (when (file-exists-p private-file)
-;       (load-file private-file))
-;     (when custom-file
-;       (load-file custom-file))
-;     (server-start))))
-;#+END_SRC
-
-A common optimization is to temporarily disable garbage collection during
-initialization. Here, we set the ~gc-cons-threshold~ to a ridiculously large
-number, and restore the default value after initialization.
+#+BEGIN_SRC emacs-lisp
+(add-hook
+ 'after-init-hook
+ (lambda ()
+   (let ((private-file (concat user-emacs-directory "private.el")))
+     (when (file-exists-p private-file)
+       (load-file private-file))
+     (when custom-file
+       (load-file custom-file))
+     (server-start))))
+#+END_SRC
 
 #+BEGIN_SRC emacs-lisp
-(let ((old-gc-treshold gc-cons-threshold))
-  (setq gc-cons-threshold most-positive-fixnum)
-  (add-hook 'after-init-hook
-            (lambda () (setq gc-cons-threshold old-gc-treshold))))
+(defun aw/reload-emacs-configuration ()
+  (interactive)
+  (load-file (concat user-emacs-directory "init.el")))
 #+END_SRC
+
+* Packages
+
+I use [[https://github.com/jwiegley/use-package][use-package]] to install and configure packages.
+
+#+BEGIN_SRC emacs-lisp
+  (require 'use-package)
+  (setq use-package-always-ensure t)
+
+  (unless (assoc-default "melpa" package-archives)
+    (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t))
+  (unless (assoc-default "nongnu" package-archives)
+    (add-to-list 'package-archives '("nongnu" . "https://elpa.nongnu.org/nongnu/") t))
+#+END_SRC
+
+* Defaults
+
+Set utf-8 as preferred coding system.
+
+#+BEGIN_SRC emacs-lisp
+(set-language-environment "UTF-8")
+(prefer-coding-system 'utf-8)
+#+END_SRC
+
+Answering /yes/ and /no/ to each question from Emacs can be tedious, a
+single /y/ or /n/ will suffice.
+
+#+BEGIN_SRC emacs-lisp
+(fset 'yes-or-no-p 'y-or-n-p)
+#+END_SRC
+
+* Appearance
+
+I want as much screen real estate as possible so I turn off the menu bar and
+tool bar.
+
+#+BEGIN_SRC emacs-lisp
+(tool-bar-mode 0)
+#+END_SRC
+
+Change the color-theme to =modus-operandi=.
+
+#+BEGIN_SRC emacs-lisp
+(load-theme 'modus-vivendi-tinted t)
+#+END_SRC
+
+=modus-operandi= is my preferred light theme and =modus-vivendi= is preferred
+dark. I want to be able to cycle between these.
+
+;#+BEGIN_SRC emacs-lisp
+;(defun cycle-themes ()
+;  "Returns a function that lets you cycle your themes."
+;  (let ((themes '#1=(modus-operandi modus-vivendi . #1#)))
+;    (lambda ()
+;      (interactive)
+;      ;; Rotates the thme cycle and changes the current theme.
+;      (load-theme (car (setq themes (cdr themes))) t)
+;      (message (concat "Switched to " (symbol-name (car themes)))))))
+;#+END_SRC
+
+* Completion
+
+[[https://github.com/minad/vertico][Vertico]] provides a performant and minimalistic vertical completion UI based on
+the default completion system.
+
+#+BEGIN_SRC emacs-lisp
+(use-package vertico
+  :ensure t
+  :init
+  (vertico-mode))
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp
+(use-package orderless
+  :ensure t
+  :custom
+  (completion-styles '(orderless basic))
+  (completion-category-overrides '((file (styles basic partial-completion)))))
+#+END_SRC
+
+I want to see [[https://github.com/minad/marginalia][marginalia]] in the minibuffer.
+
+#+BEGIN_SRC emacs-lisp
+;; Enable rich annotations using the Marginalia package
+(use-package marginalia
+  :after vertico
+  :ensure t
+  :init
+  (marginalia-mode))
+#+END_SRC
+
+#+begin_src emacs-lisp
+;; Example configuration for Consult
+(use-package consult
+  ;; Replace bindings. Lazily loaded by `use-package'.
+  :bind (;; C-c bindings in `mode-specific-map'
+         ("C-c M-x" . consult-mode-command)
+         ("C-c h" . consult-history)
+         ("C-c k" . consult-kmacro)
+         ("C-c m" . consult-man)
+         ("C-c i" . consult-info)
+         ([remap Info-search] . consult-info)
+         ;; C-x bindings in `ctl-x-map'
+         ("C-x M-:" . consult-complex-command)     ;; orig. repeat-complex-command
+         ("C-x b" . consult-buffer)                ;; orig. switch-to-buffer
+         ("C-x 4 b" . consult-buffer-other-window) ;; orig. switch-to-buffer-other-window
+         ("C-x 5 b" . consult-buffer-other-frame)  ;; orig. switch-to-buffer-other-frame
+         ("C-x t b" . consult-buffer-other-tab)    ;; orig. switch-to-buffer-other-tab
+         ("C-x r b" . consult-bookmark)            ;; orig. bookmark-jump
+         ("C-x p b" . consult-project-buffer)      ;; orig. project-switch-to-buffer
+         ;; Custom M-# bindings for fast register access
+         ("M-#" . consult-register-load)
+         ("M-'" . consult-register-store)          ;; orig. abbrev-prefix-mark (unrelated)
+         ("C-M-#" . consult-register)
+         ;; Other custom bindings
+         ("M-y" . consult-yank-pop)                ;; orig. yank-pop
+         ;; M-g bindings in `goto-map'
+         ("M-g e" . consult-compile-error)
+         ("M-g f" . consult-flymake)               ;; Alternative: consult-flycheck
+         ("M-g g" . consult-goto-line)             ;; orig. goto-line
+         ("M-g M-g" . consult-goto-line)           ;; orig. goto-line
+         ("M-g o" . consult-outline)               ;; Alternative: consult-org-heading
+         ("M-g m" . consult-mark)
+         ("M-g k" . consult-global-mark)
+         ("M-g i" . consult-imenu)
+         ("M-g I" . consult-imenu-multi)
+         ;; M-s bindings in `search-map'
+         ("M-s d" . consult-find)                  ;; Alternative: consult-fd
+         ("M-s c" . consult-locate)
+         ("M-s g" . consult-grep)
+         ("M-s G" . consult-git-grep)
+         ("M-s r" . consult-ripgrep)
+         ("M-s l" . consult-line)
+         ("M-s L" . consult-line-multi)
+         ("M-s k" . consult-keep-lines)
+         ("M-s u" . consult-focus-lines)
+         ;; Isearch integration
+         ("M-s e" . consult-isearch-history)
+         :map isearch-mode-map
+         ("M-e" . consult-isearch-history)         ;; orig. isearch-edit-string
+         ("M-s e" . consult-isearch-history)       ;; orig. isearch-edit-string
+         ("M-s l" . consult-line)                  ;; needed by consult-line to detect isearch
+         ("M-s L" . consult-line-multi)            ;; needed by consult-line to detect isearch
+         ;; Minibuffer history
+         :map minibuffer-local-map
+         ("M-s" . consult-history)                 ;; orig. next-matching-history-element
+         ("M-r" . consult-history))                ;; orig. previous-matching-history-element
+
+  ;; Enable automatic preview at point in the *Completions* buffer. This is
+  ;; relevant when you use the default completion UI.
+  :hook (completion-list-mode . consult-preview-at-point-mode)
+
+  ;; The :init configuration is always executed (Not lazy)
+  :init
+
+  ;; Tweak the register preview for `consult-register-load',
+  ;; `consult-register-store' and the built-in commands.  This improves the
+  ;; register formatting, adds thin separator lines, register sorting and hides
+  ;; the window mode line.
+  ;; (advice-add #'register-preview :override #'consult-register-window)
+  ;; (setq register-preview-delay 0.5)
+
+  ;; Use Consult to select xref locations with preview
+  ;; (setq xref-show-xrefs-function #'consult-xref
+  ;;       xref-show-definitions-function #'consult-xref)
+
+  ;; Configure other variables and modes in the :config section,
+  ;; after lazily loading the package.
+  :config
+
+  ;; Optionally configure preview. The default value
+  ;; is 'any, such that any key triggers the preview.
+  ;; (setq consult-preview-key 'any)
+  ;; (setq consult-preview-key "M-.")
+  ;; (setq consult-preview-key '("S-<down>" "S-<up>"))
+  ;; For some commands and buffer sources it is useful to configure the
+  ;; :preview-key on a per-command basis using the `consult-customize' macro.
+  (consult-customize
+   consult-theme :preview-key '(:debounce 0.2 any)
+   consult-ripgrep consult-git-grep consult-grep consult-man
+   consult-bookmark consult-recent-file consult-xref
+   consult--source-bookmark consult--source-file-register
+   consult--source-recent-file consult--source-project-recent-file
+   ;; :preview-key "M-."
+   :preview-key '(:debounce 0.4 any))
+
+  ;; Optionally configure the narrowing key.
+  ;; Both < and C-+ work reasonably well.
+  (setq consult-narrow-key "<") ;; "C-+"
+
+  ;; Optionally make narrowing help available in the minibuffer.
+  ;; You may want to use `embark-prefix-help-command' or which-key instead.
+  ;; (keymap-set consult-narrow-map (concat consult-narrow-key " ?") #'consult-narrow-help)
+)  
+#+end_src
+
+* To Do
+
+** Sane defaults
+
+These are what /I/ consider to be saner defaults.
+
+We can set variables to whatever value we'd like using =setq=.
+
+#+BEGIN_SRC emacs-lisp
+(setq echo-keystrokes 0.1               ; Show keystrokes asap
+      inhibit-startup-screen t          ; No splash screen please
+      initial-scratch-message nil       ; Clean scratch buffer
+      ring-bell-function 'ignore        ; Quiet
+      scroll-margin 1                   ; Space between cursor and top/bottom
+      sentence-end-double-space nil     ; No double space
+      custom-file                       ; Customizations in a separate file
+      (concat user-emacs-directory "custom.el"))
+#+END_SRC
+
+Some variables are buffer-local, so changing them using =setq= will only
+change them in a single buffer. Using =setq-default= we change the
+buffer-local variable's default value.
+
+#+BEGIN_SRC emacs-lisp
+  (setq-default tab-width 4                       ; Smaller tabs
+                fill-column 79                    ; Maximum line width
+                truncate-lines t                  ; Don't fold lines
+                indent-tabs-mode nil              ; Use spaces instead of tabs
+                split-width-threshold 160         ; Split verticly by default
+                split-height-threshold nil        ; Split verticly by default
+                frame-resize-pixelwise t          ; Fine-grained frame resize
+                auto-fill-function 'do-auto-fill) ; Auto-fill-mode everywhere
+#+END_SRC
+
+* Document me
+
+** Magit
+
+[[https://magit.vc/][Magit]] is awesome. [[https://github.com/magit/forge][Forge]] is also.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package magit
+    :config
+    (setq magit-repository-directories `(("~/git" . 2))))
+
+  (use-package forge
+    :after magit)
+#+END_sRC
+
+** Password store
+
+I use the /awesome/ [[https://www.passwordstore.org/][pass]], the standard unix password manager to GPG encrypt all
+of my credentials, secrets and one time passwords.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package pass)
+  (auth-source-pass-enable)
+
+  (use-package password-store)
+
+  (setq auth-sources '(password-store)
+        auth-source-debug t
+        auth-source-do-cache t)
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp
+  (use-package pinentry
+    :init
+    (setq epg-pinentry-mode 'loopback)
+    :config
+    (if (not(process-live-p pinentry--server-process))
+      (pinentry-start)))
+#+END_SRC
+
+** gptel
+
+#+BEGIN_SRC emacs-lisp
+  (use-package gptel
+    :bind (;; C-c bindings in `mode-specific-map'
+         ("C-c a" . gptel-send)))
+#+END_SRC
+
+* License
+
+My Emacs configurations written in Org mode.
+
+Copyright (c) 2020 - 2025 Tony Wolski
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
