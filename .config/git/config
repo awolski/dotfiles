@@ -14,7 +14,7 @@
 [core]
   autocrlf = input
 [gpg]
-  program = gpg2
+  program = gpg
 [pull]
 	rebase = true
 [init]
