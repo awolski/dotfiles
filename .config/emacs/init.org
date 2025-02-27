@@ -422,6 +422,97 @@ of my credentials, secrets and one time passwords.
          ("C-c a" . gptel-send)))
 #+END_SRC
 
+** COMMENT Mu4e
+
+#+begin_src emacs-lisp
+(require 'mu4e)
+
+(require 'mu4e-org)
+(require 'smtpmail)
+
+(setq send-mail-function 'smtpmail-send-it
+      smtpmail-debug-info t
+      message-kill-buffer-on-exit t
+      mu4e-get-mail-command "mbsync -a"
+      mu4e-update-interval (* 60 60)
+      ;; Prevent 'Maildir error: duplicate UID <id>' errors
+      mu4e-change-filenames-when-moving t
+      mu4e-attachment-dir "~/Downloads"
+      ;; Only ask if a context hasn't been previously picked
+      mu4e-compose-context-policy 'ask-if-none
+      auth-source-debug t)
+
+(setq mu4e-contexts
+      (list
+       ;; awolski.com account
+       (make-mu4e-context
+        :name "migadu"
+        :match-func
+        (lambda (msg)
+          (when msg
+            (string-prefix-p "/awolski.com" (mu4e-message-field msg :maildir))))
+        :vars '((user-mail-address      . "tony@awolski.com")
+                (user-full-name         . "Tony Wolski")
+                (mu4e-compose-signature . "Tony\n\n\https://awol.ski")
+                (smtpmail-smtp-user     . "tony@awolski.com")
+                (smtpmail-smtp-server   . "smtp.migadu.com")
+                (smtpmail-smtp-service  . 587)
+                (smtpmail-stream-type   . starttls)
+                (mu4e-drafts-folder     . "/awolski.com/Drafts")
+                (mu4e-sent-folder       . "/awolski.com/Sent")
+                (mu4e-refile-folder     . "/awolski.com/Archive")
+                (mu4e-trash-folder      . "/awolski.com/Trash")))
+       ))
+
+(setq mu4e-maildir-shortcuts
+      '(("/awolski.com/Inbox"   . ?i)
+        ("/awolski.com/Archive" . ?a)
+        ("/awolski.com/Sent"    . ?s)
+        ("/awolski.com/Junk"    . ?j)
+        ("/awolski.com/Trash"   . ?t)
+        ("/fastmail/Inbox"      . ?f)
+        ("/fastmail/Archive"    . ?g)
+        ("/fastmail/Trash"      . ?h)))
+
+;; Empty the initial bookmark list
+(setq mu4e-bookmarks '())
+
+;; All inboxes
+(defvar inbox-folders (string-join '("maildir:/fastmail/INBOX"
+                                     "maildir:/awolski.com/INBOX")
+                                   " OR "))
+
+;;   (add-to-list 'mu4e-bookmarks
+;;                '(inbox-folders "Inbox" ?i))
+
+;; Prevent mu4e from permanently deleting trashed items
+;; This snippet was taken from the following article:
+;; http://cachestocaches.com/2017/3/complete-guide-email-emacs-using-mu-and-/
+(defun remove-nth-element (nth list)
+  (if (zerop nth) (cdr list)
+    (let ((last (nthcdr (1- nth) list)))
+      (setcdr last (cddr last))
+      list)))
+
+(setq mu4e-marks (remove-nth-element 5 mu4e-marks))
+(add-to-list 'mu4e-marks
+             '(trash
+               :char ("d" . "▼")
+               :prompt "dtrash"
+               :dyn-target (lambda (target msg) (mu4e-get-trash-folder msg))
+               :action (lambda (docid msg target)
+                         (mu4e~proc-move docid
+                                         (mu4e~mark-check-target target) "-N"))))
+
+
+;; Close the message after I've sent it
+(setq message-kill-buffer-on-exit t)
+;; Don't ask for a 'context' upon opening mu4e
+(setq mu4e-context-policy 'pick-first)
+;; Don't ask to quit
+(setq mu4e-confirm-quit nil)
+#+end_src
+
 * License
 
 My Emacs configurations written in Org mode.
