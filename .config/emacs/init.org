@@ -324,6 +324,7 @@ I want to see [[https://github.com/minad/marginalia][marginalia]] in the minibuf
 )  
 #+end_src
 
+
 * To Do
 
 ** Sane defaults
@@ -440,9 +441,29 @@ of my credentials, secrets and one time passwords.
     (projectile-mode +1))
 #+END_SRC
 
+** Terraform
+
+#+BEGIN_SRC emacs-lisp
+  (use-package terraform-mode
+    ;; if using straight
+    ;; :straight t
+
+    ;; if using package.el
+    ;; :ensure t
+    :custom (terraform-indent-level 2)
+    :config
+    (defun my-terraform-mode-init ()
+      ;; if you want to use outline-minor-mode
+      (outline-minor-mode 1)
+      )
+    (custom-set-variables '(terraform-format-on-save t))
+
+    (add-hook 'terraform-mode-hook 'my-terraform-mode-init))
+#+END_SRC
+  
 ** COMMENT Mu4e
 
-#+begin_src emacs-lisp
+#+BEGIN_SRC emacs-lisp
 (require 'mu4e)
 
 (require 'mu4e-org)
@@ -529,7 +550,7 @@ of my credentials, secrets and one time passwords.
 (setq mu4e-context-policy 'pick-first)
 ;; Don't ask to quit
 (setq mu4e-confirm-quit nil)
-#+end_src
+#+END_SRC
 
 * License
 
