@@ -619,38 +619,6 @@ of my credentials, secrets and one time passwords.
 (setq mu4e-confirm-quit nil)
 #+END_SRC
 
-** EMMS
-
-#+BEGIN_SRC emacs-lisp
-(use-package emms
-  :ensure t
-  :config
-  ;; Initialize EMMS
-  (emms-all)
-  
-  ;; Set MPV as the player
-  (setq emms-player-list
-        '(emms-player-mpv))
-
-  ;; Optional: Configure MPV playback options
-  (setq emms-player-mpv-parameters
-        '("--no-terminal" "--input-ipc-server=/tmp/mpvsocket"))
-
-  ;; Start EMMS automatically
-  (emms-start))
-
-;; Optionally, bind keys for EMMS controls
-;;(use-package emms-mode-line
-;;  :after emms
-;;  :config
-;;  (emms-mode-line 1))
-
-;;(use-package emms-volume
-;;  :after emms
-;;  :config
-;;  (emms-volume-initialize))
-#+END_SRC
-
 ** Ediff
 
 #+BEGIN_SRC emacs-lisp
