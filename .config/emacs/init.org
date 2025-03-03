@@ -460,8 +460,75 @@ of my credentials, secrets and one time passwords.
 
     (add-hook 'terraform-mode-hook 'my-terraform-mode-init))
 #+END_SRC
-  
-** COMMENT Mu4e
+
+** Ledger
+
+#+BEGIN_SRC emacs-lisp
+  (use-package ledger-mode
+    :ensure t
+    :mode ("\\.ledger\\'" . ledger-mode)
+    :init
+    (setq ledger-default-project "~/git/org/ledger"  ;; Default project directory
+          ledger-highlight-xact-under-point t  ;; Highlight transaction under point
+          ledger-post-amount-alignment-column 70  ;; Align transactions
+          ledger-reports '(("budget" "%(binary) -f %(ledger-file) bal assets:cash -X £ --strict --cleared")
+                           ("net_worth" "%(binary) -f %(ledger-file) bal ^assets ^liabilities -X £ --strict --cleared --depth 2")
+                           ("reconcile" "%(binary) -f %(ledger-file) reg %(account) --strict")
+                           ("unknown_expenses" "%(binary) -f %(ledger-file) reg Expenses:Unknown --strict")
+                           ("interest_wise" "%(binary) -f %(ledger-file) reg income:interest and @Wise\\ Interest")
+                           ("interest_wise_aud" "%(binary) -f %(ledger-file) reg income:interest and @Wise\\ AUD\\ Interest")
+                           ("monthly-average" "%(binary) -f %(ledger-file) reg %(account) --monthly --average --strict")
+                           ("bal" "ledger [[ledger-mode-flags]] -f %(ledger-file) bal")
+                           ("reg" "%(binary) -f %(ledger-file) reg")
+                           ("payee" "%(binary) -f %(ledger-file) reg @%(payee)")
+                           ("account" "%(binary) -f %(ledger-file) reg %(account)")
+                           ))
+    :config
+    (setq ledger-fontify-headers t)  ;; Fontify headers
+    (add-hook 'ledger-mode-hook
+              (lambda ()
+                (setq indent-tabs-mode nil  ;; Use spaces instead of tabs
+                      tab-width 4))))  ;; Set tab width to 4
+#+END_SRC
+
+** Yasnippet
+
+#+BEGIN_SRC emacs-lisp
+(use-package yasnippet
+  :ensure t
+  :commands yas-minor-mode
+  :init
+  (yas-global-mode 1)  ;; Enable yasnippet globally
+  (setq yas-snippet-dirs
+        '("~/.config/emacs/snippets"  ;; Default snippet directory
+          ))
+  :config
+  (setq yas-trigger-key "TAB"  ;; Change the trigger key
+        yas-prompt-functions '(yas-ido-prompt yas-completing-prompt))  ;; Use ido or completing-read for snippets
+  (add-hook 'prog-mode-hook #'yas-minor-mode)  ;; Enable in programming modes
+  (add-hook 'text-mode-hook #'yas-minor-mode)  ;; Enable in text modes
+)    
+#+END_SRC
+
+** Company
+
+#+BEGIN_SRC emacs-lisp
+  (use-package company
+    :ensure t
+    :init
+    (global-company-mode 1)  ; Enable company mode globally
+    (setq company-minimum-prefix-length 1)  ; Minimum prefix length before suggestions show
+    (setq company-idle-delay 0.2) ; Delay before suggestions appear
+    :config
+    (add-hook 'after-init-hook 'global-company-mode)
+    (setq company-tooltip-align-annotations t) ; Align annotations to the right
+    (setq company-show-quick-access t) ; Show numbers in the tooltip
+    (define-key company-active-map (kbd "TAB") 'company-complete) ; Tab for completion
+    (define-key company-active-map (kbd "<tab>") 'company-complete) ; Tab for completion
+    (define-key company-active-map (kbd "<return>") 'company-complete)) ; Return for completion
+#+END_SRC
+
+** Mu4e
 
 #+BEGIN_SRC emacs-lisp
 (require 'mu4e)
@@ -550,6 +617,48 @@ of my credentials, secrets and one time passwords.
 (setq mu4e-context-policy 'pick-first)
 ;; Don't ask to quit
 (setq mu4e-confirm-quit nil)
+#+END_SRC
+
+** EMMS
+
+#+BEGIN_SRC emacs-lisp
+(use-package emms
+  :ensure t
+  :config
+  ;; Initialize EMMS
+  (emms-all)
+  
+  ;; Set MPV as the player
+  (setq emms-player-list
+        '(emms-player-mpv))
+
+  ;; Optional: Configure MPV playback options
+  (setq emms-player-mpv-parameters
+        '("--no-terminal" "--input-ipc-server=/tmp/mpvsocket"))
+
+  ;; Start EMMS automatically
+  (emms-start))
+
+;; Optionally, bind keys for EMMS controls
+;;(use-package emms-mode-line
+;;  :after emms
+;;  :config
+;;  (emms-mode-line 1))
+
+;;(use-package emms-volume
+;;  :after emms
+;;  :config
+;;  (emms-volume-initialize))
+#+END_SRC
+
+** Ediff
+
+#+BEGIN_SRC emacs-lisp
+(setq ediff-keep-variants nil
+      ediff-make-buffers-readonly-at-startup nil
+      ediff-show-clashes-only t
+      ediff-split-window-function 'split-window-horizontally
+      ediff-window-setup-function 'ediff-setup-windows-plain)
 #+END_SRC
 
 * License
