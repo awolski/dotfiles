@@ -541,7 +541,6 @@ of my credentials, secrets and one time passwords.
       smtpmail-debug-info t
       message-kill-buffer-on-exit t
       mu4e-get-mail-command "mbsync -a"
-      mu4e-update-interval (* 60 60)
       ;; Prevent 'Maildir error: duplicate UID <id>' errors
       mu4e-change-filenames-when-moving t
       mu4e-attachment-dir "~/Downloads"
