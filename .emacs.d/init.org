@@ -185,7 +185,7 @@ tool bar.
 Change the color-theme to =modus-operandi=.
 
 #+BEGIN_SRC emacs-lisp
-(load-theme 'modus-operandi t)
+(load-theme 'modus-vivendi t)
 #+END_SRC
 
 * Completion
