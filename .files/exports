@@ -5,3 +5,12 @@ export VISUAL="emacsclient -c -a emacs"         # $VISUAL opens in GUI mode
 
 # Ignore duplicates and leading spaces in history
 export HISTCONTROL=ignoreboth
+
+if [ $(uname) == 'Darwin' ]; then
+  if [ -d /opt/homebrew/opt/mysql\@8.4 ]; then
+    export PATH="$PATH:/opt/homebrew/opt/mysql@8.4/bin"
+  fi
+  if [ -d /Applications/Docker.app/Contents/Resources/bin ]; then
+    export PATH="$PATH:/Applications/Docker.app/Contents/Resources/bin"
+  fi
+fi

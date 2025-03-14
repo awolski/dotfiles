@@ -640,6 +640,44 @@ Activate Org Babel languages.
      (shell . t)))
 #+END_SRC
 
+** Tree Sitter
+
+#+BEGIN_SRC emacs-lisp
+  (use-package tree-sitter-langs
+    :ensure t
+    :defer t)
+
+  (use-package tree-sitter
+    :ensure t
+    :after tree-sitter-langs
+    :config
+    (global-tree-sitter-mode))
+#+END_SRC
+
+** PHP
+
+;;#+BEGIN_SRC emacs-lisp
+;;  (use-package php-ts-mode
+;;    :
+;;  (add-hook 'php-mode-hook 'eglot-ensure)
+;;  (with-eval-after-load 'tree-sitter
+;;     (add-to-list 'tree-sitter-major-mode-language-alist '(php-mode . php))))
+;;#+END_SRC
+
+** Backups
+
+#+BEGIN_SRC emacs-lisp
+  (setq auto-save-file-name-transforms '((".*" "~/.emacs.d/auto-save-list/" t)))
+#+END_SRC
+
+** MacOS
+
+#+BEGIN_SRC emacs-lisp
+  (when (eq system-type 'darwin)
+    (use-package pbcopy
+      :ensure t))
+#+END_SRC
+
 * License
 
 My Emacs configurations written in Org mode.
