@@ -1,13 +1,10 @@
 # -*- mode: snippet -*-
-# name: debit-cash-petty
+# name: debit-petty
 # key: <dc
 # expand-env: ((yas-indent-line 'fixed))
 # --
 
-${1:`(org-read-date)`} * $2
-    expenses:$4    £${3:}
-    assets:cash:petty
-
-$1 * Budget Allocation
-    assets:cash:petty:budget:$5                                 £-$3
-    assets:cash:petty
+`(org-read-date)` * $1
+    ; $2
+    expenses:$4                                  $$3 
+    assets:cash:petty:budget:$5                  £-${3:}

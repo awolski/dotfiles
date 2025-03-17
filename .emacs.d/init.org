@@ -405,7 +405,7 @@ of my credentials, secrets and one time passwords.
 #+BEGIN_SRC emacs-lisp
   (use-package gptel
     :bind (;; C-c bindings in `mode-specific-map'
-         ("C-c a" . gptel-send)))
+         ("C-c g" . gptel-send)))
 #+END_SRC
 
 ** Emacs-libvterm
@@ -501,7 +501,7 @@ of my credentials, secrets and one time passwords.
   :init
   (yas-global-mode 1)  ;; Enable yasnippet globally
   (setq yas-snippet-dirs
-        '("~/.config/emacs/snippets"  ;; Default snippet directory
+        '("~/.emacs.d/snippets"  ;; Default snippet directory
           ))
   :config
   (setq yas-trigger-key "TAB"  ;; Change the trigger key
@@ -639,6 +639,367 @@ Activate Org Babel languages.
    '((sql . t)
      (shell . t)))
 #+END_SRC
+
+Use the key bindings suggested in Org mode's [[https://orgmode.org/manual/Activation.html][activation]] document.
+
+#+BEGIN_SRC emacs-lisp
+(global-set-key (kbd "C-c l") #'org-store-link)
+(global-set-key (kbd "C-c a") #'org-agenda)
+(global-set-key (kbd "C-c c") #'org-capture)
+#+END_SRC
+
+Use sane defaults.
+
+#+BEGIN_SRC emacs-lisp
+(setq org-directory "~/git/org"
+      org-agenda-files (list "~/git/peerj/org" org-directory)
+      org-default-notes-file (concat org-directory "/refile.org")
+      org-fold-catch-invisible-edits 'smart
+      org-hierarchical-todo-statistics nil
+      org-startup-folded t
+      org-startup-indented t
+      ;; org-duration-format 'h:mm  ;; assignment to free variable
+      org-log-done t
+      org-log-into-drawer "LOGBOOK"
+      org-agenda-sticky t
+      org-agenda-window-setup 'current-window)
+#+END_SRC
+
+Refiling...
+
+#+BEGIN_SRC emacs-lisp
+(setq org-refile-use-outline-path 'file
+      org-outline-path-complete-in-steps nil
+      org-refile-targets '((org-agenda-files :maxlevel . 9)))
+#+END_SRC
+
+Use Org Crypt.
+
+#+BEGIN_SRC emacs-lisp
+(require 'org-crypt)
+(org-crypt-use-before-save-magic)
+(setq org-tags-exclude-from-inheritance '("crypt"))
+
+(setq org-crypt-key "0x72CA03529FF0C81C")
+;; GPG key to use for encryption.
+;; nil means  use symmetric encryption unconditionally.
+;; "" means use symmetric encryption unless heading sets CRYPTKEY property.
+
+(setq auto-save-default nil)
+;; Auto-saving does not cooperate with org-crypt.el: so you need to
+;; turn it off if you plan to use org-crypt.el quite often.  Otherwise,
+;; you'll get an (annoying) message each time you start Org
+#+END_SRC
+
+Keywords for todo states.
+
+#+begin_src emacs-lisp
+(setq org-todo-keywords
+      (quote ((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d!/!)")
+              (sequence "WAITING(w@/!)" "HOLD(h@/!)" "|" "CANCELLED(c@/!)" "PHONE" "MEETING"))))
+
+(setq org-todo-keyword-faces
+      (quote (("TODO" :foreground "#e76f51" :weight bold)
+              ("NEXT" :foreground "#289d8f" :weight bold)
+              ("DONE" :foreground "#6b705c" :weight bold)
+              ("WAITING" :foreground "#f4a261" :weight bold)
+              ("HOLD" :foreground "#e9c46a" :weight bold)
+              ("CANCELLED" :foreground "#6b705c" :weight bold)
+              ("MEETING" :foreground "#00b4d8" :weight bold)
+              ("PHONE" :foreground "#6b705c" :weight bold))))
+
+(setq org-todo-state-tags-triggers
+      (quote (("CANCELLED" ("CANCELLED" . t))
+              ("WAITING" ("WAITING" . t))
+              ("HOLD" ("WAITING") ("HOLD" . t))
+              (done ("WAITING") ("HOLD"))
+              ("TODO" ("WAITING") ("CANCELLED") ("HOLD"))
+              ("NEXT" ("WAITING") ("CANCELLED") ("HOLD"))
+              ("DONE" ("WAITING") ("CANCELLED") ("HOLD")))))
+#+end_src
+
+Global column view.
+
+#+begin_src emacs-lisp
+; Set default column view headings: Task Effort Clock_Summary
+(setq org-columns-default-format "%80ITEM(Task) %10Effort(Effort){:} %10CLOCKSUM")
+
+; View project subtasks in clockreport mode with larger :maxlevel value (default is 2)
+(setq org-agenda-clockreport-parameter-plist '(:link t :maxlevel 4))
+
+; global Effort estimate values
+; global STYLE property values for completion
+(setq org-global-properties (quote (("Effort_ALL" . "0:05 0:15 0:30 0:45 1:00 2:00 3:00 4:00 5:00 6:00 8:00 24:00 0:00")
+                                    ("STYLE_ALL" . "habit"))))
+#+end_src
+
+Quick access to Org tags.
+
+#+begin_src emacs-lisp
+; Tags with fast selection keys
+(setq org-tag-alist (quote ((:startgroup)
+                            ("@bujo" . ?b)
+                            ("@errand" . ?e)
+                            ("@home" . ?H)
+                            (:endgroup)
+                            ("WAITING" . ?w)
+                            ("HOLD" . ?h)
+                            ("@phone" . ?p)
+                            ("EIRA" . ?E)
+                            ("BODHI" . ?B)
+                            ("WORK" . ?W)
+                            ("ORG" . ?O)
+                            ("AWOLSKI" . ?N)
+                            ("crypt" . ?c)
+                            ("NOTE" . ?n)
+                            ("CANCELLED" . ?C)
+                            ("FLAGGED" . ??))))
+
+; ALLOW SETTING SINGLE tags without the menu
+(setq org-fast-tag-selection-single-key (quote expert))
+
+; For tag searches ignore tasks with scheduled and deadline dates
+(setq org-agenda-tags-todo-honor-ignore-options t)
+#+end_src
+
+Let's test out [[https://github.com/alphapapa/org-super-agenda][org-super-agenda]].
+
+#+begin_src emacs-lisp
+  (use-package org-super-agenda
+    :ensure t)
+
+  (org-super-agenda-mode)
+
+  ;; Do not dim blocked tasks
+  (setq org-agenda-dim-blocked-tasks nil)
+
+  ;; Compact the block agenda view
+  (setq org-agenda-compact-blocks t)
+
+  (setq org-agenda-custom-commands
+        '(
+          ("i" "Inbox"
+           ((agenda "" ((org-agenda-span 2))
+                    ((org-super-agenda-groups
+                      '((:name "Something"
+                         :time-grid nil)))))
+
+            (tags "REFILE" ((org-agenda-overriding-header "")
+                            (org-super-agenda-groups
+                             '((:name "Refile"
+                                      :tag "REFILE")))))
+
+            (alltodo "" ((org-agenda-overriding-header "")
+                         (org-super-agenda-groups
+                          '(;;(:discard (:todo "HOLD"))
+                            (:name "Estimate"
+                                   :and (:children nil :not (:effort< "0:00" :effort> "0:00"))
+                                   :order 1)
+                            (:name "Context"
+                                   :not (:tag ("@home" "@errand" "@bujo" "email"))
+                                   :order 2)
+                            ))))))
+          ("h" "Holding Tank"
+           ((agenda "" ((org-agenda-span 0))
+                    ((org-super-agenda-groups
+                      '((:name none
+                         :time-grid nil)))))
+
+            (alltodo "" ((org-agenda-overriding-header "")
+                            (org-super-agenda-groups
+                             '((:name "Hold"
+                                      :tag "HOLD")
+                               (:discard (:anything t))
+                               ))))))
+
+          ("f" "Focus"
+           ((agenda "" ((org-agenda-span 0))
+                    ((org-super-agenda-groups
+                      '((:name none
+                         :time-grid nil)))))
+
+            (alltodo "" ((org-agenda-overriding-header "")
+                            (org-super-agenda-groups
+                             '((:name "Hold"
+                                      :tag "HOLD")
+                               (:discard (:anything t))
+                               ))))))
+
+          ("p" "Personal"
+           ((agenda "" ((org-agenda-span 3))
+                    ((org-super-agenda-groups
+                      '((:name none
+                               :time-grid t)))))
+
+            (tags "REFILE" ((org-agenda-overriding-header "")
+                            (org-super-agenda-groups
+                             '((:name "Tasks to refile"
+                                      :tag "REFILE")))))
+
+            (alltodo "" ((org-agenda-overriding-header "")
+                         (org-super-agenda-groups
+                          '((:discard (:tag "WORK"
+                                            :todo "HOLD"
+                                            :scheduled t
+                                            :deadline t
+                                            :habit t))
+                            (:name "Tasks to estimate"
+                                   :and (:children nil :not (:effort< "0:00" :effort> "0:00"))
+                                   :order 1)
+                            (:name "Next to do"
+                                   :todo "NEXT"
+                                   :order 2)
+                            (:name "Important"
+                                   :priority "A"
+                                   :order 3)
+                            (:name "Stuck Projects"
+                                   :and (:todo "TODO" :children t :not (:children "NEXT"))
+                                   :order 4)
+                            (:name "Errands"
+                                   :and (:tag "@errand" :todo "TODO")
+                                   :scheduled today
+                                   :order 5)
+                            (:name "Quick Picks"
+                                   :and (:effort< "0:15" :todo "TODO")
+                                   :scheduled today
+                                   :order 6)
+                            (:name "Projects"
+                                   :and (:todo "TODO" :children t)
+                                   :order 7)
+  ;                          (:name "Home"
+  ;                                 :and (:tag "@home" :todo "TODO")
+  ;                                 :scheduled today
+  ;                                 :order 8)
+                            (:name "Waiting"
+                                   :todo "WAITING"
+                                   :order 10)
+                            ))))))
+
+          ("r" "Retrospective"
+           ((tags "/DONE|CANCELLED" ((org-agenda-overriding-header "")
+                                     (org-super-agenda-groups
+                                      '((:name "Tasks to archive"
+                                               :order 1)))))))
+
+          ("j" "PeerJ"
+           ((agenda "" ((org-agenda-span 'day)
+                        (org-super-agenda-groups
+                         '((:name "Today" :time-grid t
+                                  :date today
+                                  :todo "TODAY"
+                                  :scheduled today
+                                  :order 1)
+                           (:discard (:not (:tag "PEERJ")))))))
+            (alltodo "" ((org-agenda-overriding-header "")
+                         (org-super-agenda-groups
+                          '((:discard (:not (:tag ("PEERJ" "REFILE"))))
+                            (:discard (:todo "HOLD"
+                                       :tag "MEETING"))
+                            (:name "Next to do"
+                                   :todo "NEXT"
+                                   :order 1)
+                            (:name "Tasks to estimate"
+                                   :and (:children nil :not (:effort< "0:00" :effort> "0:00"))
+                                   :order 2)
+                            (:name "Tasks to refile"
+                                   :tag "REFILE"
+                                   :order 3)
+                            (:name "Quick Picks"
+                                   :and (:effort< "0:15" :todo "TODO")
+                                   :scheduled today
+                                   :order 4)
+                            (:name "Small tasks (effort< 2:00)"
+                                   :and (:effort< "2:00" :todo "TODO")
+                                   :scheduled today
+                                   :order 5)
+                            (:name "Medium tasks (effort< 4:00)"
+                                   :and (:effort< "4:00" :todo "TODO")
+                                   :scheduled today
+                                   :order 6)
+                            (:name "Stuck Projects"
+                                   :and (:todo ("WAITING" "HOLD") :children todo)
+                                   :order 7)
+                            (:name "Project Tasks"
+                                   :auto-parent t
+                                   :order 8)
+                            ))))))))
+#+end_src
+
+#+begin_src emacs-lisp
+(setq org-use-fast-todo-selection t)
+#+end_src
+
+Capture templates for notes, todo etc.
+
+#+begin_src emacs-lisp
+(setq org-capture-templates
+      '(("t" "Task" entry (file org-default-notes-file)
+         "* TODO %?\n%u\n%a\n" :clock-in t :clock-resume t)
+        ("x" "Email Task" entry (file org-default-notes-file)
+         "* TODO %:subject :EMAIL:\n%U\n%a\n" :clock-in t :clock-resume t :immediate-finish t)
+        ("c" "Call" entry (file org-default-notes-file)
+         "* TODO Call %? :@mobile:\n%u\n" :clock-in t :clock-resume t)
+        ("m" "Message" entry (file org-default-notes-file)
+         "* TODO Message %? :@phone:\n:PROPERTIES:\n:Effort: 0:05\n:END:\n%u\n" :clock-in t :clock-resume t)
+        ("r" "Respond" entry (file org-default-notes-file)
+         "* NEXT Respond to %:from on %:subject :EMAIL:\n%U\n%a\n" :clock-in t :clock-resume t :immediate-finish t)
+        ("b" "Bookmark" entry (file org-default-notes-file)
+         "* %? %(org-set-tags \"BOOKMARK\") \n:PROPERTIES:\n:CREATED: %U\n:END:\n\n" :empty-lines 1)
+        ("n" "Note" entry (file  org-default-notes-file)
+         "* %? :NOTE:\n%U\n%a\n" :clock-in t :clock-resume t)
+        ("g" "Forge Topic" entry (file org-default-notes-file)
+         "* TODO %:description\n%?\n%a\n%u\n" :clock-in t :clock-resume t)
+        ("i" "Meeting" entry (file org-default-notes-file)
+         "* MEETING %? :MEETING:\n%U" :clock-in t :clock-resume t)
+        ("p" "Phone call" entry (file org-default-notes-file)
+         "* PHONE Call with %? :PHONE:\n%U" :clock-in t :clock-resume t)
+        ;("#" "used by gnus-icalendar-org" entry (file org-default-notes-file)
+        ; "%i %?\n" :time-prompt t :clock-in t :clock-resume t)
+        ("p" "PeerJ")
+        ("pi" "Issue" entry (file+headline "~/git/peerj/org/peerj.org" "Tasks")
+         "* TODO %:description\n%?\n%a\n%u\n" :clock-in t :clock-resume t)
+        ("pc" "Meeting" entry (file+headline "~/git/peerj/org/peerj.org" "Meetings")
+         "* MEETING Call with %? :MEETING:CALL:\n%T\n%U" :clock-in t :clock-resume t :time-prompt t)
+        ("ps" "Stand up" entry (file+headline "~/git/peerj/org/peerj.org" "Meetings")
+         "* MEETING PeerJ Stand up :MEETING:CALL:\n<pjsu%?\n\n%U" :clock-in t :clock-resume t :time-prompt t)
+        ("pt" "Task" entry (file+headline "~/git/peerj/org/peerj.org" "Tasks")
+         "* TODO %?\n%u\n%a\n" :clock-in t :clock-resume t)
+        ))
+#+end_src
+
+Keybindings straight to capture templates.
+
+#+begin_src emacs-lisp
+;;(define-key global-map (kbd "C-c r")
+;;  (lambda () (interactive) (org-capture nil "r")))
+#+end_src
+
+When editing org-files with source-blocks, we want the source blocks to be
+themed as they would in their native mode.
+
+#+BEGIN_SRC emacs-lisp
+(setq org-src-fontify-natively t
+      org-src-tab-acts-natively t
+      org-confirm-babel-evaluate nil
+      org-edit-src-content-indentation 0)
+
+(add-to-list 'org-src-lang-modes '("plantuml" . plantuml))
+#+END_SRC
+
+** Org CalDav
+
+Use [[https://github.com/dengste/org-caldav][org-caldav]] for calendar synchronisation.
+
+#+begin_src emacs-lisp
+;(require 'org-caldav)
+;
+;;; URL of the caldav server
+;(setq org-caldav-url "https://dav.awol.ski/tony/calendar/"
+;      org-caldav-calendar-id ""
+;      org-caldav-inbox "~/git/org/refile.org"
+;      org-caldav-files '("~/git/org/simba.org")
+;      org-icalendar-timezone "Europe/London")
+#+end_src
 
 ** Tree Sitter
 

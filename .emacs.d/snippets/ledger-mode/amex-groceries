@@ -1,0 +1,12 @@
+# -*- mode: snippet -*-
+# name: amex-groceries
+# key: <ag
+# expand-env: ((yas-indent-line 'fixed))
+# --
+
+`(org-read-date)` ! $1
+    ; Groceries
+    expenses:food:groceries                                      £${2:}
+    liabilities:credit:amex_ba                                  £-$2
+    assets:cash:wise:budget:pending:amex_ba                      £$2
+    assets:cash:wise:budget:food                                    £-$2
