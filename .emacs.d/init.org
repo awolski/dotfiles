@@ -200,6 +200,15 @@ the default completion system.
   (vertico-mode))
 #+END_SRC
 
+
+
+#+BEGIN_SRC emacs-lisp
+;; Persist history over Emacs restarts. Vertico sorts by history position.
+(use-package savehist
+  :init
+  (savehist-mode))
+#+END_SRC
+
 #+BEGIN_SRC emacs-lisp
 (use-package orderless
   :ensure t
@@ -1034,9 +1043,10 @@ Use [[https://github.com/dengste/org-caldav][org-caldav]] for calendar synchroni
 ** MacOS
 
 #+BEGIN_SRC emacs-lisp
-  (when (eq system-type 'darwin)
-    (use-package pbcopy
-      :ensure t))
+(when (eq system-type 'darwin)
+  (use-package pbcopy
+    :ensure t)
+  (setq mac-right-option-modifier 'none))
 #+END_SRC
 
 * License
