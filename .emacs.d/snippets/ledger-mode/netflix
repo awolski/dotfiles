@@ -1,0 +1,13 @@
+# -*- mode: snippet -*-
+# name: netflix
+# key: <netflix
+# expand-env: ((yas-indent-line 'fixed))
+# --
+
+`(org-read-date)` * Netflix
+    ; Netflix
+    expenses:bills:netflix                                       £5.99
+    liabilities:credit:amex_ba                                  £-5.99
+    assets:cash:wise:budget:pending:amex_ba                      £5.99
+    assets:cash:wise:budget:bills                               £-5.99
+
